@@ -5,28 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>GLM — Ingénierie IA, Data, SaaS, Web &amp; Robotique</title>
 <meta name="description" content="GLM est une société de conseil tech qui conçoit et développe des solutions IA, SaaS, Data, Web et Robotique sur mesure.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b4cff'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='%230a0e17'/%3E%3Ctext x='50' y='66' font-family='Arial,sans-serif' font-weight='800' font-size='46' fill='url(%23g)' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='gRed' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ff5c72'/%3E%3Cstop offset='1' stop-color='%23ff9a3c'/%3E%3C/linearGradient%3E%3ClinearGradient id='gGreen' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%232ee6a6'/%3E%3Cstop offset='1' stop-color='%2322c55e'/%3E%3C/linearGradient%3E%3ClinearGradient id='gBlue' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2338bdf8'/%3E%3Cstop offset='1' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='0' width='40' height='120' fill='url(%23gRed)'/%3E%3Crect x='40' width='40' height='120' fill='url(%23gGreen)'/%3E%3Crect x='80' width='40' height='120' fill='url(%23gBlue)'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=13">
+<link rel="stylesheet" href="assets/css/style.css?v=16">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#05070d">
 </head>
 <body>
-
-<!-- Boot sequence splash -->
-<div class="boot-splash" id="bootSplash" aria-hidden="true">
-  <div class="boot-inner">
-    <div class="boot-logo">
-      <span class="impact-letter" style="--d:0s; --rot:-14deg">G<span class="impact-ring"></span></span>
-      <span class="impact-letter" style="--d:.08s; --rot:9deg">L<span class="impact-ring"></span></span>
-      <span class="impact-letter" style="--d:.16s; --rot:-6deg">M<span class="impact-ring"></span></span>
-    </div>
-    <div class="boot-lines" id="bootLines"></div>
-    <div class="boot-bar"><span id="bootBarFill"></span></div>
-  </div>
-</div>
 
 <!-- Custom cursor glow -->
 <div class="cursor-glow" aria-hidden="true"></div>
@@ -55,8 +42,26 @@
 <!-- Nav -->
 <header class="nav" id="nav">
   <div class="nav-inner">
-    <a href="#top" class="brand">
-      <span class="brand-mark">GLM</span>
+    <a href="#top" class="brand" aria-label="GLM — accueil">
+      <svg class="brand-logo" viewBox="0 0 120 120" width="30" height="30" role="img" aria-hidden="true">
+        <defs>
+          <linearGradient id="navRed" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ff5c72"/>
+            <stop offset="1" stop-color="#ff9a3c"/>
+          </linearGradient>
+          <linearGradient id="navGreen" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2ee6a6"/>
+            <stop offset="1" stop-color="#22c55e"/>
+          </linearGradient>
+          <linearGradient id="navBlue" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#38bdf8"/>
+            <stop offset="1" stop-color="#3b82f6"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" width="40" height="120" fill="url(#navRed)"/>
+        <rect x="40" width="40" height="120" fill="url(#navGreen)"/>
+        <rect x="80" width="40" height="120" fill="url(#navBlue)"/>
+      </svg>
     </a>
     <nav class="nav-links" aria-label="Navigation principale">
       <a href="#ia-data" data-nav data-i18n="nav.ia_data">IA &amp; Data</a>
@@ -113,10 +118,9 @@
           </a>
         </div>
         <div class="hero-stats reveal">
-          <div class="stat"><span class="stat-num" data-count="47">0</span><span class="stat-label" data-i18n="hero.stat1_label">projets livrés</span></div>
-          <div class="stat"><span class="stat-num" data-count="12">0</span><span class="stat-label" data-i18n="hero.stat2_label">secteurs adressés</span></div>
-          <div class="stat"><span class="stat-num" data-count="98" data-suffix="%">0</span><span class="stat-label" data-i18n="hero.stat3_label">clients qui recommandent</span></div>
-          <div class="stat"><span class="stat-num" data-count="24" data-suffix="/7">0</span><span class="stat-label" data-i18n="hero.stat4_label">supervision plateforme</span></div>
+          <div class="stat"><span class="stat-num" data-count="3">0</span><span class="stat-label" data-i18n="hero.stat1_label">secteurs d'expertise</span></div>
+          <div class="stat"><span class="stat-num" data-count="24" data-suffix="/7">0</span><span class="stat-label" data-i18n="hero.stat2_label">disponibles pour votre projet</span></div>
+          <div class="stat"><span class="stat-num" data-i18n="hero.stat3_num">Sur-mesure</span><span class="stat-label" data-i18n="hero.stat3_label">pensés pour votre business, selon vos envies</span></div>
         </div>
       </div>
     </div>
@@ -138,7 +142,7 @@
   <p class="poles-intro reveal" data-i18n="poles.intro">Trois pôles d'ingénierie, une seule équipe.</p>
 
   <!-- IA · DATA · AUTOMATISATION -->
-  <section class="section theme-section" id="ia-data" data-zone="red">
+  <section class="section theme-section" id="ia-data">
     <div class="container">
       <div class="section-head reveal">
         <span class="tag tag-red" data-i18n="section1.tag">Intelligence</span>
@@ -149,7 +153,7 @@
   </section>
 
   <!-- ROBOTIQUE -->
-  <section class="section section-alt theme-section" id="robotique" data-zone="green">
+  <section class="section section-alt theme-section" id="robotique">
     <div class="container">
       <div class="section-head reveal">
         <span class="tag tag-green" data-i18n="section2.tag">Systèmes</span>
@@ -160,7 +164,7 @@
   </section>
 
   <!-- SAAS · WEB · DEVOPS -->
-  <section class="section theme-section" id="saas-web" data-zone="blue">
+  <section class="section theme-section" id="saas-web">
     <div class="container">
       <div class="section-head reveal">
         <span class="tag tag-blue" data-i18n="section3.tag">Plateformes</span>
@@ -193,13 +197,11 @@
           </div>
           <span class="contact-tile-cta"><span data-i18n="contact.email_cta">Écrire un message</span> <span>→</span></span>
         </a>
-        <a class="contact-tile reveal is-placeholder" href="#" rel="noopener" aria-disabled="true">
-          <span class="tile-badge" data-i18n="contact.linkedin_badge">Bientôt</span>
+        <a class="contact-tile reveal" href="https://www.linkedin.com/company/glmprime/" target="_blank" rel="noopener">
           <div class="contact-tile-head">
             <span class="contact-tile-icon linkedin">in</span>
             <h3 data-i18n="contact.linkedin_title">LinkedIn</h3>
           </div>
-          <p data-i18n="contact.linkedin_sub">Lien à venir</p>
           <span class="contact-tile-cta"><span data-i18n="contact.linkedin_cta">Voir le profil</span> <span>→</span></span>
         </a>
       </div>
@@ -276,6 +278,6 @@
 <!-- Matrix easter egg overlay -->
 <canvas id="matrixCanvas" class="matrix-canvas" aria-hidden="true"></canvas>
 
-<script src="assets/js/main.js?v=12"></script>
+<script src="assets/js/main.js?v=13"></script>
 </body>
 </html>

@@ -44,8 +44,8 @@
       'hero.title': 'On transforme vos <span class="grad-text">idées</span> en produits qui tournent.',
       'hero.subtitle': 'GLM conçoit, développe et déploie des solutions <strong>IA</strong>, <strong>SaaS</strong>, <strong>Data</strong>, <strong>Web</strong> et <strong>Robotique</strong> — du cadrage à la mise en production, avec une équipe qui code autant qu\'elle conseille.',
       'hero.cta_primary': 'Discuter de mon projet',
-      'hero.stat1_label': 'projets livrés', 'hero.stat2_label': 'secteurs adressés',
-      'hero.stat3_label': 'clients qui recommandent', 'hero.stat4_label': 'supervision plateforme',
+      'hero.stat1_label': "secteurs d'expertise", 'hero.stat2_label': 'disponibles pour votre projet',
+      'hero.stat3_num': 'Sur-mesure', 'hero.stat3_label': 'pensés pour votre business, selon vos envies',
       'poles.intro': "Trois pôles d'ingénierie, une seule équipe.",
       'section1.tag': 'Intelligence', 'section1.heading': 'IA, Data & Automatisation',
       'section1.body': "Sur la donnée, nous collectons, nettoyons et analysons vos data, déployons les pipelines qui les font circuler, puis créons et exploitons des API pour les rendre accessibles. Sur l'IA, nous entraînons des modèles sur ces données, construisons des systèmes RAG et des assistants conversationnels sur-mesure. Sur l'automatisation, nous prenons en charge les tâches répétitives et administratives — tri des emails, envoi de rappels, facturation — pour une vraie excellence opérationnelle.",
@@ -57,8 +57,8 @@
       'contact.subtitle': "Écrivez, appelez ou passez sur WhatsApp — on vous répond directement, sans formulaire à remplir.",
       'contact.whatsapp_title': 'WhatsApp', 'contact.whatsapp_cta': 'Ouvrir la conversation',
       'contact.email_title': 'Email', 'contact.email_cta': 'Écrire un message',
-      'contact.linkedin_title': 'LinkedIn', 'contact.linkedin_sub': 'Lien à venir',
-      'contact.linkedin_cta': 'Voir le profil', 'contact.linkedin_badge': 'Bientôt',
+      'contact.linkedin_title': 'LinkedIn',
+      'contact.linkedin_cta': 'Voir le profil',
       'footer.legal': 'GLM — SAS, SIREN 108 105 529.',
       'footer.shortcuts_btn': 'Raccourcis clavier',
       'shortcuts.title': 'Raccourcis clavier', 'shortcuts.cmdk_label': 'Palette de commandes',
@@ -74,8 +74,8 @@
       'hero.title': 'We turn your <span class="grad-text">ideas</span> into products that ship.',
       'hero.subtitle': 'GLM designs, builds and ships <strong>AI</strong>, <strong>SaaS</strong>, <strong>Data</strong>, <strong>Web</strong> and <strong>Robotics</strong> solutions — from scoping to production, with a team that codes as much as it advises.',
       'hero.cta_primary': 'Discuss my project',
-      'hero.stat1_label': 'projects delivered', 'hero.stat2_label': 'industries served',
-      'hero.stat3_label': 'clients who recommend us', 'hero.stat4_label': 'platform monitoring',
+      'hero.stat1_label': 'areas of expertise', 'hero.stat2_label': 'available for your project',
+      'hero.stat3_num': 'Tailor-made', 'hero.stat3_label': 'built around your business, on your terms',
       'poles.intro': 'Three engineering practices, one team.',
       'section1.tag': 'Intelligence', 'section1.heading': 'AI, Data & Automation',
       'section1.body': 'On data, we collect, clean and analyse your data, deploy the pipelines that move it, then build and run APIs to make it accessible. On AI, we train models on that data, build RAG systems and bespoke conversational assistants. On automation, we handle repetitive administrative tasks — sorting emails, sending reminders, invoicing — for real operational excellence.',
@@ -87,8 +87,8 @@
       'contact.subtitle': 'Write, call, or message us on WhatsApp — we reply directly, no form to fill in.',
       'contact.whatsapp_title': 'WhatsApp', 'contact.whatsapp_cta': 'Start the conversation',
       'contact.email_title': 'Email', 'contact.email_cta': 'Send a message',
-      'contact.linkedin_title': 'LinkedIn', 'contact.linkedin_sub': 'Link coming soon',
-      'contact.linkedin_cta': 'View profile', 'contact.linkedin_badge': 'Soon',
+      'contact.linkedin_title': 'LinkedIn',
+      'contact.linkedin_cta': 'View profile',
       'footer.legal': 'GLM — a French SAS, SIREN 108 105 529.',
       'footer.shortcuts_btn': 'Keyboard shortcuts',
       'shortcuts.title': 'Keyboard shortcuts', 'shortcuts.cmdk_label': 'Command palette',
@@ -104,8 +104,8 @@
       'hero.title': '我们将您的<span class="grad-text">创意</span>转化为真正运转的产品。',
       'hero.subtitle': 'GLM设计、开发并交付<strong>人工智能</strong>、<strong>SaaS</strong>、<strong>数据</strong>、<strong>网页</strong>与<strong>机器人</strong>解决方案——从需求梳理到上线部署,我们的团队既提供咨询,也亲自编写代码。',
       'hero.cta_primary': '讨论我的项目',
-      'hero.stat1_label': '已交付项目', 'hero.stat2_label': '覆盖行业',
-      'hero.stat3_label': '客户推荐率', 'hero.stat4_label': '平台监控',
+      'hero.stat1_label': '专业领域', 'hero.stat2_label': '随时为您的项目待命',
+      'hero.stat3_num': '量身定制', 'hero.stat3_label': '根据您的业务与需求打造',
       'poles.intro': '三大工程领域,同一支团队。',
       'section1.tag': '智能', 'section1.heading': '人工智能、数据与自动化',
       'section1.body': '在数据方面,我们负责数据的采集、清洗与分析,部署让数据流转的管道,再构建并运维API使其可被调用。在人工智能方面,我们基于这些数据训练模型,搭建RAG系统与定制化对话助手。在自动化方面,我们处理重复性行政任务——邮件自动分类、提醒发送、开票——实现真正的运营卓越。',
@@ -117,8 +117,8 @@
       'contact.subtitle': '写邮件、打电话或通过WhatsApp联系我们——我们直接回复,无需填写表单。',
       'contact.whatsapp_title': 'WhatsApp', 'contact.whatsapp_cta': '开始对话',
       'contact.email_title': '邮箱', 'contact.email_cta': '发送消息',
-      'contact.linkedin_title': 'LinkedIn', 'contact.linkedin_sub': '链接即将上线',
-      'contact.linkedin_cta': '查看主页', 'contact.linkedin_badge': '即将上线',
+      'contact.linkedin_title': 'LinkedIn',
+      'contact.linkedin_cta': '查看主页',
       'footer.legal': 'GLM——法国SAS公司,SIREN 108 105 529。',
       'footer.shortcuts_btn': '键盘快捷键',
       'shortcuts.title': '键盘快捷键', 'shortcuts.cmdk_label': '命令面板',
@@ -232,17 +232,6 @@
     setTimeout(() => revealEls.forEach(el => el.classList.add('in-view')), 3000);
   }
 
-  /* ================= Immersive per-section theme zones ================= */
-  const zoneSections = document.querySelectorAll('.hero, [data-zone], #contact');
-  const zoneObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        document.body.setAttribute('data-theme-zone', entry.target.dataset.zone || '');
-      }
-    });
-  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
-  zoneSections.forEach(sec => zoneObserver.observe(sec));
-
   /* ================= Magnetic buttons ================= */
   if (!reduceMotion) {
     document.querySelectorAll('.magnetic').forEach(btn => {
@@ -274,7 +263,7 @@
   }
 
   /* ================= Stat counters ================= */
-  const statEls = document.querySelectorAll('.stat-num');
+  const statEls = document.querySelectorAll('.stat-num[data-count]');
   const statsIO = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
@@ -380,7 +369,7 @@
           const a = particles[i], b = particles[j];
           const d = Math.hypot(a.x - b.x, a.y - b.y);
           if (d < 130) {
-            ctx.strokeStyle = `rgba(91,76,255,${0.14 * (1 - d / 130)})`;
+            ctx.strokeStyle = `rgba(255,92,114,${0.14 * (1 - d / 130)})`;
             ctx.lineWidth = 1;
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           }
@@ -388,7 +377,7 @@
       }
       particles.forEach(p => {
         ctx.beginPath();
-        ctx.fillStyle = 'rgba(91,76,255,0.55)';
+        ctx.fillStyle = 'rgba(255,92,114,0.55)';
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       });
@@ -632,7 +621,7 @@
       if (!matrixActive) return;
       mctx.fillStyle = 'rgba(5,7,13,0.14)';
       mctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
-      mctx.fillStyle = '#5b4cff';
+      mctx.fillStyle = '#ff5c72';
       mctx.font = fontSize + 'px monospace';
       matrixCols.forEach((y, i) => {
         const ch = chars[Math.floor(Math.random() * chars.length)];
@@ -658,50 +647,6 @@
       konamiPos = (key === konami[0]) ? 1 : 0;
     }
   });
-
-  /* ================= Boot splash (first visit of the session) ================= */
-  (function bootSequence() {
-    const splash = document.getElementById('bootSplash');
-    const linesEl = document.getElementById('bootLines');
-    const barFill = document.getElementById('bootBarFill');
-    if (!splash) return;
-
-    if (sessionStorage.getItem('glm-booted') || reduceMotion) {
-      splash.remove();
-      return;
-    }
-    sessionStorage.setItem('glm-booted', '1');
-    document.body.style.overflow = 'hidden';
-
-    const steps = [
-      'Initialisation de glm-os v2.4…',
-      'Connexion aux modules IA · Data · SaaS · Web · Robotique…',
-      'Chargement des expertises… OK',
-      'Calibration de l\'interface…',
-      'Prêt.',
-    ];
-    let i = 0;
-    function nextLine() {
-      if (i >= steps.length) {
-        barFill.style.width = '100%';
-        setTimeout(() => {
-          splash.classList.add('hidden');
-          document.body.style.overflow = '';
-          setTimeout(() => splash.remove(), 600);
-        }, 250);
-        return;
-      }
-      const div = document.createElement('div');
-      const isLast = i === steps.length - 1;
-      div.textContent = (isLast ? '✔ ' : '> ') + steps[i];
-      if (isLast) div.classList.add('ok');
-      linesEl.appendChild(div);
-      barFill.style.width = Math.round(((i + 1) / steps.length) * 100) + '%';
-      i++;
-      setTimeout(nextLine, 340 + Math.random() * 220);
-    }
-    setTimeout(nextLine, 250);
-  })();
 
   /* ================= Status ticker (real perf metrics + ops lines) ================= */
   const statusTrack = document.getElementById('statusTrack');
@@ -742,7 +687,7 @@
   }
 
   /* ================= Console easter egg for curious devs ================= */
-  console.log('%cGLM', 'font-size: 42px; font-weight: 800; background: linear-gradient(120deg,#5b4cff,#7c3aed); -webkit-background-clip: text; background-clip: text; color: transparent;');
+  console.log('%cGLM', 'font-size: 42px; font-weight: 800; background: linear-gradient(120deg,#ff5c72,#38bdf8); -webkit-background-clip: text; background-clip: text; color: transparent;');
   console.log('%cVous inspectez le code ? Bon signe. Écrivez-nous : romain.dufraiche@gmail.com', 'font-size: 13px; color: #9aa2b8;');
   console.log('%cAstuce : essayez le code Konami sur cette page (↑ ↑ ↓ ↓ ← → ← → B A).', 'font-size: 12px; color: #5c6480;');
 })();
