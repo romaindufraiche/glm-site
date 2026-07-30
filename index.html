@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GLM — Ingénierie IA, Data, SaaS, Web &amp; Robotique</title>
+<meta name="description" content="GLM est une société de conseil tech qui conçoit et développe des solutions IA, SaaS, Data, Web et Robotique sur mesure.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b4cff'/%3E%3Cstop offset='1' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='%230a0e17'/%3E%3Ctext x='50' y='66' font-family='Arial,sans-serif' font-weight='800' font-size='46' fill='url(%23g)' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;0,900;1,500;1,600&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=13">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#05070d">
+</head>
+<body>
+
+<!-- Boot sequence splash -->
+<div class="boot-splash" id="bootSplash" aria-hidden="true">
+  <div class="boot-inner">
+    <div class="boot-logo">
+      <span class="impact-letter" style="--d:0s; --rot:-14deg">G<span class="impact-ring"></span></span>
+      <span class="impact-letter" style="--d:.08s; --rot:9deg">L<span class="impact-ring"></span></span>
+      <span class="impact-letter" style="--d:.16s; --rot:-6deg">M<span class="impact-ring"></span></span>
+    </div>
+    <div class="boot-lines" id="bootLines"></div>
+    <div class="boot-bar"><span id="bootBarFill"></span></div>
+  </div>
+</div>
+
+<!-- Custom cursor glow -->
+<div class="cursor-glow" aria-hidden="true"></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" aria-hidden="true"><span id="scrollProgressBar"></span></div>
+
+<!-- Command palette -->
+<div class="cmdk-overlay" id="cmdkOverlay" role="dialog" aria-modal="true" aria-label="Palette de commandes">
+  <div class="cmdk-box" role="combobox" aria-expanded="true">
+    <div class="cmdk-input-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="text" id="cmdkInput" placeholder="Rechercher une section, une action…" autocomplete="off">
+      <kbd>Esc</kbd>
+    </div>
+    <ul class="cmdk-list" id="cmdkList"></ul>
+    <div class="cmdk-footer">
+      <span><kbd>↑</kbd><kbd>↓</kbd> naviguer</span>
+      <span><kbd>↵</kbd> sélectionner</span>
+      <span><kbd>⌘K</kbd> ouvrir/fermer</span>
+    </div>
+  </div>
+</div>
+
+<!-- Nav -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="brand-mark">GLM</span>
+    </a>
+    <nav class="nav-links" aria-label="Navigation principale">
+      <a href="#ia-data" data-nav data-i18n="nav.ia_data">IA &amp; Data</a>
+      <a href="#robotique" data-nav data-i18n="nav.robotique">Robotique</a>
+      <a href="#saas-web" data-nav data-i18n="nav.saas_web">SaaS &amp; Web</a>
+      <a href="#contact" data-nav data-i18n="nav.contact">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="cmdk-trigger" id="cmdkTrigger" aria-label="Ouvrir la palette de commandes">
+        <span data-i18n="nav.search">Recherche rapide</span>
+        <kbd>⌘K</kbd>
+      </button>
+      <div class="lang-switch" id="langSwitch">
+        <button class="lang-trigger" id="langTrigger" aria-label="Changer de langue" aria-haspopup="true" aria-expanded="false">
+          <span id="langCurrent">FR</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <ul class="lang-menu" id="langMenu">
+          <li data-lang="fr">Français</li>
+          <li data-lang="en">English</li>
+          <li data-lang="zh">中文</li>
+        </ul>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème clair/sombre">
+        <svg class="i-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="i-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+      </button>
+      <a href="#contact" class="btn btn-primary btn-sm" data-i18n="nav.cta">Démarrer un projet</a>
+    </div>
+    <button class="nav-burger" id="navBurger" aria-label="Ouvrir le menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO / VITRINE D'ACCUEIL -->
+  <section class="hero">
+    <canvas id="heroCanvas" aria-hidden="true"></canvas>
+    <div class="hero-grid-overlay" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1 class="hero-title reveal" data-scramble data-i18n-html="hero.title">
+          On transforme vos <span class="grad-text">idées</span> en produits qui tournent.
+        </h1>
+        <p class="hero-sub reveal" data-i18n-html="hero.subtitle">
+          GLM conçoit, développe et déploie des solutions <strong>IA</strong>, <strong>SaaS</strong>, <strong>Data</strong>, <strong>Web</strong> et <strong>Robotique</strong> — du cadrage à la mise en production, avec une équipe qui code autant qu'elle conseille.
+        </p>
+        <div class="hero-cta reveal">
+          <a href="#contact" class="btn btn-primary btn-lg magnetic">
+            <span data-i18n="hero.cta_primary">Discuter de mon projet</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="hero-stats reveal">
+          <div class="stat"><span class="stat-num" data-count="47">0</span><span class="stat-label" data-i18n="hero.stat1_label">projets livrés</span></div>
+          <div class="stat"><span class="stat-num" data-count="12">0</span><span class="stat-label" data-i18n="hero.stat2_label">secteurs adressés</span></div>
+          <div class="stat"><span class="stat-num" data-count="98" data-suffix="%">0</span><span class="stat-label" data-i18n="hero.stat3_label">clients qui recommandent</span></div>
+          <div class="stat"><span class="stat-num" data-count="24" data-suffix="/7">0</span><span class="stat-label" data-i18n="hero.stat4_label">supervision plateforme</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>SaaS</span><span>•</span><span>API</span><span>•</span><span>DevOps</span><span>•</span>
+        <span>Intégration</span><span>•</span><span>Data</span><span>•</span><span>IA</span><span>•</span>
+        <span>Web</span><span>•</span><span>Robotique</span><span>•</span><span>Infrastructure</span><span>•</span>
+        <span>Cloud</span><span>•</span><span>Hébergement</span><span>•</span>
+        <span>SaaS</span><span>•</span><span>API</span><span>•</span><span>DevOps</span><span>•</span>
+        <span>Intégration</span><span>•</span><span>Data</span><span>•</span><span>IA</span><span>•</span>
+        <span>Web</span><span>•</span><span>Robotique</span><span>•</span><span>Infrastructure</span><span>•</span>
+        <span>Cloud</span><span>•</span><span>Hébergement</span><span>•</span>
+      </div>
+    </div>
+  </section>
+
+  <p class="poles-intro reveal" data-i18n="poles.intro">Trois pôles d'ingénierie, une seule équipe.</p>
+
+  <!-- IA · DATA · AUTOMATISATION -->
+  <section class="section theme-section" id="ia-data" data-zone="red">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="tag tag-red" data-i18n="section1.tag">Intelligence</span>
+        <h2 class="heading-red" data-i18n="section1.heading">IA, Data &amp; Automatisation</h2>
+        <p class="section-body" data-i18n="section1.body">Des modèles de machine learning et des systèmes RAG entraînés sur vos données, des pipelines d'ingestion qui alimentent vos décisions en continu, et des workflows qui s'exécutent seuls là où vos équipes perdaient des heures chaque semaine.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROBOTIQUE -->
+  <section class="section section-alt theme-section" id="robotique" data-zone="green">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="tag tag-green" data-i18n="section2.tag">Systèmes</span>
+        <h2 class="heading-green" data-i18n="section2.heading">Robotique</h2>
+        <p class="section-body" data-i18n="section2.body">Des chiens robots 100% autonomes aux bras articulés de production, nous concevons, programmons et déployons des systèmes robotiques pilotés par IA — vision industrielle, contrôle-commande et grande autonomie opérationnelle, jusqu'au robot industriel qui tourne en continu sur votre ligne.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAAS · WEB · DEVOPS -->
+  <section class="section theme-section" id="saas-web" data-zone="blue">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="tag tag-blue" data-i18n="section3.tag">Plateformes</span>
+        <h2 class="heading-blue" data-i18n="section3.heading">SaaS, Web &amp; DevOps</h2>
+        <p class="section-body" data-i18n="section3.body">Des sites web sur-mesure pour lancer votre activité, des plateformes SaaS de bout en bout, des outils de prospection connectés à vos données via MCP — et l'automatisation des tâches répétitives par des pipelines qui tournent seuls, jour et nuit.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section-alt" id="contact">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="tag" data-i18n="contact.tag">Contact</span>
+        <h2 data-i18n="contact.heading">Un projet en tête ? Parlons-en.</h2>
+        <p data-i18n="contact.subtitle">Écrivez, appelez ou passez sur WhatsApp — on vous répond directement, sans formulaire à remplir.</p>
+      </div>
+      <div class="contact-tiles">
+        <a class="contact-tile reveal" href="https://wa.me/33651280191?text=Bonjour%20GLM%2C%20je%20souhaite%20échanger%20sur%20un%20projet." target="_blank" rel="noopener">
+          <div class="contact-tile-head">
+            <svg class="contact-tile-icon whatsapp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+            <h3 data-i18n="contact.whatsapp_title">WhatsApp</h3>
+          </div>
+          <span class="contact-tile-cta"><span data-i18n="contact.whatsapp_cta">Ouvrir la conversation</span> <span>→</span></span>
+        </a>
+        <a class="contact-tile reveal" href="mailto:romain.dufraiche@gmail.com?subject=Projet%20GLM">
+          <div class="contact-tile-head">
+            <svg class="contact-tile-icon mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 7 9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+            <h3 data-i18n="contact.email_title">Email</h3>
+          </div>
+          <span class="contact-tile-cta"><span data-i18n="contact.email_cta">Écrire un message</span> <span>→</span></span>
+        </a>
+        <a class="contact-tile reveal is-placeholder" href="#" rel="noopener" aria-disabled="true">
+          <span class="tile-badge" data-i18n="contact.linkedin_badge">Bientôt</span>
+          <div class="contact-tile-head">
+            <span class="contact-tile-icon linkedin">in</span>
+            <h3 data-i18n="contact.linkedin_title">LinkedIn</h3>
+          </div>
+          <p data-i18n="contact.linkedin_sub">Lien à venir</p>
+          <span class="contact-tile-cta"><span data-i18n="contact.linkedin_cta">Voir le profil</span> <span>→</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="status-ticker" aria-hidden="true">
+  <div class="status-track" id="statusTrack"></div>
+</div>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <span class="brand-mark small">GLM</span>
+    <p>© <span id="year"></span> <span data-i18n="footer.legal">GLM — SAS, SIREN 108 105 529.</span></p>
+    <div class="fr-badge" aria-label="France" title="France">
+      <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
+        <rect width="20" height="14" rx="2" fill="#fff"/>
+        <rect width="6.67" height="14" fill="#0055A4"/>
+        <rect x="13.33" width="6.67" height="14" fill="#EF4135"/>
+      </svg>
+    </div>
+    <div class="footer-links">
+      <a href="#ia-data" data-i18n="nav.ia_data">IA &amp; Data</a>
+      <a href="#robotique" data-i18n="nav.robotique">Robotique</a>
+      <a href="#saas-web" data-i18n="nav.saas_web">SaaS &amp; Web</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+      <button class="link-btn" id="shortcutsBtn" data-i18n="footer.shortcuts_btn">Raccourcis clavier</button>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating AI assistant -->
+<div class="assistant" id="assistant">
+  <button class="assistant-fab" id="assistantFab" aria-label="Ouvrir l'assistant IA GLM">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5Z"/></svg>
+    <span class="assistant-dot"></span>
+  </button>
+  <div class="assistant-panel" id="assistantPanel" hidden>
+    <div class="assistant-header">
+      <span class="pulse-dot"></span>
+      <span>Assistant GLM</span>
+      <button class="assistant-mic" id="assistantMic" hidden aria-label="Poser une question à la voix">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v1a7 7 0 0 0 14 0v-1M12 18v4"/></svg>
+      </button>
+      <button class="icon-close" id="assistantClose" aria-label="Fermer">✕</button>
+    </div>
+    <div class="assistant-body" id="assistantBody"></div>
+    <div class="assistant-input-row">
+      <input type="text" id="assistantInput" placeholder="Écrivez ou dites une question…" data-i18n-placeholder="assistant.placeholder" autocomplete="off">
+    </div>
+  </div>
+</div>
+
+<!-- Keyboard shortcuts overlay -->
+<div class="shortcuts-overlay" id="shortcutsOverlay">
+  <div class="shortcuts-box">
+    <div class="shortcuts-head">
+      <h3 data-i18n="shortcuts.title">Raccourcis clavier</h3>
+      <button class="icon-close" id="shortcutsClose" aria-label="Fermer">✕</button>
+    </div>
+    <ul class="shortcuts-list">
+      <li><span data-i18n="shortcuts.cmdk_label">Palette de commandes</span><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd> <kbd>K</kbd> ou <kbd>/</kbd></span></li>
+      <li><span data-i18n="shortcuts.theme_label">Basculer le thème</span><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd> <kbd>J</kbd></span></li>
+      <li><span data-i18n="shortcuts.assistant_label">Ouvrir l'assistant IA</span><span><kbd>⌘</kbd>/<kbd>Ctrl</kbd> <kbd>I</kbd></span></li>
+      <li><span data-i18n="shortcuts.help_label">Cette aide</span><span><kbd>?</kbd></span></li>
+      <li><span data-i18n="shortcuts.close_label">Fermer une fenêtre</span><span><kbd>Esc</kbd></span></li>
+      <li><span data-i18n="shortcuts.easter_label">Un easter egg de développeur…</span><span>🎮 ↑ ↑ ↓ ↓ ← → ← → B A</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- Matrix easter egg overlay -->
+<canvas id="matrixCanvas" class="matrix-canvas" aria-hidden="true"></canvas>
+
+<script src="assets/js/main.js?v=12"></script>
+</body>
+</html>

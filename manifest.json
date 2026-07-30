@@ -1,0 +1,13 @@
+{
+  "name": "GLM — Conseil, IA, SaaS, Data, Web & Robotique",
+  "short_name": "GLM",
+  "description": "GLM conçoit et développe des solutions IA, SaaS, Data, Web et Robotique sur mesure.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#05070d",
+  "theme_color": "#05070d",
+  "icons": [
+    { "src": "assets/img/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
