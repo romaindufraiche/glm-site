@@ -153,7 +153,7 @@ svg { display: block; flex-shrink: 0; }
 :root[data-theme="light"] .theme-toggle .i-sun { display: none; }
 :root[data-theme="light"] .theme-toggle .i-moon { display: block; }
 
-.nav-burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 6px; }
+.nav-burger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; background: none; border: none; width: 40px; height: 40px; margin: -8px 0; flex-shrink: 0; }
 .nav-burger span { width: 20px; height: 2px; background: var(--text); border-radius: 2px; }
 
 /* ============ Buttons ============ */
@@ -261,7 +261,8 @@ svg { display: block; flex-shrink: 0; }
 .footer-inner p { font-size: 13.5px; margin-right: auto; }
 .fr-badge { display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--text-faint); }
 .fr-badge svg { border-radius: 2px; box-shadow: 0 0 0 1px var(--border); }
-.footer-links { display: flex; gap: 18px; font-size: 13.5px; color: var(--text-muted); }
+.footer-links { display: flex; flex-wrap: wrap; row-gap: 10px; gap: 18px; font-size: 13.5px; color: var(--text-muted); }
+.footer-links a, .footer-links .link-btn { white-space: nowrap; }
 .footer-links a:hover { color: var(--text); }
 
 /* ============ Reveal on scroll ============ */
@@ -366,4 +367,14 @@ svg { display: block; flex-shrink: 0; }
   .section { padding: 72px 0; }
   .assistant { right: 14px; bottom: 14px; }
   .assistant-panel { width: min(340px, 92vw); }
+  .footer-inner { padding-bottom: 64px; }
+}
+@media (max-width: 480px) {
+  .nav-actions .btn-primary { display: none; }
+  .nav-inner { padding: 12px 16px; gap: 10px; }
+  .lang-trigger { padding: 8px 10px; }
+  .hero-title { margin-bottom: 16px; }
+  .hero-stats { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .section-head { margin-bottom: 40px; }
+  .contact-tile { padding: 24px; }
 }
