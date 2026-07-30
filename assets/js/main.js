@@ -205,10 +205,15 @@
     const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight) * 100;
     progressBar.style.width = scrolled + '%';
 
-    let currentIdx = 0;
+    // -1 = still on the landing hero, before any tracked section — no nav link should be active yet.
+    let currentIdx = -1;
     sections.forEach((sec, i) => {
       if (sec.getBoundingClientRect().top - 120 <= 0) currentIdx = i;
     });
+    // The last section (Contact) often can't scroll its own top past the 120px trigger if there's
+    // little page content below it (footer/ticker) — force it active once we hit the true bottom.
+    const atBottom = window.innerHeight + window.scrollY >= h.scrollHeight - 4;
+    if (atBottom) currentIdx = sections.length - 1;
     navLinks.forEach((a, i) => a.classList.toggle('active', i === currentIdx));
   }
   document.addEventListener('scroll', onScroll, { passive: true });

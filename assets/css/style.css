@@ -236,9 +236,14 @@ svg { display: block; flex-shrink: 0; }
   transition: border-color .3s, transform .2s var(--ease); position: relative; display: block;
 }
 .contact-tile:hover { border-color: var(--border-strong); transform: translateY(-3px); }
-.contact-tile-head { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-.contact-tile-icon { width: 20px; height: 20px; color: var(--text-muted); }
-.contact-tile-icon.linkedin { font-family: var(--font-heading); font-weight: 700; font-size: 14px; width: auto; height: auto; line-height: 1; }
+.contact-tile-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.contact-tile-icon { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex-shrink: 0; }
+.contact-tile-icon svg { width: 19px; height: 19px; }
+.contact-tile-icon.whatsapp { background: #25d366; }
+.contact-tile-icon.mail { background: #ea4335; }
+.contact-tile-icon.linkedin {
+  background: #0a66c2; color: #fff; font-family: var(--font-heading); font-weight: 700; font-size: 15px; line-height: 1;
+}
 .contact-tile h3 { font-size: 17px; }
 .contact-tile p { font-size: 14px; margin-bottom: 18px; }
 .contact-tile-cta {
