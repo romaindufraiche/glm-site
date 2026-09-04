@@ -229,6 +229,31 @@ svg { display: block; flex-shrink: 0; }
   color: var(--text-faint); padding: 36px 24px 0;
 }
 
+/* Project thumbnails (placeholders) */
+.projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 48px; }
+.project-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+  transition: border-color .3s, transform .2s var(--ease);
+}
+.project-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+.project-thumb {
+  aspect-ratio: 16/10; display: grid; place-items: center;
+  background: repeating-linear-gradient(135deg, var(--surface-2) 0 14px, var(--surface) 14px 28px);
+  border-bottom: 1px dashed var(--border-strong);
+}
+.project-thumb svg { width: 32px; height: 32px; opacity: 0.55; }
+.thumb-red svg { color: var(--red); }
+.thumb-green svg { color: var(--green); }
+.thumb-blue svg { color: var(--blue); }
+.project-card-body { padding: 20px 22px 24px; }
+.project-status {
+  display: inline-block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-faint); background: var(--surface-2); border: 1px solid var(--border); border-radius: 999px;
+  padding: 4px 10px; margin-bottom: 12px;
+}
+.project-card h3 { font-size: 16.5px; margin-bottom: 8px; }
+.project-card p { font-size: 13.5px; line-height: 1.6; }
+
 /* Contact tiles */
 .contact-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .contact-tile {
@@ -356,13 +381,13 @@ svg { display: block; flex-shrink: 0; }
   .nav-inner { gap: 16px; }
 }
 @media (max-width: 980px) {
-  .contact-tiles { grid-template-columns: repeat(2, 1fr); }
+  .contact-tiles, .projects-grid { grid-template-columns: repeat(2, 1fr); }
   .hero-stats { grid-template-columns: repeat(2, auto); row-gap: 20px; }
 }
 @media (max-width: 880px) {
   .nav-links, .nav-actions .cmdk-trigger { display: none; }
   .nav-burger { display: flex; }
-  .contact-tiles { grid-template-columns: 1fr; }
+  .contact-tiles, .projects-grid { grid-template-columns: 1fr; }
   .hero-inner { padding-top: 20px; }
   .section { padding: 72px 0; }
   .assistant { right: 14px; bottom: 14px; }
