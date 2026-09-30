@@ -1,0 +1,48 @@
+name: Vérifications
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: none
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Lint et formatage
+        run: npm run lint
+
+      - name: Syntaxe PHP
+        run: find public config -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Tests unitaires (TypeScript et PHP)
+        run: npm test
+
+      - name: Typecheck et build
+        run: npm run build
+
+      - name: Installer Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Tests de bout en bout et accessibilité
+        run: npm run test:e2e
+
+      - name: Audit des dépendances
+        run: npm audit --omit=dev --audit-level=high
