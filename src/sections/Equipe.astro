@@ -1,38 +1,83 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
 import EnTeteSection from '../components/EnTeteSection.astro';
 import { equipe } from '../data/site';
+
+// Photos déposées dans src/assets/equipe/ : optimisées au build (WebP, tailles adaptées à l’écran).
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/equipe/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+});
+
+function photoDe(fichier: string | undefined): ImageMetadata | undefined {
+  if (!fichier) return undefined;
+  const image = photos[`../assets/equipe/${fichier}`];
+  if (!image) {
+    throw new Error(`Photo introuvable : src/assets/equipe/${fichier} (voir equipe dans src/data/site.ts).`);
+  }
+  return image.default;
+}
 ---
 
 <section class="section surface-nuit" id="equipe" aria-labelledby="equipe-titre">
   <div class="container">
-    <EnTeteSection surtitre="Équipe" titre="Côte à côte, à la même hauteur." id="equipe-titre">
+    <EnTeteSection surtitre="Équipe" titre={equipe.titre} id="equipe-titre">
       <p>{equipe.texte}</p>
     </EnTeteSection>
 
     <ul class="associes">
-      {equipe.associes.map((associe) => (
-        <li class={`associe accent-${associe.accent}`}>
-          <div class="associe__visuel">
-            {associe.photo ? (
-              <img
-                src={associe.photo}
-                alt={`Portrait de ${associe.prenom} ${associe.nom}`}
-                width="800"
-                height="800"
-                loading="lazy"
-                decoding="async"
-              />
-            ) : (
-              <span class="associe__bande" aria-hidden="true" />
-            )}
-          </div>
-          <h3 class="associe__nom">
-            {associe.prenom} {associe.nom}
-          </h3>
-          <p class="associe__role">{associe.role}</p>
-          {associe.description && <p class="associe__description">{associe.description}</p>}
-        </li>
-      ))}
+      {equipe.associes.map((associe) => {
+        const nomComplet = `${associe.prenom} ${associe.nom}`;
+        const photo = photoDe(associe.photo);
+        return (
+          <li class={`associe accent-${associe.accent}`}>
+            <article class="associe__carte" aria-labelledby={`associe-${associe.nom.toLowerCase()}`}>
+              <div class="associe__visuel">
+                {photo ? (
+                  <Image
+                    src={photo}
+                    alt={`Portrait de ${nomComplet}`}
+                    widths={[360, 540, 720]}
+                    sizes="(max-width: 40rem) 90vw, (max-width: 60rem) 45vw, 380px"
+                    loading="lazy"
+                    class="associe__photo"
+                  />
+                ) : (
+                  <span class="associe__bande" aria-hidden="true" />
+                )}
+              </div>
+
+              <div class="associe__texte">
+                <p class="associe__role">{associe.role}</p>
+                <h3 class="associe__nom" id={`associe-${associe.nom.toLowerCase()}`}>
+                  {nomComplet}
+                </h3>
+                <p class="associe__bio">{associe.bio}</p>
+
+                {associe.expertises.length > 0 && (
+                  <ul class="associe__expertises" aria-label={`Expertises de ${associe.prenom}`}>
+                    {associe.expertises.map((expertise) => (
+                      <li>{expertise}</li>
+                    ))}
+                  </ul>
+                )}
+
+                {associe.linkedin && (
+                  <a
+                    class="associe__linkedin"
+                    href={associe.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Profil LinkedIn<span class="sr-only"> de {nomComplet} (nouvel onglet)</span>
+                    <span aria-hidden="true"> ↗</span>
+                  </a>
+                )}
+              </div>
+            </article>
+          </li>
+        );
+      })}
     </ul>
   </div>
 </section>
@@ -54,54 +99,100 @@ import { equipe } from '../data/site';
     --accent: var(--bleu);
   }
 
-  .associe {
+  .associe__carte {
     display: grid;
     align-content: start;
-    gap: var(--space-2);
-  }
-
-  /* Emplacement photo : carré à bords droits, barre de couleur du fondateur en haut. */
-  .associe__visuel {
-    position: relative;
-    aspect-ratio: 1;
-    margin-bottom: var(--space-4);
+    height: 100%;
     border: var(--border) solid var(--trait);
     border-top: var(--bar) solid var(--accent);
-    background: var(--nuit);
-    overflow: hidden;
   }
 
-  .associe__visuel img {
+  /* Portrait 4:5, cadrage identique pour les trois associés. */
+  .associe__visuel {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    background: var(--nuit);
+    border-bottom: var(--border) solid var(--trait);
+  }
+
+  /* Photos LinkedIn hétérogènes (fonds, lumières) : noir et blanc pour une série cohérente,
+     couleur au survol de la fiche. */
+  .associe__visuel :global(.associe__photo) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 30%;
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 300ms var(--ease);
   }
 
-  /* Sans photo : une seule bande, aux proportions du logo (2 × 6 sur une grille de 12). */
+  .associe__carte:hover :global(.associe__photo) {
+    filter: none;
+  }
+
+  /* Sans photo : une seule bande, aux proportions du logo (déclinaison « accent unique », charte p. 16). */
   .associe__bande {
     position: absolute;
     left: calc(100% * 5 / 12);
-    top: 25%;
+    top: 30%;
     width: calc(100% / 6);
-    height: 50%;
+    height: 40%;
     background: var(--accent);
+  }
+
+  .associe__texte {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-5) var(--space-6);
+  }
+
+  .associe__role {
+    font-size: var(--fs-surtitre);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-surtitre);
+    text-transform: uppercase;
+    color: var(--texte-doux);
   }
 
   .associe__nom {
     font-size: var(--fs-h3);
   }
 
-  .associe__role {
-    font-weight: var(--fw-semibold);
+  .associe__bio {
+    color: var(--texte-doux);
   }
 
-  .associe__description {
-    color: var(--texte-doux);
+  .associe__expertises {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding-top: var(--space-2);
+  }
+
+  .associe__expertises li {
+    padding: 0.125rem var(--space-3);
+    border: var(--border) solid var(--trait);
+    font-size: var(--fs-petit);
+  }
+
+  .associe__linkedin {
+    justify-self: start;
+    margin-top: var(--space-2);
+    padding-block: var(--space-1);
+    font-weight: var(--fw-medium);
   }
 
   @media (max-width: 60rem) {
     .associes {
-      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .associes {
+      grid-template-columns: 1fr;
     }
   }
 </style>

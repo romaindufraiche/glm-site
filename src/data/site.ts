@@ -51,11 +51,20 @@ export interface Associe {
   prenom: string;
   nom: string;
   role: string;
-  description?: string;
+  /** Deux phrases maximum : ce que l’associé apporte concrètement aux clients. */
+  bio: string;
+  /** Domaines d’expertise affichés en repères (3 à 4 mots-clés courts). */
+  expertises: string[];
   /** Couleur de la bande du fondateur (ordre du logo : corail, jade, bleu). */
   accent: Accent;
-  /** Chemin d’une photo dans public/ (ex. « /equipe/romain.jpg »), carrée, 800 × 800 px minimum. */
+  /**
+   * Nom du fichier photo déposé dans src/assets/equipe/ (ex. « romain-dufraiche.jpg »).
+   * Portrait 4:5, 1000 × 1250 px minimum. Le site génère lui-même les versions optimisées.
+   * Sans photo, un emplacement aux couleurs du fondateur s’affiche.
+   */
   photo?: string;
+  /** URL du profil LinkedIn personnel. */
+  linkedin?: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -204,29 +213,37 @@ export const methode = {
 /* Équipe                                                             */
 /* ------------------------------------------------------------------ */
 
-export const equipe: { texte: string; associes: Associe[] } = {
+export const equipe: { titre: string; texte: string; associes: Associe[] } = {
+  titre: 'Trois associés, une seule équipe.',
+  // Texte repris de la charte v0.5 (« À propos »).
   texte:
-    'Trois associés du Val-d’Oise, formés à l’informatique et à la data en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous.',
-  // TODO: ajouter les photos (champ « photo ») et confirmer l’attribution des couleurs de bande.
+    'Trois amis du Val-d’Oise, partis étudier l’informatique et la data en Californie. Au contact de la Silicon Valley, une envie ne nous a plus quittés : construire quelque chose à nous. De retour en France, on a créé GLM. Chaque projet est suivi par les trois associés, du premier échange à la mise en service.',
+  // TODO: déposer les 3 photos LinkedIn dans src/assets/equipe/ et renseigner « photo » et « linkedin ».
+  // TODO: relire les bios et expertises (rédigées à partir des rôles et de la charte v0.5).
   associes: [
     {
       prenom: 'Romain',
       // TODO: confirmer le nom (déduit de l’adresse e-mail de l’ancien site).
       nom: 'Dufraiche',
       role: 'Président',
-      description: 'Vision, organisation, relation client.',
+      bio: 'Il porte la vision de GLM et reste votre interlocuteur du premier échange à la mise en service. Il traduit vos besoins métier en un projet clair.',
+      expertises: ['Stratégie', 'Organisation', 'Relation client'],
       accent: 'corail',
     },
     {
       prenom: 'Théo',
       nom: 'Delaforge',
       role: 'Expert technique',
+      bio: 'Il conçoit l’architecture de chaque solution et veille à sa solidité, du code à la mise en production.',
+      expertises: ['Architecture', 'Développement', 'IA & données'],
       accent: 'jade',
     },
     {
       prenom: 'Romain',
       nom: 'Yerolymos',
       role: 'Développement et partenariats',
+      bio: 'Il développe le réseau de GLM et construit les partenariats, notamment pour la robotique autonome en Europe.',
+      expertises: ['Partenariats', 'Réseau', 'Robotique'],
       accent: 'bleu',
     },
   ],
