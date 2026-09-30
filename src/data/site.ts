@@ -241,7 +241,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       expertises: ['Architecture', 'Développement', 'IA & données'],
       accent: 'jade',
       photo: 'theo-delaforge.png',
-      // TODO: URL du profil LinkedIn de Théo.
+      linkedin: 'https://www.linkedin.com/in/theo-delaforge/',
     },
     {
       prenom: 'Romain',
@@ -251,7 +251,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       expertises: ['Partenariats', 'Réseau', 'Robotique'],
       accent: 'bleu',
       photo: 'romain-yerolymos.webp',
-      // TODO: URL du profil LinkedIn de Romain Yerolymos.
+      linkedin: 'https://www.linkedin.com/in/romain-yerolymos/',
     },
   ],
 };
