@@ -69,7 +69,6 @@ export const siteMeta = {
   titre: 'GLM · Architectes de la tech',
   description:
     'GLM conçoit et construit les systèmes numériques des entreprises : sites web, automatisation et intelligence artificielle, et demain robots autonomes. Une seule équipe, du premier échange à la mise en service.',
-  signature: 'IA & data · Robotique · Web',
   locale: 'fr_FR',
 } as const;
 

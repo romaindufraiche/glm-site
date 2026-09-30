@@ -70,13 +70,11 @@ const og = `
   .nom { font-family: Caslon; font-size: 150px; letter-spacing: 0.14em; line-height: 1; }
   .sur { display: flex; align-items: center; gap: 18px; margin-top: 40px; font-family: Plex; font-weight: 600; font-size: 26px; letter-spacing: 0.14em; text-transform: uppercase; }
   .filet { display: flex; } .filet i { width: 22px; height: 5px; display: block; }
-  .base { margin-top: 22px; font-family: Plex; font-weight: 600; font-size: 20px; letter-spacing: 0.3em; text-transform: uppercase; color: #BAB9B8; }
 </style>
 ${symbole}
 <div>
   <div class="nom">GLM</div>
   <div class="sur"><span class="filet"><i style="background:#E9674F"></i><i style="background:#2FA877"></i><i style="background:#3F63F2"></i></span>Architectes de la tech</div>
-  <div class="base">IA &amp; data · Robotique · Web</div>
 </div>`;
 await writeFile(`${racine}public/og-image.png`, await capturer(og, 1200, 630));
 

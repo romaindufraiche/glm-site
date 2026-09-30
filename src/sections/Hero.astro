@@ -2,7 +2,6 @@
 import Symbole from '../components/Symbole.astro';
 import Surtitre from '../components/Surtitre.astro';
 import Bouton from '../components/Bouton.astro';
-import { siteMeta } from '../data/site';
 ---
 
 <section class="hero surface-nuit" aria-labelledby="hero-titre">
@@ -26,10 +25,9 @@ import { siteMeta } from '../data/site';
       </div>
     </div>
 
-    <figure class="hero__logo">
+    <div class="hero__logo">
       <Symbole size={420} anime class="hero__symbole" />
-      <figcaption class="hero__signature">{siteMeta.signature}</figcaption>
-    </figure>
+    </div>
   </div>
 </section>
 
@@ -68,26 +66,14 @@ import { siteMeta } from '../data/site';
   }
 
   .hero__logo {
-    margin: 0;
     display: grid;
     justify-items: center;
-    /* Pas d’écart : la marge du carré (invisible sur Nuit) sépare déjà les bandes de la signature. */
-    gap: 0;
   }
 
   /* Sur fond Nuit, le carré se fond dans le fond (charte p. 15) : seules les bandes ressortent. */
   .hero__logo :global(.hero__symbole) {
     width: min(100%, 26rem);
     height: auto;
-  }
-
-  .hero__signature {
-    font-size: var(--fs-surtitre);
-    font-weight: var(--fw-semibold);
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--texte-doux);
-    text-align: center;
   }
 
   @media (max-width: 60rem) {
@@ -103,10 +89,6 @@ import { siteMeta } from '../data/site';
 
     .hero__logo :global(.hero__symbole) {
       width: clamp(6rem, 30vw, 9rem);
-    }
-
-    .hero__signature {
-      display: none;
     }
   }
 </style>
