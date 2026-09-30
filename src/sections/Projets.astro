@@ -2,127 +2,192 @@
 import EnTeteSection from '../components/EnTeteSection.astro';
 import CarteProjet from '../components/CarteProjet.astro';
 import { projets } from '../data/site';
+
+const total = String(projets.length).padStart(2, '0');
 ---
 
-<section class="section surface-nuit" id="projets" aria-labelledby="projets-titre">
-  <div class="container projets__tete">
-    <EnTeteSection surtitre="Projets" titre="Une histoire vraie vaut dix promesses." id="projets-titre" />
-    <button class="projets__pause" type="button" hidden data-carrousel-pause>
-      <span class="projets__pause-icone" aria-hidden="true"></span>
-      <span data-carrousel-pause-libelle>Mettre en pause</span>
-    </button>
-  </div>
+<!--
+  Défilement horizontal piloté par la molette (desktop) : la section reste épinglée sous la navigation
+  et le défilement vertical fait glisser les projets de gauche à droite. On passe à la section suivante
+  une fois tous les projets vus. Sans JavaScript, sur mobile ou avec « mouvement réduit » : grille simple.
+-->
+<section class="projets surface-nuit" id="projets" aria-labelledby="projets-titre" data-projets>
+  <div class="projets__piste" data-projets-piste>
+    <div class="projets__scene">
+      <div class="container projets__tete">
+        <EnTeteSection surtitre="Projets" titre="Une histoire vraie vaut dix promesses." id="projets-titre" />
+        <p class="projets__compteur" aria-hidden="true">
+          <span data-projets-courant>01</span> / {total}
+        </p>
+      </div>
 
-  <div
-    class="defilement"
-    role="region"
-    aria-labelledby="projets-titre"
-    aria-describedby="projets-aide"
-    tabindex="0"
-    data-carrousel
-  >
-    <ul class="defilement__liste" data-carrousel-liste>
-      {projets.map((projet) => (
-        <li class="defilement__item">
-          <CarteProjet projet={projet} />
-        </li>
-      ))}
-    </ul>
+      <div class="projets__fenetre">
+        <ul class="projets__liste" data-projets-liste>
+          {projets.map((projet) => (
+            <li class="projets__item" data-projets-item>
+              <CarteProjet projet={projet} />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="container projets__pied" aria-hidden="true">
+        <!-- Barre de progression : le filet tricolore de la charte (p. 25) se remplit au fil du défilement. -->
+        <div class="projets__progression">
+          <span class="projets__progression-remplie" data-projets-barre>
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </div>
+        <p class="projets__consigne">Faites défiler pour parcourir les projets</p>
+      </div>
+    </div>
   </div>
-  <p id="projets-aide" class="sr-only">
-    Liste de projets défilant horizontalement. Le défilement s’arrête au survol ou au focus.
-  </p>
 </section>
 
 <script>
-  import { initCarrousel } from '../scripts/carrousel';
-  initCarrousel();
+  import { initDefilementProjets } from '../scripts/projets-defilement';
+  initDefilementProjets();
 </script>
 
 <style>
-  .projets__tete {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+  /* ---------- Par défaut : grille simple (mobile, mouvement réduit, sans JavaScript) ---------- */
+  .projets {
+    padding-block: var(--section-y);
+  }
+
+  .projets__liste {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-5);
+    width: 100%;
+    max-width: calc(var(--container) + 2 * var(--gutter));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
   }
 
-  .projets__pause {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-3);
-    flex-shrink: 0;
-    min-height: 2.75rem;
-    margin-bottom: clamp(var(--space-7), 5vw, var(--space-8));
-    padding: 0 var(--space-4);
-    background: none;
-    border: var(--border) solid var(--trait);
-    font-size: var(--fs-petit);
-    font-weight: var(--fw-medium);
-    cursor: pointer;
-    transition: border-color var(--dur-court) var(--ease);
-  }
-
-  .projets__pause:hover {
-    border-color: var(--texte);
-  }
-
-  .projets__pause[hidden] {
+  .projets__compteur,
+  .projets__pied {
     display: none;
   }
 
-  /* Icône pause (deux barres) / lecture (triangle), en CSS. */
-  .projets__pause-icone {
-    width: 10px;
-    height: 12px;
-    border-inline: 3px solid currentColor;
-  }
-
-  .projets__pause[data-en-pause] .projets__pause-icone {
-    width: 0;
-    height: 0;
-    border-block: 6px solid transparent;
-    border-inline: 10px solid currentColor;
-    border-inline-end-width: 0;
-  }
-
-  .defilement {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    scrollbar-color: var(--trait) transparent;
-    padding-bottom: var(--space-4);
-  }
-
-  /* Défilement manuel seul (pas de JavaScript, ou mouvement réduit) : aimantation carte par carte. */
-  .defilement:not(.is-auto) {
-    scroll-snap-type: x proximity;
-  }
-
-  .defilement:focus-visible {
-    outline-offset: -2px;
-  }
-
-  .defilement__liste {
-    display: flex;
-    gap: var(--space-5);
-    width: max-content;
-    padding-inline: max(var(--gutter), (100vw - var(--container)) / 2);
-  }
-
-  .defilement__item {
-    width: min(21rem, 80vw);
-    scroll-snap-align: start;
-    scroll-margin-inline: var(--gutter);
-  }
-
   @media (max-width: 40rem) {
-    .projets__tete {
-      display: block;
+    .projets__liste {
+      grid-template-columns: 1fr;
     }
+  }
 
-    .projets__pause {
-      margin: calc(-1 * var(--space-5)) 0 var(--space-6);
-    }
+  /* ---------- Desktop : section épinglée, projets pilotés par la molette ---------- */
+  .projets.is-horizontal {
+    /* La hauteur de la piste (écran + longueur du trajet horizontal) est calculée en JavaScript. */
+    padding-block: 0;
+    --largeur-carte: calc((min(100vw - 2 * var(--gutter), var(--container)) - var(--space-6)) / 2);
+  }
+
+  .is-horizontal .projets__scene {
+    position: sticky;
+    top: var(--nav-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-6);
+    height: calc(100vh - var(--nav-h));
+    min-height: 34rem;
+    padding-block: var(--space-7);
+  }
+
+  .is-horizontal .projets__tete {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-6);
+  }
+
+  .is-horizontal .projets__tete :global(.en-tete) {
+    margin-bottom: 0;
+  }
+
+  .is-horizontal .projets__compteur {
+    display: block;
+    font-family: var(--font-titre);
+    font-size: 1.5rem;
+    color: var(--texte-doux);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* overflow: clip (et non hidden) : le navigateur ne fait pas défiler la fenêtre lui-même au focus. */
+  .is-horizontal .projets__fenetre {
+    overflow-x: clip;
+    overflow-y: visible;
+  }
+
+  .is-horizontal .projets__liste {
+    display: flex;
+    gap: var(--space-6);
+    width: max-content;
+    max-width: none;
+    margin: 0;
+    padding-inline: max(var(--gutter), (100vw - var(--container)) / 2);
+    will-change: transform;
+  }
+
+  .is-horizontal .projets__item {
+    width: var(--largeur-carte);
+    transition: opacity 400ms var(--ease);
+  }
+
+  .is-horizontal .projets__item :global(.carte) {
+    min-height: 19rem;
+    padding: var(--space-6) var(--space-6) var(--space-7);
+  }
+
+  .is-horizontal .projets__item :global(.carte__nom) {
+    font-size: var(--fs-h3);
+  }
+
+  /* Les cartes pas encore (ou plus) dans le cadre sont atténuées. */
+  .is-horizontal .projets__item.is-hors-champ {
+    opacity: 0.35;
+  }
+
+  .is-horizontal .projets__pied {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .projets__progression {
+    position: relative;
+    flex: 1;
+    height: 3px;
+    background: var(--trait);
+  }
+
+  .projets__progression-remplie {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .projets__progression-remplie span {
+    flex: 1;
+  }
+  .projets__progression-remplie span:nth-child(1) {
+    background: var(--corail);
+  }
+  .projets__progression-remplie span:nth-child(2) {
+    background: var(--jade);
+  }
+  .projets__progression-remplie span:nth-child(3) {
+    background: var(--bleu);
+  }
+
+  .projets__consigne {
+    font-size: var(--fs-petit);
+    color: var(--texte-doux);
+    white-space: nowrap;
   }
 </style>

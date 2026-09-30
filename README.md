@@ -12,7 +12,7 @@ Tout le contenu éditable est dans **un seul fichier** : [`src/data/site.ts`](sr
 
 | Pour changer…                     | Modifier dans `site.ts`             |
 | --------------------------------- | ----------------------------------- |
-| Projets (carrousel)               | `projets`                           |
+| Projets (défilement horizontal)   | `projets`                           |
 | Associés, bios, photos, LinkedIn  | `equipe`                            |
 | Posts LinkedIn                    | `postsLinkedIn` (URL d’intégration) |
 | E-mail, page LinkedIn             | `contact`                           |
@@ -59,7 +59,7 @@ src/
   layouts/            gabarits (base SEO + pages de texte)
   pages/              accueil, mentions légales, confidentialité, confirmations, 404, robots.txt
   lib/                logique isolée et testée (validation du formulaire, consentement, LinkedIn)
-  scripts/            comportements côté navigateur (menu, carrousel, formulaire, consentement)
+  scripts/            comportements côté navigateur (menu, défilement des projets, formulaire, consentement)
 public/
   contact.php         point d’entrée du formulaire
   _serveur/           logique PHP (non accessible depuis le web)

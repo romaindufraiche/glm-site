@@ -1,38 +1,48 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
+
+/** Décalage horizontal actuel de la liste des projets (valeur de translateX, en pixels). */
+const decalage = (page: Page) =>
+  page.locator('[data-projets-liste]').evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m41);
 
 test.describe('Défilement des projets', () => {
-  test('défile seul, se met en pause au bouton et garde les copies hors d’atteinte', async ({ page }) => {
-    await page.goto('/#projets');
-    const piste = page.locator('[data-carrousel]');
-    const bouton = page.getByRole('button', { name: 'Mettre en pause' });
-    await expect(bouton).toBeVisible();
+  test('desktop : la section reste épinglée et la molette fait défiler les projets', async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, 'Défilement horizontal réservé au desktop');
+    await page.goto('/');
+    const section = page.locator('[data-projets]');
+    await expect(section).toHaveClass(/is-horizontal/);
 
-    // Les copies nécessaires à la boucle sont masquées aux lecteurs d'écran et au clavier.
-    const clones = page.locator('[data-carrousel-liste] > [data-clone]');
-    expect(await clones.count()).toBeGreaterThan(0);
-    await expect(clones.first()).toHaveAttribute('aria-hidden', 'true');
-    expect(await clones.first().evaluate((el) => (el as HTMLElement).inert)).toBe(true);
+    const { debut, trajet } = await page.evaluate(() => {
+      const piste = document.querySelector<HTMLElement>('[data-projets-piste]');
+      const liste = document.querySelector<HTMLElement>('[data-projets-liste]');
+      const fenetre = liste?.parentElement;
+      if (!piste || !liste || !fenetre) throw new Error('Section Projets introuvable');
+      const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) * 16;
+      return {
+        debut: piste.getBoundingClientRect().top + window.scrollY - nav,
+        trajet: liste.scrollWidth - fenetre.clientWidth,
+      };
+    });
+    expect(trajet).toBeGreaterThan(0);
 
-    // Le défilement avance (la souris est placée hors de la piste pour ne pas la mettre en pause).
-    await page.mouse.move(0, 0);
-    const depart = await piste.evaluate((el) => el.scrollLeft);
-    await expect.poll(() => piste.evaluate((el) => el.scrollLeft), { timeout: 4000 }).toBeGreaterThan(depart);
+    // À mi-parcours : les projets ont glissé d’environ la moitié du trajet, le titre reste à l’écran.
+    await page.evaluate((y) => window.scrollTo(0, y), debut + trajet / 2);
+    await expect.poll(() => decalage(page)).toBeCloseTo(-trajet / 2, 0);
+    await expect(page.locator('#projets-titre')).toBeInViewport();
 
-    await bouton.click();
-    await expect(page.getByRole('button', { name: 'Reprendre le défilement' })).toBeVisible();
-    const arret = await piste.evaluate((el) => el.scrollLeft);
-    await page.waitForTimeout(600);
-    expect(await piste.evaluate((el) => el.scrollLeft)).toBe(arret);
+    // Fin du trajet : tous les projets ont défilé, puis la page reprend son défilement normal.
+    await page.evaluate((y) => window.scrollTo(0, y), debut + trajet + 400);
+    await expect.poll(() => decalage(page)).toBeCloseTo(-trajet, 0);
+    await expect(page.locator('#methode')).toBeInViewport();
   });
 
-  test('avec mouvement réduit : aucun défilement automatique', async ({ page }) => {
+  test('mobile et mouvement réduit : grille simple, aucune animation', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/#projets');
-    await expect(page.locator('[data-carrousel-pause]')).toBeHidden();
-    await expect(page.locator('[data-clone]')).toHaveCount(0);
-    const piste = page.locator('[data-carrousel]');
-    const depart = await piste.evaluate((el) => el.scrollLeft);
-    await page.waitForTimeout(800);
-    expect(await piste.evaluate((el) => el.scrollLeft)).toBe(depart);
+    await expect(page.locator('[data-projets]')).not.toHaveClass(/is-horizontal/);
+    expect(await decalage(page)).toBe(0);
+    await expect(page.locator('[data-projets-item]').first()).toBeVisible();
   });
 });

@@ -53,8 +53,9 @@ plafonné à 84 px pour tenir en quatre lignes au lieu de sept. Les titres de se
 
 ## Mouvement
 
-Un seul moment animé : la montée des trois bandes du logo du hero au chargement. Seul autre mouvement :
-le défilement continu des projets (avec bouton Pause, WCAG 2.2.2). `prefers-reduced-motion` désactive les deux.
+Un seul moment animé : la montée des trois bandes du logo du hero au chargement. Les projets, eux, suivent
+la molette : la section reste épinglée et défile horizontalement (desktop), avec le filet tricolore en barre de
+progression (charte p. 25). Rien ne bouge tout seul ; `prefers-reduced-motion` affiche une grille simple.
 
 ## Éléments de l’ancienne identité retirés
 
