@@ -1,0 +1,83 @@
+---
+/**
+ * Bouton aux couleurs d’un réseau (LinkedIn, WhatsApp), pour qu’il soit reconnu au premier coup d’œil.
+ * Seule exception volontaire à la palette de la charte : les couleurs de marque des réseaux.
+ * Contrastes : blanc sur bleu LinkedIn 5,7:1 ; encre sur vert WhatsApp 9,6:1 (le blanc n’y atteint que 2:1).
+ */
+interface Props {
+  reseau: 'linkedin' | 'whatsapp';
+  href: string;
+  class?: string;
+}
+
+const { reseau, href, class: className } = Astro.props;
+---
+
+<a
+  class:list={['reseau', `reseau--${reseau}`, className]}
+  href={href}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  {reseau === 'linkedin' ? (
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+      <path
+        fill="currentColor"
+        d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"
+      />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+      <path
+        fill="currentColor"
+        d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.09-1.33A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2Zm0 18.2c-1.62 0-3.14-.44-4.44-1.2l-.32-.19-3.3.86.88-3.22-.21-.33A8.18 8.18 0 0 1 3.8 12c0-4.53 3.68-8.2 8.2-8.2s8.2 3.67 8.2 8.2-3.68 8.2-8.2 8.2Zm4.53-6.05c-.25-.12-1.47-.72-1.7-.81-.23-.08-.4-.12-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.39.11-.51.11-.11.25-.29.37-.43.12-.15.16-.25.25-.42.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.44.06-.67.31-.23.25-.87.85-.87 2.08s.9 2.42 1.02 2.58c.13.17 1.78 2.72 4.31 3.81.6.26 1.07.42 1.44.53.6.19 1.15.16 1.59.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.16-.48-.28Z"
+      />
+    </svg>
+  )}
+  <span>
+    <slot />
+  </span>
+  <span class="sr-only"> (nouvel onglet)</span>
+</a>
+
+<style>
+  .reseau {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: 3rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: var(--fw-semibold);
+    line-height: 1.2;
+    text-decoration: none;
+    transition: background-color var(--dur-court) var(--ease);
+  }
+
+  .reseau svg {
+    flex-shrink: 0;
+  }
+
+  .reseau--linkedin {
+    background: #0a66c2;
+    color: #ffffff;
+  }
+
+  .reseau--linkedin:hover {
+    background: #004182;
+  }
+
+  .reseau--whatsapp {
+    background: #25d366;
+    color: var(--encre);
+  }
+
+  .reseau--whatsapp:hover {
+    background: #1ebe5a;
+  }
+
+  .reseau:active {
+    transform: translateY(1px);
+  }
+</style>

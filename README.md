@@ -26,10 +26,10 @@ explicite, au lieu de casser le site en ligne.
 **Ajouter un post LinkedIn** : sur LinkedIn, menu « … » du post → « Intégrer ce post » → copier uniquement
 la valeur `src="…"` de l’iframe (elle commence par `https://www.linkedin.com/embed/feed/update/`).
 
-**Ajouter une photo d’associé** : déposer le fichier (portrait 4:5, 1000 × 1250 px minimum, JPEG, PNG ou WebP)
+**Ajouter une photo d’associé** : déposer le fichier (carré, 400 × 400 px minimum, JPEG, PNG ou WebP)
 dans `src/assets/equipe/`, puis renseigner `photo: 'nom.jpg'` et `linkedin: 'https://www.linkedin.com/in/…'`.
-Le build génère lui-même les versions optimisées (WebP, plusieurs tailles). Les photos s’affichent en noir et
-blanc pour former une série homogène, et en couleur au survol.
+Le build génère lui-même les versions optimisées (WebP). Les photos s’affichent dans un petit rond :
+privilégier une photo carrée, visage centré.
 
 ## Développement
 
@@ -126,7 +126,6 @@ Tous sont marqués `TODO:` dans le code ; `npm run verifier:production` les dét
 - [ ] Adresse e-mail professionnelle (actuellement l’adresse personnelle reprise de l’ancien site)
 - [ ] URL de la page LinkedIn à vérifier (`linkedin.com/company/glmprime`, reprise de l’ancien site)
 - [ ] Vérifier que chaque photo correspond au bon associé
-- [ ] Bios et expertises des associés à relire (rédigées à partir des rôles et de la charte)
 - [ ] Attribution des couleurs de bande à confirmer (corail, jade, bleu)
 
 **Contenu**

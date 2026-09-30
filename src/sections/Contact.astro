@@ -1,7 +1,10 @@
 ---
 import Surtitre from '../components/Surtitre.astro';
 import FormulaireContact from '../components/FormulaireContact.astro';
+import BoutonReseau from '../components/BoutonReseau.astro';
 import { contact } from '../data/site';
+
+const lienWhatsApp = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}`;
 ---
 
 <section
@@ -24,16 +27,16 @@ import { contact } from '../data/site';
             <a href={`mailto:${contact.email}`}>{contact.email}</a>
           </dd>
         </div>
-        <div>
-          <dt>LinkedIn</dt>
-          <dd>
-            <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
-              Page GLM<span class="sr-only"> (nouvel onglet)</span>
-              <span aria-hidden="true"> ↗</span>
-            </a>
-          </dd>
-        </div>
       </dl>
+
+      <div class="contact__reseaux">
+        <BoutonReseau reseau="whatsapp" href={lienWhatsApp}>
+          Écrire sur WhatsApp
+        </BoutonReseau>
+        <BoutonReseau reseau="linkedin" href={contact.linkedin}>
+          Suivre GLM sur LinkedIn
+        </BoutonReseau>
+      </div>
     </div>
 
     <FormulaireContact />
@@ -77,6 +80,13 @@ import { contact } from '../data/site';
     margin: 0;
     font-size: var(--fs-lead);
     overflow-wrap: anywhere;
+  }
+
+  .contact__reseaux {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
   }
 
   @media (max-width: 60rem) {

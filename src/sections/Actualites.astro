@@ -1,6 +1,6 @@
 ---
 import EnTeteSection from '../components/EnTeteSection.astro';
-import Bouton from '../components/Bouton.astro';
+import BoutonReseau from '../components/BoutonReseau.astro';
 import { contact, postsLinkedIn } from '../data/site';
 import { analyserPostLinkedIn } from '../lib/linkedin';
 
@@ -49,9 +49,9 @@ const posts = postsLinkedIn.map(analyserPostLinkedIn);
     )}
 
     <div class="actualites__suivre">
-      <Bouton href={contact.linkedin} variante="secondaire" target="_blank" rel="noopener noreferrer">
-        Suivre GLM sur LinkedIn<span class="sr-only"> (nouvel onglet)</span>
-      </Bouton>
+      <BoutonReseau reseau="linkedin" href={contact.linkedin}>
+        Suivre GLM sur LinkedIn
+      </BoutonReseau>
     </div>
   </div>
 </section>

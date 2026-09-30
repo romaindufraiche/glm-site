@@ -51,6 +51,8 @@ export interface Associe {
   prenom: string;
   nom: string;
   role: string;
+  /** Formation, affichée sous le nom (ex. « Ingénieur Télécom Paris · ESSEC »). */
+  formation?: string;
   /** Deux phrases maximum : ce que l’associé apporte concrètement aux clients. */
   bio: string;
   /** Domaines d’expertise affichés en repères (3 à 4 mots-clés courts). */
@@ -59,8 +61,8 @@ export interface Associe {
   accent: Accent;
   /**
    * Nom du fichier photo déposé dans src/assets/equipe/ (ex. « romain-dufraiche.jpg »).
-   * Portrait 4:5, 1000 × 1250 px minimum. Le site génère lui-même les versions optimisées.
-   * Sans photo, un emplacement aux couleurs du fondateur s’affiche.
+   * Photo carrée, visage centré, 400 × 400 px minimum : elle est affichée dans un petit rond
+   * et le site génère lui-même les versions optimisées. Sans photo, les initiales s’affichent.
    */
   photo?: string;
   /** URL du profil LinkedIn personnel. */
@@ -114,6 +116,9 @@ export const contact = {
   email: 'romain.dufraiche@gmail.com',
   // TODO: vérifier l’URL de la page LinkedIn (reprise de l’ancien site).
   linkedin: 'https://www.linkedin.com/company/glmprime/',
+  /** Numéro WhatsApp au format international, sans « + » ni espaces. */
+  whatsapp: '33651280191',
+  whatsappMessage: 'Bonjour GLM, je souhaite échanger sur un projet.',
   /** Script PHP de traitement du formulaire, déposé avec le site sur OVH (voir public/contact.php). */
   endpoint: '/contact.php',
   sujets: ['Web & communication', 'Automatisation & IA', 'Robotique', 'Autre'],
@@ -217,17 +222,16 @@ export const methode = {
 
 export const equipe: { titre: string; texte: string; associes: Associe[] } = {
   titre: 'Trois associés, une seule équipe.',
-  // Texte repris de la charte v0.5 (« À propos »).
   texte:
-    'Trois amis du Val-d’Oise, partis étudier l’informatique et la data en Californie. Au contact de la Silicon Valley, une envie ne nous a plus quittés : construire quelque chose à nous. De retour en France, on a créé GLM. Chaque projet est suivi par les trois associés, du premier échange à la mise en service.',
+    'Trois ingénieurs qui se sont rencontrés en cours de data, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par les trois associés, du premier échange à la mise en service.',
   // TODO: vérifier que chaque photo correspond au bon associé.
-  // TODO: relire les bios et expertises (rédigées à partir des rôles et de la charte v0.5).
   associes: [
     {
       prenom: 'Romain',
       nom: 'Dufraiche',
       role: 'Président',
-      bio: 'Il porte la vision de GLM et reste votre interlocuteur du premier échange à la mise en service. Il traduit vos besoins métier en un projet clair.',
+      formation: 'Ingénieur Télécom Paris · ESSEC',
+      bio: 'Il apporte une vision stratégique de l’entreprise et traduit vos besoins métier en un projet clair.',
       expertises: ['Stratégie', 'Organisation', 'Relation client'],
       accent: 'corail',
       photo: 'romain-dufraiche.webp',
@@ -237,7 +241,8 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Théo',
       nom: 'Delaforge',
       role: 'Expert technique',
-      bio: 'Il conçoit l’architecture de chaque solution et veille à sa solidité, du code à la mise en production.',
+      formation: 'Ingénieur diplômé des Mines',
+      bio: 'Il porte l’expertise technique de GLM : il conçoit l’architecture de chaque solution et veille à sa solidité, du code à la mise en production.',
       expertises: ['Architecture', 'Développement', 'IA & données'],
       accent: 'jade',
       photo: 'theo-delaforge.png',
@@ -247,8 +252,9 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Romain',
       nom: 'Yerolymos',
       role: 'Développement et partenariats',
-      bio: 'Il développe le réseau de GLM et construit les partenariats, notamment pour la robotique autonome en Europe.',
-      expertises: ['Partenariats', 'Réseau', 'Robotique'],
+      formation: 'Ingénieur en cybersécurité',
+      bio: 'Il fait le lien avec les clients et les partenaires, et veille à la sécurité des systèmes que l’on construit.',
+      expertises: ['Cybersécurité', 'Partenariats', 'Réseau'],
       accent: 'bleu',
       photo: 'romain-yerolymos.webp',
       linkedin: 'https://www.linkedin.com/in/romain-yerolymos/',

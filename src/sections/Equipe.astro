@@ -17,6 +17,8 @@ function photoDe(fichier: string | undefined): ImageMetadata | undefined {
   }
   return image.default;
 }
+
+const TAILLE_PHOTO = 88;
 ---
 
 <section class="section surface-nuit" id="equipe" aria-labelledby="equipe-titre">
@@ -29,51 +31,57 @@ function photoDe(fichier: string | undefined): ImageMetadata | undefined {
       {equipe.associes.map((associe) => {
         const nomComplet = `${associe.prenom} ${associe.nom}`;
         const photo = photoDe(associe.photo);
+        const idNom = `associe-${associe.prenom}-${associe.nom}`.toLowerCase();
         return (
           <li class={`associe accent-${associe.accent}`}>
-            <article class="associe__carte" aria-labelledby={`associe-${associe.nom.toLowerCase()}`}>
-              <div class="associe__visuel">
+            <article class="associe__carte" aria-labelledby={idNom}>
+              <header class="associe__tete">
                 {photo ? (
                   <Image
                     src={photo}
                     alt={`Portrait de ${nomComplet}`}
-                    widths={[360, 540, 720]}
-                    sizes="(max-width: 40rem) 90vw, (max-width: 60rem) 45vw, 380px"
+                    width={TAILLE_PHOTO}
+                    height={TAILLE_PHOTO}
+                    densities={[1, 2]}
                     loading="lazy"
                     class="associe__photo"
                   />
                 ) : (
-                  <span class="associe__bande" aria-hidden="true" />
+                  <span class="associe__photo associe__initiales" aria-hidden="true">
+                    {associe.prenom.charAt(0)}
+                    {associe.nom.charAt(0)}
+                  </span>
                 )}
-              </div>
+                <div>
+                  <h3 class="associe__nom" id={idNom}>
+                    {nomComplet}
+                  </h3>
+                  <p class="associe__role">{associe.role}</p>
+                </div>
+              </header>
 
-              <div class="associe__texte">
-                <p class="associe__role">{associe.role}</p>
-                <h3 class="associe__nom" id={`associe-${associe.nom.toLowerCase()}`}>
-                  {nomComplet}
-                </h3>
-                <p class="associe__bio">{associe.bio}</p>
+              {associe.formation && <p class="associe__formation">{associe.formation}</p>}
+              <p class="associe__bio">{associe.bio}</p>
 
-                {associe.expertises.length > 0 && (
-                  <ul class="associe__expertises" aria-label={`Expertises de ${associe.prenom}`}>
-                    {associe.expertises.map((expertise) => (
-                      <li>{expertise}</li>
-                    ))}
-                  </ul>
-                )}
+              {associe.expertises.length > 0 && (
+                <ul class="associe__expertises" aria-label={`Expertises de ${associe.prenom}`}>
+                  {associe.expertises.map((expertise) => (
+                    <li>{expertise}</li>
+                  ))}
+                </ul>
+              )}
 
-                {associe.linkedin && (
-                  <a
-                    class="associe__linkedin"
-                    href={associe.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Profil LinkedIn<span class="sr-only"> de {nomComplet} (nouvel onglet)</span>
-                    <span aria-hidden="true"> ↗</span>
-                  </a>
-                )}
-              </div>
+              {associe.linkedin && (
+                <a
+                  class="associe__linkedin"
+                  href={associe.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Profil LinkedIn<span class="sr-only"> de {nomComplet} (nouvel onglet)</span>
+                  <span aria-hidden="true"> ↗</span>
+                </a>
+              )}
             </article>
           </li>
         );
@@ -86,7 +94,7 @@ function photoDe(fichier: string | undefined): ImageMetadata | undefined {
   .associes {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-6);
+    gap: var(--space-5);
   }
 
   .accent-corail {
@@ -102,53 +110,45 @@ function photoDe(fichier: string | undefined): ImageMetadata | undefined {
   .associe__carte {
     display: grid;
     align-content: start;
+    gap: var(--space-4);
     height: 100%;
+    padding: var(--space-5) var(--space-5) var(--space-6);
     border: var(--border) solid var(--trait);
     border-top: var(--bar) solid var(--accent);
   }
 
-  /* Portrait 4:5, cadrage identique pour les trois associés. */
-  .associe__visuel {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    background: var(--nuit);
-    border-bottom: var(--border) solid var(--trait);
+  .associe__tete {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
   }
 
-  /* Photos LinkedIn hétérogènes (fonds, lumières) : noir et blanc pour une série cohérente,
-     couleur au survol de la fiche. */
-  .associe__visuel :global(.associe__photo) {
-    width: 100%;
-    height: 100%;
+  /* Petite photo ronde, cadrée sur le visage. */
+  .associe__tete :global(.associe__photo) {
+    flex-shrink: 0;
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
     object-fit: cover;
-    object-position: center 30%;
-    filter: grayscale(1) contrast(1.05);
-    transition: filter 300ms var(--ease);
+    object-position: center 35%;
+    background: var(--trait);
   }
 
-  .associe__carte:hover :global(.associe__photo) {
-    filter: none;
-  }
-
-  /* Sans photo : une seule bande, aux proportions du logo (déclinaison « accent unique », charte p. 16). */
-  .associe__bande {
-    position: absolute;
-    left: calc(100% * 5 / 12);
-    top: 30%;
-    width: calc(100% / 6);
-    height: 40%;
-    background: var(--accent);
-  }
-
-  .associe__texte {
+  .associe__initiales {
     display: grid;
-    align-content: start;
-    gap: var(--space-3);
-    padding: var(--space-5) var(--space-5) var(--space-6);
+    place-items: center;
+    font-family: var(--font-titre);
+    font-size: 1.75rem;
+    color: var(--texte);
+  }
+
+  .associe__nom {
+    font-size: 1.5rem;
+    line-height: 1.15;
   }
 
   .associe__role {
+    margin-top: var(--space-1);
     font-size: var(--fs-surtitre);
     font-weight: var(--fw-semibold);
     letter-spacing: var(--ls-surtitre);
@@ -156,8 +156,8 @@ function photoDe(fichier: string | undefined): ImageMetadata | undefined {
     color: var(--texte-doux);
   }
 
-  .associe__nom {
-    font-size: var(--fs-h3);
+  .associe__formation {
+    font-weight: var(--fw-medium);
   }
 
   .associe__bio {
@@ -168,7 +168,6 @@ function photoDe(fichier: string | undefined): ImageMetadata | undefined {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    padding-top: var(--space-2);
   }
 
   .associe__expertises li {
@@ -179,7 +178,6 @@ function photoDe(fichier: string | undefined): ImageMetadata | undefined {
 
   .associe__linkedin {
     justify-self: start;
-    margin-top: var(--space-2);
     padding-block: var(--space-1);
     font-weight: var(--fw-medium);
   }
