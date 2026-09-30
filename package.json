@@ -1,0 +1,44 @@
+{
+  "name": "glm-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Site vitrine de GLM — charte graphique v0.5",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "vitest run && npm run test:php",
+    "test:php": "php tests/php/contact.test.php",
+    "test:e2e": "playwright test",
+    "images": "node scripts/generer-images.mjs",
+    "verifier:production": "node scripts/verifier-production.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/ibm-plex-sans": "^5.3.0",
+    "@fontsource/libre-caslon-display": "^5.3.0",
+    "astro": "^7.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.63.0",
+    "astro-eslint-parser": "^1.4.0",
+    "eslint": "^10.11.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.1.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^5.0.3"
+  }
+}
