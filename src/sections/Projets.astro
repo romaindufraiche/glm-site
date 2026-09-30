@@ -2,26 +2,33 @@
 import EnTeteSection from '../components/EnTeteSection.astro';
 import CarteProjet from '../components/CarteProjet.astro';
 import { projets } from '../data/site';
-
-const total = String(projets.length).padStart(2, '0');
 ---
 
 <!--
-  Défilement horizontal piloté par la molette (desktop) : la section reste épinglée sous la navigation
-  et le défilement vertical fait glisser les projets de gauche à droite. On passe à la section suivante
-  une fois tous les projets vus. Sans JavaScript, sur mobile ou avec « mouvement réduit » : grille simple.
+  Desktop : la section reste épinglée sous la navigation. Le défilement de la page fait monter la colonne
+  de gauche et descendre celle de droite ; on passe à la section suivante une fois tous les projets vus.
+  Une seule liste dans le HTML (ordre de lecture naturel) : le décalage des colonnes est appliqué en
+  JavaScript. Sans JavaScript, sur mobile/tablette ou avec « mouvement réduit » : grille simple.
 -->
 <section class="projets surface-nuit" id="projets" aria-labelledby="projets-titre" data-projets>
   <div class="projets__piste" data-projets-piste>
-    <div class="projets__scene">
-      <div class="container projets__tete">
+    <div class="container projets__scene">
+      <div class="projets__tete">
         <EnTeteSection surtitre="Projets" titre="Une histoire vraie vaut dix promesses." id="projets-titre" />
-        <p class="projets__compteur" aria-hidden="true">
-          <span data-projets-courant>01</span> / {total}
-        </p>
+        <div class="projets__pied" aria-hidden="true">
+          <!-- Barre de progression : le filet tricolore de la charte (p. 25) se remplit au fil du défilement. -->
+          <div class="projets__progression">
+            <span class="projets__progression-remplie" data-projets-barre>
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </div>
+          <p class="projets__consigne">Faites défiler pour parcourir les projets</p>
+        </div>
       </div>
 
-      <div class="projets__fenetre">
+      <div class="projets__fenetre" data-projets-fenetre>
         <ul class="projets__liste" data-projets-liste>
           {projets.map((projet) => (
             <li class="projets__item" data-projets-item>
@@ -29,18 +36,6 @@ const total = String(projets.length).padStart(2, '0');
             </li>
           ))}
         </ul>
-      </div>
-
-      <div class="container projets__pied" aria-hidden="true">
-        <!-- Barre de progression : le filet tricolore de la charte (p. 25) se remplit au fil du défilement. -->
-        <div class="projets__progression">
-          <span class="projets__progression-remplie" data-projets-barre>
-            <span></span>
-            <span></span>
-            <span></span>
-          </span>
-        </div>
-        <p class="projets__consigne">Faites défiler pour parcourir les projets</p>
       </div>
     </div>
   </div>
@@ -61,13 +56,8 @@ const total = String(projets.length).padStart(2, '0');
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-5);
-    width: 100%;
-    max-width: calc(var(--container) + 2 * var(--gutter));
-    margin-inline: auto;
-    padding-inline: var(--gutter);
   }
 
-  .projets__compteur,
   .projets__pied {
     display: none;
   }
@@ -78,89 +68,66 @@ const total = String(projets.length).padStart(2, '0');
     }
   }
 
-  /* ---------- Desktop : section épinglée, projets pilotés par la molette ---------- */
-  .projets.is-horizontal {
-    /* La hauteur de la piste (écran + longueur du trajet horizontal) est calculée en JavaScript. */
+  /* ---------- Desktop : section épinglée, deux colonnes en sens opposés ---------- */
+  .projets.is-epingle {
+    /* La hauteur de la piste (écran + longueur du trajet) est calculée en JavaScript. */
     padding-block: 0;
-    --largeur-carte: calc((min(100vw - 2 * var(--gutter), var(--container)) - var(--space-6)) / 2);
   }
 
-  .is-horizontal .projets__scene {
+  .is-epingle .projets__scene {
     position: sticky;
     top: var(--nav-h);
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: var(--space-8);
+    height: calc(100vh - var(--nav-h));
+    min-height: 32rem;
+  }
+
+  .is-epingle .projets__tete {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: var(--space-6);
-    height: calc(100vh - var(--nav-h));
-    min-height: 34rem;
-    padding-block: var(--space-7);
+    gap: var(--space-7);
   }
 
-  .is-horizontal .projets__tete {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: var(--space-6);
-  }
-
-  .is-horizontal .projets__tete :global(.en-tete) {
+  .is-epingle .projets__tete :global(.en-tete) {
     margin-bottom: 0;
   }
 
-  .is-horizontal .projets__compteur {
-    display: block;
-    font-family: var(--font-titre);
-    font-size: 1.5rem;
-    color: var(--texte-doux);
-    white-space: nowrap;
-    font-variant-numeric: tabular-nums;
+  /* Seul le débordement vertical est coupé : les cartes entrent et sortent par le haut et le bas. */
+  .is-epingle .projets__fenetre {
+    position: relative;
+    overflow-y: clip;
+    overflow-x: visible;
   }
 
-  /* overflow: clip (et non hidden) : le navigateur ne fait pas défiler la fenêtre lui-même au focus. */
-  .is-horizontal .projets__fenetre {
-    overflow-x: clip;
-    overflow-y: visible;
+  .is-epingle .projets__liste {
+    gap: var(--space-5);
+    align-items: start;
   }
 
-  .is-horizontal .projets__liste {
-    display: flex;
-    gap: var(--space-6);
-    width: max-content;
-    max-width: none;
-    margin: 0;
-    padding-inline: max(var(--gutter), (100vw - var(--container)) / 2);
+  .is-epingle .projets__item {
     will-change: transform;
-  }
-
-  .is-horizontal .projets__item {
-    width: var(--largeur-carte);
     transition: opacity 400ms var(--ease);
   }
 
-  .is-horizontal .projets__item :global(.carte) {
-    min-height: 19rem;
-    padding: var(--space-6) var(--space-6) var(--space-7);
+  .is-epingle .projets__item :global(.carte) {
+    min-height: 20rem;
   }
 
-  .is-horizontal .projets__item :global(.carte__nom) {
-    font-size: var(--fs-h3);
-  }
-
-  /* Les cartes pas encore (ou plus) dans le cadre sont atténuées. */
-  .is-horizontal .projets__item.is-hors-champ {
+  /* Cartes à moitié sorties du cadre : atténuées. */
+  .is-epingle .projets__item.is-hors-champ {
     opacity: 0.35;
   }
 
-  .is-horizontal .projets__pied {
-    display: flex;
-    align-items: center;
-    gap: var(--space-5);
+  .is-epingle .projets__pied {
+    display: grid;
+    gap: var(--space-3);
   }
 
   .projets__progression {
     position: relative;
-    flex: 1;
     height: 3px;
     background: var(--trait);
   }
@@ -188,6 +155,5 @@ const total = String(projets.length).padStart(2, '0');
   .projets__consigne {
     font-size: var(--fs-petit);
     color: var(--texte-doux);
-    white-space: nowrap;
   }
 </style>

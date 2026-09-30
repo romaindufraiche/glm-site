@@ -12,7 +12,7 @@ Tout le contenu éditable est dans **un seul fichier** : [`src/data/site.ts`](sr
 
 | Pour changer…                     | Modifier dans `site.ts`             |
 | --------------------------------- | ----------------------------------- |
-| Projets (défilement horizontal)   | `projets`                           |
+| Projets (défilement épinglé)      | `projets`                           |
 | Associés, bios, photos, LinkedIn  | `equipe`                            |
 | Posts LinkedIn                    | `postsLinkedIn` (URL d’intégration) |
 | E-mail, page LinkedIn             | `contact`                           |
