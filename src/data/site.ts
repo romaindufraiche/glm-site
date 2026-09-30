@@ -220,17 +220,18 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
   // Texte repris de la charte v0.5 (« À propos »).
   texte:
     'Trois amis du Val-d’Oise, partis étudier l’informatique et la data en Californie. Au contact de la Silicon Valley, une envie ne nous a plus quittés : construire quelque chose à nous. De retour en France, on a créé GLM. Chaque projet est suivi par les trois associés, du premier échange à la mise en service.',
-  // TODO: déposer les 3 photos LinkedIn dans src/assets/equipe/ et renseigner « photo » et « linkedin ».
+  // TODO: vérifier que chaque photo correspond au bon associé.
   // TODO: relire les bios et expertises (rédigées à partir des rôles et de la charte v0.5).
   associes: [
     {
       prenom: 'Romain',
-      // TODO: confirmer le nom (déduit de l’adresse e-mail de l’ancien site).
       nom: 'Dufraiche',
       role: 'Président',
       bio: 'Il porte la vision de GLM et reste votre interlocuteur du premier échange à la mise en service. Il traduit vos besoins métier en un projet clair.',
       expertises: ['Stratégie', 'Organisation', 'Relation client'],
       accent: 'corail',
+      photo: 'romain-dufraiche.webp',
+      linkedin: 'https://www.linkedin.com/in/romain-dufraiche/',
     },
     {
       prenom: 'Théo',
@@ -239,6 +240,8 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       bio: 'Il conçoit l’architecture de chaque solution et veille à sa solidité, du code à la mise en production.',
       expertises: ['Architecture', 'Développement', 'IA & données'],
       accent: 'jade',
+      photo: 'theo-delaforge.png',
+      // TODO: URL du profil LinkedIn de Théo.
     },
     {
       prenom: 'Romain',
@@ -247,6 +250,8 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       bio: 'Il développe le réseau de GLM et construit les partenariats, notamment pour la robotique autonome en Europe.',
       expertises: ['Partenariats', 'Réseau', 'Robotique'],
       accent: 'bleu',
+      photo: 'romain-yerolymos.webp',
+      // TODO: URL du profil LinkedIn de Romain Yerolymos.
     },
   ],
 };
@@ -256,11 +261,15 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
 /* ------------------------------------------------------------------ */
 
 /**
- * URL d’intégration officielles LinkedIn (menu « … » d’un post → « Intégrer ce post »).
- * Copier uniquement la valeur de l’attribut src de l’iframe, par exemple :
- * https://www.linkedin.com/embed/feed/update/urn:li:share:7000000000000000000
+ * Posts LinkedIn affichés dans la rubrique Actualités, du plus récent au plus ancien.
+ * Coller au choix le lien du post (menu « … » → « Copier le lien vers le post »)
+ * ou l’URL d’intégration officielle (menu « … » → « Intégrer ce post », valeur de src).
+ * Les paramètres de suivi du lien sont ignorés automatiquement.
  *
  * Les iframes ne sont chargées qu’après consentement (bandeau cookies).
  */
-// TODO: ajouter les 3 URL d’intégration des posts à afficher.
-export const postsLinkedIn: string[] = [];
+// TODO: ajouter un 3e post (idéalement depuis la page entreprise GLM).
+export const postsLinkedIn: string[] = [
+  'https://www.linkedin.com/posts/romain-dufraiche_datascience-ai-generativeai-activity-7406866497341452288-Wxge',
+  'https://www.linkedin.com/posts/romain-dufraiche_echec-ia-data-activity-7348087063193239552-Rr_i',
+];

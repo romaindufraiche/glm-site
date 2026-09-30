@@ -125,15 +125,14 @@ Tous sont marqués `TODO:` dans le code ; `npm run verifier:production` les dét
 - [ ] Nom de domaine définitif (`siteMeta.url`) : URL canoniques, sitemap, Open Graph, `robots.txt`
 - [ ] Adresse e-mail professionnelle (actuellement l’adresse personnelle reprise de l’ancien site)
 - [ ] URL de la page LinkedIn à vérifier (`linkedin.com/company/glmprime`, reprise de l’ancien site)
-- [ ] Nom de famille du Président (« Dufraiche », déduit de l’adresse e-mail) à confirmer
-- [ ] Photos des trois associés (`src/assets/equipe/`) et URL de leurs profils LinkedIn
+- [ ] Vérifier que chaque photo correspond au bon associé, et ajouter les URL LinkedIn de Théo et de Romain Yerolymos
 - [ ] Bios et expertises des associés à relire (rédigées à partir des rôles et de la charte)
 - [ ] Attribution des couleurs de bande à confirmer (corail, jade, bleu)
 
 **Contenu**
 
 - [ ] 4 projets d’exemple à remplacer par de vrais projets (puis retirer `exemple: true`)
-- [ ] 3 URL d’intégration de posts LinkedIn
+- [ ] Un 3e post LinkedIn (idéalement de la page entreprise GLM)
 - [ ] Phrases des 4 étapes de la méthode à relire (rédigées à partir de la charte)
 
 **Mentions légales et confidentialité**
