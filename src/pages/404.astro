@@ -1,0 +1,18 @@
+---
+import PageTexte from '../layouts/PageTexte.astro';
+import Bouton from '../components/Bouton.astro';
+---
+
+<PageTexte
+  titre="Page introuvable"
+  surtitre="Erreur 404"
+  description="Cette page n’existe pas ou a été déplacée."
+  noindex
+>
+  <p>Cette page n’existe pas ou a été déplacée.</p>
+  <p>
+    <Bouton href="/" fleche>
+      Retour à l’accueil
+    </Bouton>
+  </p>
+</PageTexte>

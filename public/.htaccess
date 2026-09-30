@@ -1,0 +1,47 @@
+# Configuration Apache pour l'hébergement mutualisé OVH.
+# Déposée à la racine du site (www/) avec le contenu du dossier dist/.
+
+AddDefaultCharset UTF-8
+Options -Indexes
+ErrorDocument 404 /404.html
+
+# ---------- HTTPS obligatoire (méthode recommandée par OVH) ----------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{SERVER_PORT} 80
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+  # TODO: une fois le domaine définitif choisi, rediriger aussi la variante sans www vers www (ou l'inverse).
+</IfModule>
+
+# ---------- En-têtes de sécurité ----------
+<IfModule mod_headers.c>
+  # Politique de sécurité du contenu : tout est servi par le site lui-même,
+  # seules les iframes LinkedIn (après consentement) sont autorisées.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-src https://www.linkedin.com; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  # À activer une fois le certificat HTTPS vérifié sur le domaine définitif :
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+  # ---------- Cache ----------
+  # Fichiers générés par Astro : nom unique à chaque build, donc cache long.
+  <If "%{REQUEST_URI} =~ m#^/_astro/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+  # Pages HTML, service worker de désinstallation et script PHP : toujours revalidés.
+  <FilesMatch "\.(html|php)$|^sw\.js$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+# ---------- Compression ----------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain application/javascript application/json image/svg+xml application/xml
+</IfModule>
+
+# ---------- Fichiers sensibles ----------
+<FilesMatch "^\.|\.(md|log|bak|dist|example)$">
+  Require all denied
+</FilesMatch>

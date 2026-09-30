@@ -1,0 +1,76 @@
+---
+import PageTexte from '../layouts/PageTexte.astro';
+import { contact, entreprise } from '../data/site';
+---
+
+<PageTexte
+  titre="Politique de confidentialité"
+  surtitre="Données personnelles"
+  description="Comment GLM traite les données personnelles transmises via son site, et comment exercer vos droits."
+  miseAJour={entreprise.miseAJourLegale}
+>
+  <p>
+    Cette page explique quelles données personnelles nous collectons sur ce site, pourquoi, combien de temps
+    nous les gardons et comment exercer vos droits, conformément au Règlement général sur la protection des
+    données (RGPD) et à la loi Informatique et Libertés.
+  </p>
+
+  <h2>Responsable du traitement</h2>
+  <p>
+    {entreprise.raisonSociale} {entreprise.forme}, {entreprise.adresse}, SIREN {entreprise.siren}. Contact :
+    <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+  </p>
+
+  <h2>Données collectées via le formulaire de contact</h2>
+  <ul>
+    <li>Données : nom, adresse e-mail, entreprise (facultatif), sujet et contenu du message.</li>
+    <li>Finalité : répondre à votre demande et, le cas échéant, préparer une proposition commerciale.</li>
+    <li>
+      Base légale : mesures précontractuelles prises à votre demande (article 6.1.b du RGPD) et intérêt
+      légitime à répondre aux sollicitations reçues (article 6.1.f).
+    </li>
+    <li>
+      Destinataires : les associés de GLM uniquement. Les messages sont transmis par e-mail via notre
+      hébergeur ({entreprise.hebergeur.nom}) et reçus dans notre messagerie (TODO: préciser le fournisseur de
+      messagerie et, s’il est situé hors de l’Union européenne, les garanties encadrant le transfert).
+    </li>
+    <li>
+      Durée de conservation : TODO: à valider. Proposition : 3 ans à compter du dernier échange, conformément
+      aux recommandations de la CNIL pour les prospects.
+    </li>
+  </ul>
+  <p>
+    Pour limiter les envois abusifs, l’adresse IP de l’expéditeur est enregistrée sous forme chiffrée (non
+    réversible) pendant une heure au maximum, puis supprimée.
+  </p>
+
+  <h2>Cookies et contenus intégrés</h2>
+  <p>
+    Ce site n’utilise ni cookie publicitaire ni outil de mesure d’audience. Les polices sont hébergées sur
+    notre serveur : aucune donnée n’est envoyée à un service tiers au chargement des pages.
+  </p>
+  <p>
+    La rubrique Actualités intègre des posts LinkedIn. LinkedIn peut déposer des cookies lorsqu’un post
+    s’affiche : ces contenus ne sont chargés qu’avec votre accord, donné via le bandeau prévu à cet effet.
+    Votre choix est conservé 6 mois dans votre navigateur (stockage local, sans cookie), et vous pouvez le
+    modifier à tout moment via le lien « Gérer les cookies » en bas de page. Pour en savoir plus, consultez la
+    <a href="https://fr.linkedin.com/legal/cookie-policy" target="_blank" rel="noopener noreferrer">
+      politique cookies de LinkedIn<span class="sr-only"> (nouvel onglet)</span>
+    </a>
+    .
+  </p>
+
+  <h2>Vos droits</h2>
+  <p>
+    Vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation, d’opposition et de
+    portabilité de vos données. Pour les exercer, écrivez-nous à{' '}
+    <a href={`mailto:${contact.email}`}>{contact.email}</a>. Nous répondons dans un délai d’un mois.
+  </p>
+  <p>
+    Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL (
+    <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">
+      cnil.fr<span class="sr-only"> (nouvel onglet)</span>
+    </a>
+    ).
+  </p>
+</PageTexte>
