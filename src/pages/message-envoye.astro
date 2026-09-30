@@ -1,0 +1,19 @@
+---
+import PageTexte from '../layouts/PageTexte.astro';
+import Bouton from '../components/Bouton.astro';
+---
+
+<!-- Confirmation affichée lorsque le formulaire est envoyé sans JavaScript (redirection depuis contact.php). -->
+<PageTexte
+  titre="Message envoyé"
+  surtitre="Contact"
+  description="Votre message a bien été envoyé à GLM."
+  noindex
+>
+  <p>Merci. On a bien reçu votre message et on revient vers vous rapidement.</p>
+  <p>
+    <Bouton href="/" variante="secondaire">
+      Retour à l’accueil
+    </Bouton>
+  </p>
+</PageTexte>

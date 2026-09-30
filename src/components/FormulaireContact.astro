@@ -1,0 +1,294 @@
+---
+import Bouton from './Bouton.astro';
+import { contact } from '../data/site';
+import { LIMITES, SUJETS } from '../lib/validation-contact';
+---
+
+<div class="formulaire" data-formulaire>
+  <form
+    class="formulaire__form"
+    action={contact.endpoint}
+    method="post"
+    novalidate
+    aria-describedby="formulaire-note"
+    data-formulaire-form
+  >
+    <p id="formulaire-note" class="formulaire__note">
+      Tous les champs sont obligatoires, sauf mention contraire.
+    </p>
+
+    <div class="formulaire__erreur-globale" role="alert" tabindex="-1" hidden data-formulaire-alerte></div>
+
+    <div class="champ">
+      <label for="contact-nom">Nom</label>
+      <input
+        id="contact-nom"
+        name="nom"
+        type="text"
+        autocomplete="name"
+        required
+        minlength={LIMITES.nom.min}
+        maxlength={LIMITES.nom.max}
+        aria-describedby="contact-nom-erreur"
+      />
+      <p id="contact-nom-erreur" class="champ__erreur" data-erreur-pour="nom"></p>
+    </div>
+
+    <div class="champ">
+      <label for="contact-email">E-mail</label>
+      <input
+        id="contact-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        inputmode="email"
+        spellcheck="false"
+        required
+        maxlength={LIMITES.email.max}
+        aria-describedby="contact-email-erreur"
+      />
+      <p id="contact-email-erreur" class="champ__erreur" data-erreur-pour="email"></p>
+    </div>
+
+    <div class="champ">
+      <label for="contact-entreprise">
+        Entreprise <span class="champ__facultatif">(facultatif)</span>
+      </label>
+      <input
+        id="contact-entreprise"
+        name="entreprise"
+        type="text"
+        autocomplete="organization"
+        maxlength={LIMITES.entreprise.max}
+        aria-describedby="contact-entreprise-erreur"
+      />
+      <p id="contact-entreprise-erreur" class="champ__erreur" data-erreur-pour="entreprise"></p>
+    </div>
+
+    <div class="champ">
+      <label for="contact-sujet">Sujet</label>
+      <div class="champ__select">
+        <select id="contact-sujet" name="sujet" required aria-describedby="contact-sujet-erreur">
+          <option value="">Choisir un sujet</option>
+          {SUJETS.map((sujet) => (
+            <option value={sujet}>{sujet}</option>
+          ))}
+        </select>
+      </div>
+      <p id="contact-sujet-erreur" class="champ__erreur" data-erreur-pour="sujet"></p>
+    </div>
+
+    <div class="champ champ--large">
+      <label for="contact-message">Message</label>
+      <textarea
+        id="contact-message"
+        name="message"
+        rows="6"
+        required
+        minlength={LIMITES.message.min}
+        maxlength={LIMITES.message.max}
+        aria-describedby="contact-message-erreur"
+      ></textarea>
+      <p id="contact-message-erreur" class="champ__erreur" data-erreur-pour="message"></p>
+    </div>
+
+    <!-- Champ piège anti-robots : invisible et ignoré par les personnes, rempli par les robots. -->
+    <div class="formulaire__piege" aria-hidden="true">
+      <label for="contact-site">Ne pas remplir ce champ</label>
+      <input id="contact-site" name="site_web" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div class="formulaire__envoi">
+      <Bouton type="submit" fleche data-formulaire-bouton>
+        <span data-formulaire-bouton-libelle>Envoyer le message</span>
+      </Bouton>
+      <p class="formulaire__rgpd">
+        Vos informations servent uniquement à vous répondre.
+        <a href="/confidentialite/">Politique de confidentialité</a>
+      </p>
+    </div>
+  </form>
+
+  <div class="formulaire__succes" role="status" tabindex="-1" hidden data-formulaire-succes>
+    <p class="formulaire__succes-titre">Message envoyé</p>
+    <p>Merci. On a bien reçu votre message et on revient vers vous rapidement.</p>
+    <Bouton variante="secondaire" data-formulaire-nouveau>
+      Écrire un autre message
+    </Bouton>
+  </div>
+</div>
+
+<script>
+  import { initFormulaireContact } from '../scripts/formulaire-contact';
+  initFormulaireContact();
+</script>
+
+<style>
+  .formulaire__form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5) var(--space-5);
+  }
+
+  .formulaire__note,
+  .formulaire__erreur-globale,
+  .champ--large,
+  .formulaire__envoi {
+    grid-column: 1 / -1;
+  }
+
+  .formulaire__note {
+    font-size: var(--fs-petit);
+    color: var(--texte-doux);
+  }
+
+  .formulaire__erreur-globale {
+    padding: var(--space-4) var(--space-5);
+    border-left: var(--bar) solid var(--erreur);
+    background: rgb(166 60 41 / 0.06);
+    color: var(--erreur);
+    font-weight: var(--fw-medium);
+  }
+
+  .formulaire__erreur-globale:focus {
+    outline: none;
+  }
+
+  .formulaire__erreur-globale[hidden] {
+    display: none;
+  }
+
+  .champ {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+  }
+
+  .champ label {
+    font-weight: var(--fw-medium);
+  }
+
+  .champ__facultatif {
+    font-weight: var(--fw-regular);
+    color: var(--texte-doux);
+  }
+
+  .champ input,
+  .champ select,
+  .champ textarea {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem var(--space-4);
+    background: var(--ivoire);
+    border: var(--border) solid var(--trait-clair);
+    border-radius: var(--radius);
+    color: var(--encre);
+    font-size: 1rem;
+    transition: border-color var(--dur-court) var(--ease);
+  }
+
+  .champ textarea {
+    resize: vertical;
+    min-height: 10rem;
+  }
+
+  .champ input:hover,
+  .champ select:hover,
+  .champ textarea:hover {
+    border-color: var(--encre);
+  }
+
+  .champ :is(input, select, textarea):focus-visible {
+    outline: 2px solid var(--nuit);
+    outline-offset: 0;
+    border-color: var(--nuit);
+  }
+
+  .champ :is(input, select, textarea)[aria-invalid='true'] {
+    border-color: var(--erreur);
+    border-width: 2px;
+  }
+
+  .champ__select {
+    position: relative;
+  }
+
+  .champ__select select {
+    appearance: none;
+    padding-right: var(--space-7);
+    cursor: pointer;
+  }
+
+  .champ__select::after {
+    content: '';
+    position: absolute;
+    right: var(--space-4);
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--encre);
+    border-bottom: 2px solid var(--encre);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .champ__erreur {
+    font-size: var(--fs-petit);
+    font-weight: var(--fw-medium);
+    color: var(--erreur);
+  }
+
+  .champ__erreur:empty {
+    display: none;
+  }
+
+  .formulaire__piege {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .formulaire__envoi {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+    padding-top: var(--space-2);
+  }
+
+  .formulaire__rgpd {
+    font-size: var(--fs-petit);
+    color: var(--texte-doux);
+  }
+
+  .formulaire__succes {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+    padding: var(--space-6);
+    border-left: var(--bar) solid var(--succes);
+    background: rgb(29 110 77 / 0.06);
+  }
+
+  .formulaire__succes[hidden] {
+    display: none;
+  }
+
+  .formulaire__succes:focus {
+    outline: none;
+  }
+
+  .formulaire__succes-titre {
+    font-family: var(--font-titre);
+    font-size: var(--fs-h3);
+    color: var(--succes);
+  }
+
+  @media (max-width: 40rem) {
+    .formulaire__form {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
