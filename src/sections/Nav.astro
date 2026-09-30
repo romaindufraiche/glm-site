@@ -1,0 +1,166 @@
+---
+import Logotype from '../components/Logotype.astro';
+import Bouton from '../components/Bouton.astro';
+
+const liens = [
+  { href: '/#expertises', libelle: 'Expertises' },
+  { href: '/#projets', libelle: 'Projets' },
+  { href: '/#equipe', libelle: 'Équipe' },
+  { href: '/#actualites', libelle: 'Actualités' },
+  { href: '/#contact', libelle: 'Contact' },
+];
+---
+
+<header class="nav surface-nuit" data-nav>
+  <div class="container nav__inner">
+    <Logotype href="/" />
+
+    <button
+      class="nav__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="menu-principal"
+      data-nav-toggle
+    >
+      <span class="nav__toggle-icone" aria-hidden="true">
+        <span></span>
+        <span></span>
+      </span>
+      <span data-nav-toggle-libelle>Menu</span>
+    </button>
+
+    <nav class="nav__menu" id="menu-principal" aria-label="Navigation principale" data-nav-menu>
+      <ul class="nav__liens">
+        {liens.map((lien) => (
+          <li>
+            <a href={lien.href}>{lien.libelle}</a>
+          </li>
+        ))}
+      </ul>
+      <Bouton href="/#contact" class="nav__cta">
+        Parlons de votre projet
+      </Bouton>
+    </nav>
+  </div>
+</header>
+
+<script>
+  import { initNavigation } from '../scripts/navigation';
+  initNavigation();
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-nav);
+    border-bottom: var(--border) solid var(--trait);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+    min-height: var(--nav-h);
+  }
+
+  .nav__menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .nav__liens {
+    display: flex;
+    gap: var(--space-5);
+  }
+
+  .nav__liens a {
+    display: inline-block;
+    padding-block: var(--space-2);
+    font-size: var(--fs-petit);
+    font-weight: var(--fw-medium);
+    text-decoration: none;
+    color: var(--texte-doux);
+    border-bottom: 1px solid transparent;
+    transition:
+      color var(--dur-court) var(--ease),
+      border-color var(--dur-court) var(--ease);
+  }
+
+  .nav__liens a:hover {
+    color: var(--texte);
+    border-bottom-color: currentColor;
+  }
+
+  .nav__toggle {
+    display: none;
+  }
+
+  /* ---------- Mobile et tablette : menu dépliant ---------- */
+  @media (max-width: 60rem) {
+    .nav__toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-height: 2.75rem;
+      padding: 0 var(--space-2);
+      margin-right: calc(-1 * var(--space-2));
+      background: none;
+      border: 0;
+      font-size: var(--fs-petit);
+      font-weight: var(--fw-medium);
+      cursor: pointer;
+    }
+
+    .nav__toggle-icone {
+      display: grid;
+      gap: 6px;
+      width: 20px;
+    }
+
+    .nav__toggle-icone span {
+      height: 2px;
+      background: currentColor;
+      transition: transform var(--dur-court) var(--ease);
+    }
+
+    .nav__toggle[aria-expanded='true'] .nav__toggle-icone span:first-child {
+      transform: translateY(4px) rotate(45deg);
+    }
+
+    .nav__toggle[aria-expanded='true'] .nav__toggle-icone span:last-child {
+      transform: translateY(-4px) rotate(-45deg);
+    }
+
+    .nav__menu {
+      position: absolute;
+      inset: 100% 0 auto;
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--space-5);
+      padding: var(--space-4) var(--gutter) var(--space-6);
+      background: var(--nuit);
+      border-bottom: var(--border) solid var(--trait);
+    }
+
+    /* Replié par défaut. Sans JavaScript, les mêmes liens restent accessibles dans le pied de page. */
+    .nav__menu:not(.is-open) {
+      display: none;
+    }
+
+    .nav__liens {
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .nav__liens a {
+      display: block;
+      padding-block: var(--space-4);
+      font-size: 1.125rem;
+      color: var(--texte);
+      border-bottom: var(--border) solid var(--trait);
+    }
+  }
+</style>

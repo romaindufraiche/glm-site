@@ -1,0 +1,24 @@
+---
+import { calibres, type CalibreId } from '../data/site';
+
+/** Repère texte d’un Calibre : « Calibre 01 · Web ». La couleur est portée par la barre de la carte, pas par le texte. */
+interface Props {
+  calibre: CalibreId;
+}
+
+const { numero, nom } = calibres[Astro.props.calibre];
+---
+
+<p class="repere">
+  Calibre {numero} · {nom}
+</p>
+
+<style>
+  .repere {
+    font-size: var(--fs-surtitre);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-surtitre);
+    text-transform: uppercase;
+    color: var(--texte-doux);
+  }
+</style>

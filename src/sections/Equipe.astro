@@ -1,0 +1,107 @@
+---
+import EnTeteSection from '../components/EnTeteSection.astro';
+import { equipe } from '../data/site';
+---
+
+<section class="section surface-nuit" id="equipe" aria-labelledby="equipe-titre">
+  <div class="container">
+    <EnTeteSection surtitre="Équipe" titre="Côte à côte, à la même hauteur." id="equipe-titre">
+      <p>{equipe.texte}</p>
+    </EnTeteSection>
+
+    <ul class="associes">
+      {equipe.associes.map((associe) => (
+        <li class={`associe accent-${associe.accent}`}>
+          <div class="associe__visuel">
+            {associe.photo ? (
+              <img
+                src={associe.photo}
+                alt={`Portrait de ${associe.prenom} ${associe.nom}`}
+                width="800"
+                height="800"
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <span class="associe__bande" aria-hidden="true" />
+            )}
+          </div>
+          <h3 class="associe__nom">
+            {associe.prenom} {associe.nom}
+          </h3>
+          <p class="associe__role">{associe.role}</p>
+          {associe.description && <p class="associe__description">{associe.description}</p>}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .associes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  .accent-corail {
+    --accent: var(--corail);
+  }
+  .accent-jade {
+    --accent: var(--jade);
+  }
+  .accent-bleu {
+    --accent: var(--bleu);
+  }
+
+  .associe {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+  }
+
+  /* Emplacement photo : carré à bords droits, barre de couleur du fondateur en haut. */
+  .associe__visuel {
+    position: relative;
+    aspect-ratio: 1;
+    margin-bottom: var(--space-4);
+    border: var(--border) solid var(--trait);
+    border-top: var(--bar) solid var(--accent);
+    background: var(--nuit);
+    overflow: hidden;
+  }
+
+  .associe__visuel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Sans photo : une seule bande, aux proportions du logo (2 × 6 sur une grille de 12). */
+  .associe__bande {
+    position: absolute;
+    left: calc(100% * 5 / 12);
+    top: 25%;
+    width: calc(100% / 6);
+    height: 50%;
+    background: var(--accent);
+  }
+
+  .associe__nom {
+    font-size: var(--fs-h3);
+  }
+
+  .associe__role {
+    font-weight: var(--fw-semibold);
+  }
+
+  .associe__description {
+    color: var(--texte-doux);
+  }
+
+  @media (max-width: 60rem) {
+    .associes {
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    }
+  }
+</style>

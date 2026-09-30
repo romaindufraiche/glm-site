@@ -1,0 +1,128 @@
+---
+import EnTeteSection from '../components/EnTeteSection.astro';
+import CarteProjet from '../components/CarteProjet.astro';
+import { projets } from '../data/site';
+---
+
+<section class="section surface-nuit" id="projets" aria-labelledby="projets-titre">
+  <div class="container projets__tete">
+    <EnTeteSection surtitre="Projets" titre="Une histoire vraie vaut dix promesses." id="projets-titre" />
+    <button class="projets__pause" type="button" hidden data-carrousel-pause>
+      <span class="projets__pause-icone" aria-hidden="true"></span>
+      <span data-carrousel-pause-libelle>Mettre en pause</span>
+    </button>
+  </div>
+
+  <div
+    class="defilement"
+    role="region"
+    aria-labelledby="projets-titre"
+    aria-describedby="projets-aide"
+    tabindex="0"
+    data-carrousel
+  >
+    <ul class="defilement__liste" data-carrousel-liste>
+      {projets.map((projet) => (
+        <li class="defilement__item">
+          <CarteProjet projet={projet} />
+        </li>
+      ))}
+    </ul>
+  </div>
+  <p id="projets-aide" class="sr-only">
+    Liste de projets défilant horizontalement. Le défilement s’arrête au survol ou au focus.
+  </p>
+</section>
+
+<script>
+  import { initCarrousel } from '../scripts/carrousel';
+  initCarrousel();
+</script>
+
+<style>
+  .projets__tete {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: var(--space-5);
+  }
+
+  .projets__pause {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-shrink: 0;
+    min-height: 2.75rem;
+    margin-bottom: clamp(var(--space-7), 5vw, var(--space-8));
+    padding: 0 var(--space-4);
+    background: none;
+    border: var(--border) solid var(--trait);
+    font-size: var(--fs-petit);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+    transition: border-color var(--dur-court) var(--ease);
+  }
+
+  .projets__pause:hover {
+    border-color: var(--texte);
+  }
+
+  .projets__pause[hidden] {
+    display: none;
+  }
+
+  /* Icône pause (deux barres) / lecture (triangle), en CSS. */
+  .projets__pause-icone {
+    width: 10px;
+    height: 12px;
+    border-inline: 3px solid currentColor;
+  }
+
+  .projets__pause[data-en-pause] .projets__pause-icone {
+    width: 0;
+    height: 0;
+    border-block: 6px solid transparent;
+    border-inline: 10px solid currentColor;
+    border-inline-end-width: 0;
+  }
+
+  .defilement {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--trait) transparent;
+    padding-bottom: var(--space-4);
+  }
+
+  /* Défilement manuel seul (pas de JavaScript, ou mouvement réduit) : aimantation carte par carte. */
+  .defilement:not(.is-auto) {
+    scroll-snap-type: x proximity;
+  }
+
+  .defilement:focus-visible {
+    outline-offset: -2px;
+  }
+
+  .defilement__liste {
+    display: flex;
+    gap: var(--space-5);
+    width: max-content;
+    padding-inline: max(var(--gutter), (100vw - var(--container)) / 2);
+  }
+
+  .defilement__item {
+    width: min(21rem, 80vw);
+    scroll-snap-align: start;
+    scroll-margin-inline: var(--gutter);
+  }
+
+  @media (max-width: 40rem) {
+    .projets__tete {
+      display: block;
+    }
+
+    .projets__pause {
+      margin: calc(-1 * var(--space-5)) 0 var(--space-6);
+    }
+  }
+</style>
