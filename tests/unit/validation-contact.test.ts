@@ -5,7 +5,7 @@ const valide: DonneesContact = {
   nom: 'Camille Martin',
   email: 'camille@entreprise.fr',
   entreprise: '',
-  sujet: 'Web',
+  sujet: 'Web & communication',
   message: 'Bonjour, nous aimerions refaire notre site.',
 };
 

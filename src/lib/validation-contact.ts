@@ -3,7 +3,7 @@
  * Ces règles sont dupliquées côté serveur dans public/contact.php (seule validation qui fait foi) :
  * toute modification doit être reportée dans les deux fichiers.
  */
-export const SUJETS = ['Web', 'Automatisation & IA', 'Robotique', 'Autre'] as const;
+export const SUJETS = ['Web & communication', 'Automatisation & IA', 'Robotique', 'Autre'] as const;
 export type Sujet = (typeof SUJETS)[number];
 
 export const LIMITES = {

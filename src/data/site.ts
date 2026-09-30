@@ -116,7 +116,7 @@ export const contact = {
   linkedin: 'https://www.linkedin.com/company/glmprime/',
   /** Script PHP de traitement du formulaire, déposé avec le site sur OVH (voir public/contact.php). */
   endpoint: '/contact.php',
-  sujets: ['Web', 'Automatisation & IA', 'Robotique', 'Autre'],
+  sujets: ['Web & communication', 'Automatisation & IA', 'Robotique', 'Autre'],
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -124,7 +124,7 @@ export const contact = {
 /* ------------------------------------------------------------------ */
 
 export const calibres: Record<CalibreId, Calibre> = {
-  web: { numero: '01', nom: 'Web', accent: 'bleu' },
+  web: { numero: '01', nom: 'Web & communication', accent: 'bleu' },
   ia: { numero: '02', nom: 'Automatisation & IA', accent: 'corail' },
   robotique: { numero: '03', nom: 'Robotique', accent: 'jade' },
 };
@@ -133,12 +133,14 @@ export const expertises: Expertise[] = [
   {
     calibre: 'web',
     titre: 'La façade',
-    texte: 'Sites, e-commerce, applications. Ce que vos clients voient de vous.',
+    texte:
+      'Sites, e-commerce, applications, personal branding, campagnes de prospection et de communication. Ce qui vous rend visible et construit votre image.',
   },
   {
     calibre: 'ia',
     titre: 'La structure',
-    texte: 'Process automatisés, données, IA intégrée à vos outils. Ce qui fait tourner l’entreprise.',
+    texte:
+      'Process automatisés, données, IA intégrée à vos outils. Ce qui fait tourner l’entreprise et vous fait gagner du temps et de l’argent.',
   },
   {
     calibre: 'robotique',

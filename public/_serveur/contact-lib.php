@@ -8,7 +8,7 @@
  */
 declare(strict_types=1);
 
-const GLM_SUJETS = ['Web', 'Automatisation & IA', 'Robotique', 'Autre'];
+const GLM_SUJETS = ['Web & communication', 'Automatisation & IA', 'Robotique', 'Autre'];
 const GLM_LIMITES = [
     'nom' => [2, 100],
     'email' => [3, 254],

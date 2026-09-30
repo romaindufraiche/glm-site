@@ -17,16 +17,12 @@ import { calibres, expertises } from '../data/site';
         const calibre = calibres[expertise.calibre];
         return (
           <li class={`calibre surface-nuit accent-${calibre.accent}`}>
-            <p class="calibre__label">Calibre</p>
             <p class="calibre__numero" aria-hidden="true">
               {calibre.numero}
             </p>
             <h3 class="calibre__titre">
               {expertise.titre}
-              <span class="calibre__nom">
-                <span class="sr-only">, Calibre {calibre.numero} · </span>
-                {calibre.nom}
-              </span>
+              <span class="calibre__nom">{calibre.nom}</span>
             </h3>
             <p class="calibre__texte">{expertise.texte}</p>
             {expertise.statut && <p class="calibre__statut">{expertise.statut}</p>}
@@ -64,14 +60,6 @@ import { calibres, expertises } from '../data/site';
   .accent-bleu {
     --accent: var(--bleu);
     --accent-texte: var(--ivoire);
-  }
-
-  .calibre__label {
-    font-size: var(--fs-surtitre);
-    font-weight: var(--fw-semibold);
-    letter-spacing: var(--ls-surtitre);
-    text-transform: uppercase;
-    color: var(--texte-doux);
   }
 
   .calibre__numero {
