@@ -51,7 +51,7 @@ export interface Associe {
   prenom: string;
   nom: string;
   role: string;
-  /** Formation, affichée sous le nom (ex. « Ingénieur Télécom Paris · ESSEC »). */
+  /** Parcours, affiché sous le rôle en une ligne courte (ex. « Télécom Paris · ESSEC »). */
   formation?: string;
   /** Deux phrases maximum : ce que l’associé apporte concrètement aux clients. */
   bio: string;
@@ -223,15 +223,15 @@ export const methode = {
 export const equipe: { titre: string; texte: string; associes: Associe[] } = {
   titre: 'Trois associés, une seule équipe.',
   texte:
-    'Trois ingénieurs qui se sont rencontrés en cours de data, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par les trois associés, du premier échange à la mise en service.',
+    'On s’est rencontrés en cours de data à UC Irvine, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par nous trois, du premier échange à la mise en service.',
   // TODO: vérifier que chaque photo correspond au bon associé.
   associes: [
     {
       prenom: 'Romain',
       nom: 'Dufraiche',
       role: 'Président',
-      formation: 'Ingénieur Télécom Paris · ESSEC',
-      bio: 'Il apporte une vision stratégique de l’entreprise et traduit vos besoins métier en un projet clair.',
+      formation: 'Télécom Paris · ESSEC',
+      bio: 'Il porte la vision stratégique de GLM et traduit vos besoins métier en un projet clair.',
       expertises: ['Stratégie', 'Organisation', 'Relation client'],
       accent: 'corail',
       photo: 'romain-dufraiche.webp',
@@ -241,8 +241,8 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Théo',
       nom: 'Delaforge',
       role: 'Expert technique',
-      formation: 'Ingénieur diplômé des Mines',
-      bio: 'Il porte l’expertise technique de GLM : il conçoit l’architecture de chaque solution et veille à sa solidité, du code à la mise en production.',
+      formation: 'École des Mines',
+      bio: 'Il conçoit l’architecture de chaque solution et veille à sa solidité, du code à la mise en production.',
       expertises: ['Architecture', 'Développement', 'IA & données'],
       accent: 'jade',
       photo: 'theo-delaforge.png',
@@ -252,8 +252,8 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Romain',
       nom: 'Yerolymos',
       role: 'Développement et partenariats',
-      formation: 'Ingénieur en cybersécurité',
-      bio: 'Il fait le lien avec les clients et les partenaires, et veille à la sécurité des systèmes que l’on construit.',
+      formation: 'Expert en cybersécurité',
+      bio: 'Il sécurise les systèmes que l’on construit et développe les partenariats de GLM.',
       expertises: ['Cybersécurité', 'Partenariats', 'Réseau'],
       accent: 'bleu',
       photo: 'romain-yerolymos.webp',

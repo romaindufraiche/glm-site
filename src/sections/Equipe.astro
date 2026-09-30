@@ -77,9 +77,9 @@ const TAILLE_PHOTO = 88;
                   href={associe.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`Profil LinkedIn de ${nomComplet} (nouvel onglet)`}
                 >
-                  Profil LinkedIn<span class="sr-only"> de {nomComplet} (nouvel onglet)</span>
-                  <span aria-hidden="true"> ↗</span>
+                  Profil LinkedIn <span aria-hidden="true">↗</span>
                 </a>
               )}
             </article>
@@ -107,9 +107,11 @@ const TAILLE_PHOTO = 88;
     --accent: var(--bleu);
   }
 
+  /* Colonne flexible : le lien LinkedIn reste aligné en bas des trois fiches. */
   .associe__carte {
-    display: grid;
-    align-content: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: var(--space-4);
     height: 100%;
     padding: var(--space-5) var(--space-5) var(--space-6);
@@ -177,7 +179,7 @@ const TAILLE_PHOTO = 88;
   }
 
   .associe__linkedin {
-    justify-self: start;
+    margin-top: auto;
     padding-block: var(--space-1);
     font-weight: var(--fw-medium);
   }
