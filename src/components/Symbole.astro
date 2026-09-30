@@ -1,0 +1,70 @@
+---
+/**
+ * Symbole GLM : carré Nuit, trois bandes égales corail · jade · bleu.
+ * Construction (charte p. 14) : grille de 12, bandes 2 × 6, 3 modules de marge.
+ * Aucune modification autorisée : pas d’arrondi, de dégradé ni d’élément ajouté.
+ */
+interface Props {
+  /** Taille en pixels (minimum charte : 24 px). */
+  size?: number;
+  /** Nom accessible. Sans libellé, le symbole est décoratif (aria-hidden). */
+  label?: string;
+  /** Montée des trois bandes au chargement (hero uniquement). */
+  anime?: boolean;
+  class?: string;
+}
+
+const { size = 32, label, anime = false, class: className } = Astro.props;
+const taille = Math.max(size, 24);
+---
+
+<svg
+  class:list={['symbole', { 'symbole--anime': anime }, className]}
+  viewBox="0 0 120 120"
+  width={taille}
+  height={taille}
+  xmlns="http://www.w3.org/2000/svg"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  <rect width="120" height="120" fill="#0B1533"></rect>
+  <rect class="bande" x="30" y="30" width="20" height="60" fill="#E9674F"></rect>
+  <rect class="bande" x="50" y="30" width="20" height="60" fill="#2FA877"></rect>
+  <rect class="bande" x="70" y="30" width="20" height="60" fill="#3F63F2"></rect>
+</svg>
+
+<style>
+  .symbole {
+    flex-shrink: 0;
+  }
+
+  /* Seul moment animé du site : les bandes montent l’une après l’autre dans le carré.
+     Elles partent sous le bord du carré (masquées par la zone de dessin du SVG). */
+  @media (prefers-reduced-motion: no-preference) {
+    .symbole--anime .bande {
+      transform-box: fill-box;
+      animation: monter var(--dur-logo) var(--ease) both;
+    }
+
+    .symbole--anime .bande:nth-of-type(2) {
+      animation-delay: 200ms;
+    }
+    .symbole--anime .bande:nth-of-type(3) {
+      animation-delay: 350ms;
+    }
+    .symbole--anime .bande:nth-of-type(4) {
+      animation-delay: 500ms;
+    }
+  }
+
+  @keyframes monter {
+    from {
+      transform: translateY(150%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+</style>

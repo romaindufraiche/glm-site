@@ -1,0 +1,47 @@
+---
+/**
+ * Filet tricolore : les trois bandes du logo, couchées. Corail, jade, bleu, bords droits.
+ * Seul élément décoratif récurrent du site (surtitre, sous un titre, séparateur).
+ */
+interface Props {
+  taille?: 'sm' | 'lg';
+  class?: string;
+}
+
+const { taille = 'sm', class: className } = Astro.props;
+---
+
+<span class:list={['filet', `filet--${taille}`, className]} aria-hidden="true">
+  <span></span>
+  <span></span>
+  <span></span>
+</span>
+
+<style>
+  .filet {
+    display: inline-flex;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .filet span {
+    display: block;
+    width: var(--filet-segment);
+    height: var(--filet-h);
+  }
+
+  .filet--lg span {
+    width: 2.5rem;
+    height: 4px;
+  }
+
+  .filet span:nth-child(1) {
+    background: var(--corail);
+  }
+  .filet span:nth-child(2) {
+    background: var(--jade);
+  }
+  .filet span:nth-child(3) {
+    background: var(--bleu);
+  }
+</style>
