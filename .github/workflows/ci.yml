@@ -2,7 +2,10 @@ name: Vérifications
 
 on:
   push:
+    # Sur main, ces vérifications sont lancées par le workflow de déploiement (voir deploiement.yml).
+    branches-ignore: [main]
   pull_request:
+  workflow_call:
 
 permissions:
   contents: read
@@ -37,6 +40,15 @@ jobs:
 
       - name: Typecheck et build
         run: npm run build
+
+      # Le déploiement met en ligne exactement ce site construit et vérifié.
+      - name: Conserver le site construit
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          include-hidden-files: true
+          retention-days: 7
 
       - name: Installer Chromium
         run: npx playwright install --with-deps chromium
