@@ -223,7 +223,7 @@ export const methode = {
 export const equipe: { titre: string; texte: string; associes: Associe[] } = {
   titre: 'Trois associés, une seule équipe.',
   texte:
-    'On s’est rencontrés en cours de data à UC Irvine, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par nous trois, du premier échange à la mise en service.',
+    'On s’est rencontrés en cours de data science à UC Irvine, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par toute l’équipe, du premier échange à la mise en service.',
   // TODO: vérifier que chaque photo correspond au bon associé.
   associes: [
     {
