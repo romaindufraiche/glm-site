@@ -270,6 +270,34 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
 };
 
 /* ------------------------------------------------------------------ */
+/* Vision                                                             */
+/* ------------------------------------------------------------------ */
+
+export const vision: { cap: string; principes: { titre: string; texte: string; accent: Accent }[] } = {
+  cap: 'Notre cap\u00a0: rendre l’IA et la robotique autonomes concrètes pour les entreprises en France et en Europe.',
+  // Principes tirés des réponses des associés au questionnaire de marque.
+  principes: [
+    {
+      titre: 'Liberté',
+      texte:
+        'On a créé GLM pour rester libres de nos choix. On choisit nos projets, et des clients qui jouent franc-jeu avec nous.',
+      accent: 'corail',
+    },
+    {
+      titre: 'Terrain',
+      texte:
+        'Jeunes et au contact des PME, on part de la réalité de votre quotidien, pas d’une vision lointaine.',
+      accent: 'jade',
+    },
+    {
+      titre: 'Ambition',
+      texte: 'On a faim de réussir et on vise loin : faire de GLM une belle réussite de la tech française.',
+      accent: 'bleu',
+    },
+  ],
+};
+
+/* ------------------------------------------------------------------ */
 /* Actualités LinkedIn                                                */
 /* ------------------------------------------------------------------ */
 
