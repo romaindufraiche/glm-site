@@ -1,6 +1,6 @@
 ---
 import Bouton from './Bouton.astro';
-import { contact } from '../data/site';
+import { contact, entreprise } from '../data/site';
 import { LIMITES, SUJETS } from '../lib/validation-contact';
 ---
 
@@ -102,9 +102,12 @@ import { LIMITES, SUJETS } from '../lib/validation-contact';
       <Bouton type="submit" fleche data-formulaire-bouton>
         <span data-formulaire-bouton-libelle>Envoyer le message</span>
       </Bouton>
+      <!-- Information des personnes au moment de la collecte (RGPD, art. 13). -->
       <p class="formulaire__rgpd">
-        Vos informations servent uniquement à vous répondre.
-        <a href="/confidentialite/">Politique de confidentialité</a>
+        GLM traite ces informations uniquement pour répondre à votre demande et les conserve{' '}
+        {entreprise.donnees.conservation.replace('à compter du', 'après le')}. Vous pouvez y accéder, les
+        rectifier ou les faire supprimer en écrivant à <a href={`mailto:${contact.email}`}>{contact.email}</a>
+        .<a href="/confidentialite/">Politique de confidentialité</a>
       </p>
     </div>
   </form>

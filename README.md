@@ -89,7 +89,7 @@ Choix techniques :
 2. **Configuration du formulaire** : copier `config/glm-contact-config.example.php` sur le FTP **à côté**
    du dossier `www/` (et non dedans), sous le nom `glm-contact-config.php`, puis le compléter :
    - `destinataire` : l’adresse qui reçoit les messages ;
-   - `expediteur` : une adresse **du domaine hébergé** (ex. `site@votre-domaine.fr`), sinon OVH rejette l’envoi ;
+   - `expediteur` : une adresse **du domaine hébergé** (ex. `contact@glmprime.com`), sinon OVH rejette l’envoi ;
    - `origines` : l’URL du site, avec et sans `www` ;
    - `sel` : une chaîne aléatoire (`php -r "echo bin2hex(random_bytes(32));"`).
 3. **Domaine et HTTPS** : associer le domaine à l’hébergement (Multisite) et activer le certificat SSL gratuit.
@@ -122,8 +122,7 @@ Tous sont marqués `TODO:` dans le code ; `npm run verifier:production` les dét
 
 **Identité et coordonnées** (`src/data/site.ts`)
 
-- [ ] Nom de domaine définitif (`siteMeta.url`) : URL canoniques, sitemap, Open Graph, `robots.txt`
-- [ ] Adresse e-mail professionnelle (actuellement l’adresse personnelle reprise de l’ancien site)
+- [ ] Domaine : `https://www.glmprime.com` retenu (déduit de contact@glmprime.com), à ajuster si le site est servi sans `www`
 - [ ] URL de la page LinkedIn à vérifier (`linkedin.com/company/glmprime`, reprise de l’ancien site)
 - [ ] Vérifier que chaque photo correspond au bon associé
 - [ ] Attribution des couleurs de bande à confirmer (corail, jade, bleu)
@@ -138,11 +137,11 @@ Tous sont marqués `TODO:` dans le code ; `npm run verifier:production` les dét
 
 - [ ] SIREN à vérifier (108 105 529, repris de l’ancien site)
 - [ ] RCS (ville du greffe), capital social, adresse du siège, numéro de TVA intracommunautaire
-- [ ] Numéro de téléphone (obligatoire, LCEN)
-- [ ] Directeur de la publication à confirmer
+- [ ] Téléphone affiché dans les mentions légales : le numéro WhatsApp (+33 6 51 28 01 91), à confirmer
 - [ ] Date de mise en ligne des pages légales
-- [ ] Fournisseur de messagerie qui reçoit les messages (et garanties si hors UE)
-- [ ] Durée de conservation des messages (3 ans proposés, recommandation CNIL)
+- [ ] Fournisseur de la messagerie contact@glmprime.com (`entreprise.donnees.messagerie`)
+- [ ] Durée de conservation : 3 ans après le dernier échange (recommandation CNIL), à ajuster si besoin
+- [ ] Médiateur de la consommation (`entreprise.mediateur`) : uniquement si GLM vend un jour à des particuliers
 
 **Hébergement**
 

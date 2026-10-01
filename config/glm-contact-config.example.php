@@ -8,11 +8,11 @@
  */
 return [
     // Adresse qui reçoit les messages.
-    'destinataire' => 'contact@votre-domaine.fr',
+    'destinataire' => 'contact@glmprime.com',
     // Adresse d'expédition : doit appartenir au domaine hébergé chez OVH, sinon les e-mails sont rejetés.
-    'expediteur' => 'site@votre-domaine.fr',
+    'expediteur' => 'contact@glmprime.com',
     // Origines autorisées à envoyer le formulaire (le site, avec et sans www).
-    'origines' => ['https://www.votre-domaine.fr', 'https://votre-domaine.fr'],
+    'origines' => ['https://www.glmprime.com', 'https://glmprime.com'],
     // Chaîne aléatoire d'au moins 32 caractères (sert à rendre les IP non réversibles).
     // Générer par exemple avec : php -r "echo bin2hex(random_bytes(32));"
     'sel' => 'REMPLACER_PAR_UNE_CHAINE_ALEATOIRE_DE_64_CARACTERES_HEXADECIMAUX_',

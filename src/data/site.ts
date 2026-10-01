@@ -75,8 +75,8 @@ export interface Associe {
 
 export const siteMeta = {
   nom: 'GLM',
-  // TODO: remplacer par le nom de domaine définitif (utilisé pour les URL canoniques, le sitemap et l’Open Graph).
-  url: 'https://www.TODO-domaine-glm.fr',
+  // Domaine déduit de l’adresse contact@glmprime.com. À ajuster si le site est servi sans « www ».
+  url: 'https://www.glmprime.com',
   titre: 'GLM · Architectes de la tech',
   description:
     'GLM conçoit et construit les systèmes numériques des entreprises : sites web, automatisation et intelligence artificielle, et demain robots autonomes. Une seule équipe, du premier échange à la mise en service.',
@@ -96,13 +96,25 @@ export const entreprise = {
   adresse: 'TODO: adresse du siège social',
   // TODO: compléter le numéro de TVA intracommunautaire.
   tva: 'TODO: numéro de TVA intracommunautaire',
-  // TODO: compléter le numéro de téléphone (obligatoire dans les mentions légales, LCEN art. 6).
-  telephone: 'TODO: numéro de téléphone',
+  // Numéro obligatoire dans les mentions légales (LCEN art. 6) : numéro WhatsApp de GLM, à confirmer.
+  telephone: '+33 6 51 28 01 91',
   departement: 'Val-d’Oise',
-  // TODO: confirmer le directeur de la publication (en principe le Président).
+  /** Directeur de la publication : en SAS, le représentant légal (le Président). */
   directeurPublication: 'Romain Dufraiche, Président',
   // TODO: indiquer la date de mise en ligne des pages légales (ex. « 15 octobre 2026 »).
   miseAJourLegale: 'TODO: date de mise en ligne',
+  /**
+   * Médiateur de la consommation : obligatoire uniquement si GLM vend à des particuliers
+   * (Code de la consommation, art. L612-1). Laisser vide tant que les prestations sont réservées aux professionnels.
+   */
+  mediateur: undefined as { nom: string; url: string } | undefined,
+  /** Données du formulaire de contact. */
+  donnees: {
+    // TODO: préciser le fournisseur de la messagerie contact@glmprime.com (ex. « OVHcloud, France » ou « Google Workspace »).
+    messagerie: 'TODO: fournisseur de messagerie',
+    // Durée recommandée par la CNIL pour les échanges avec des prospects : à ajuster si besoin.
+    conservation: '3 ans à compter du dernier échange',
+  },
   hebergeur: {
     nom: 'OVH SAS',
     adresse: '2 rue Kellermann, 59100 Roubaix, France',
@@ -112,8 +124,7 @@ export const entreprise = {
 } as const;
 
 export const contact = {
-  // TODO: remplacer par une adresse professionnelle (ex. contact@domaine.fr). Adresse reprise de l’ancien site.
-  email: 'romain.dufraiche@gmail.com',
+  email: 'contact@glmprime.com',
   // TODO: vérifier l’URL de la page LinkedIn (reprise de l’ancien site).
   linkedin: 'https://www.linkedin.com/company/glmprime/',
   /** Numéro WhatsApp au format international, sans « + » ni espaces. */
