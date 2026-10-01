@@ -1,0 +1,107 @@
+---
+/**
+ * Deux variantes seulement : « primaire » (aplat) pour l’action qui compte,
+ * « secondaire » (contour) pour l’action d’appoint. Bords droits, comme le logo.
+ * Rendu en lien si « href » est fourni, en bouton sinon.
+ */
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit';
+  variante?: 'primaire' | 'secondaire';
+  fleche?: boolean;
+  target?: '_blank';
+  rel?: string;
+  class?: string;
+  [data: `data-${string}`]: string | boolean | undefined;
+}
+
+const {
+  href,
+  type = 'button',
+  variante = 'primaire',
+  fleche = false,
+  class: className,
+  ...attrs
+} = Astro.props;
+const classes = ['bouton', `bouton--${variante}`, className];
+---
+
+{href ? (
+  <a class:list={classes} href={href} {...attrs}>
+    <slot />
+    {fleche && (
+      <span class="bouton__fleche" aria-hidden="true">
+        →
+      </span>
+    )}
+  </a>
+) : (
+  <button class:list={classes} type={type} {...attrs}>
+    <slot />
+    {fleche && (
+      <span class="bouton__fleche" aria-hidden="true">
+        →
+      </span>
+    )}
+  </button>
+)}
+
+<style>
+  .bouton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    min-height: 3rem;
+    padding: 0.75rem 1.5rem;
+    border: var(--border) solid transparent;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: var(--fw-medium);
+    line-height: 1.2;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-court) var(--ease),
+      color var(--dur-court) var(--ease),
+      border-color var(--dur-court) var(--ease);
+  }
+
+  .bouton--primaire {
+    background: var(--btn-fond);
+    color: var(--btn-texte);
+  }
+
+  .bouton--primaire:hover {
+    background: var(--btn-survol);
+  }
+
+  .bouton--secondaire {
+    background: transparent;
+    color: var(--texte);
+    border-color: currentColor;
+  }
+
+  .bouton--secondaire:hover {
+    background: var(--texte);
+    color: var(--fond);
+  }
+
+  .bouton:active {
+    transform: translateY(1px);
+  }
+
+  .bouton:disabled,
+  .bouton[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .bouton__fleche {
+    transition: transform var(--dur-court) var(--ease);
+  }
+
+  .bouton:hover .bouton__fleche {
+    transform: translateX(3px);
+  }
+</style>

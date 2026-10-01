@@ -1,0 +1,21 @@
+---
+import PageTexte from '../layouts/PageTexte.astro';
+import Bouton from '../components/Bouton.astro';
+import { contact } from '../data/site';
+---
+
+<!-- Erreur affichée lorsque le formulaire est envoyé sans JavaScript et que l’envoi échoue. -->
+<PageTexte
+  titre="Le message n’a pas pu être envoyé"
+  surtitre="Contact"
+  description="L’envoi du message a échoué."
+  noindex
+>
+  <p>
+    Vérifiez que tous les champs sont remplis correctement, puis réessayez. Vous pouvez aussi nous écrire
+    directement à <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+  </p>
+  <p>
+    <Bouton href="/#contact">Revenir au formulaire</Bouton>
+  </p>
+</PageTexte>

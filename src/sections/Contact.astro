@@ -1,0 +1,98 @@
+---
+import Surtitre from '../components/Surtitre.astro';
+import FormulaireContact from '../components/FormulaireContact.astro';
+import BoutonReseau from '../components/BoutonReseau.astro';
+import { contact } from '../data/site';
+
+const lienWhatsApp = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}`;
+---
+
+<section
+  class="section surface-ivoire"
+  id="contact"
+  aria-labelledby="contact-titre"
+  data-email-direct={contact.email}
+>
+  <div class="container contact__inner">
+    <div class="contact__intro">
+      <Surtitre>Contact</Surtitre>
+      <h2 id="contact-titre" class="contact__titre">
+        Un projet, une idée, une question&nbsp;? Parlons-en.
+      </h2>
+
+      <dl class="contact__direct">
+        <div>
+          <dt>E-mail</dt>
+          <dd>
+            <a href={`mailto:${contact.email}`}>{contact.email}</a>
+          </dd>
+        </div>
+      </dl>
+
+      <div class="contact__reseaux">
+        <BoutonReseau reseau="whatsapp" href={lienWhatsApp}>
+          Écrire sur WhatsApp
+        </BoutonReseau>
+        <BoutonReseau reseau="linkedin" href={contact.linkedin}>
+          Suivre GLM sur LinkedIn
+        </BoutonReseau>
+      </div>
+    </div>
+
+    <FormulaireContact />
+  </div>
+</section>
+
+<style>
+  .contact__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-8);
+    align-items: start;
+  }
+
+  .contact__intro {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  .contact__titre {
+    font-size: var(--fs-h2);
+  }
+
+  .contact__direct {
+    display: grid;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding-top: var(--space-5);
+    border-top: var(--border) solid var(--pierre);
+  }
+
+  .contact__direct dt {
+    font-size: var(--fs-surtitre);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-surtitre);
+    text-transform: uppercase;
+    color: var(--texte-doux);
+  }
+
+  .contact__direct dd {
+    margin: 0;
+    font-size: var(--fs-lead);
+    overflow-wrap: anywhere;
+  }
+
+  .contact__reseaux {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
+  }
+
+  @media (max-width: 60rem) {
+    .contact__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-7);
+    }
+  }
+</style>

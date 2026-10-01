@@ -1,0 +1,133 @@
+---
+import Logotype from '../components/Logotype.astro';
+import { entreprise, contact } from '../data/site';
+
+const annee = new Date().getFullYear();
+const liens = [
+  { href: '/#expertises', libelle: 'Expertises' },
+  { href: '/#projets', libelle: 'Projets' },
+  { href: '/#equipe', libelle: 'Équipe' },
+  { href: '/#actualites', libelle: 'Actualités' },
+  { href: '/#contact', libelle: 'Contact' },
+];
+---
+
+<footer class="pied surface-nuit">
+  <div class="container pied__inner">
+    <div class="pied__marque">
+      <Logotype href="/" />
+      <p class="pied__identite">
+        {entreprise.raisonSociale} · {entreprise.forme}
+        <br />
+        SIREN {entreprise.siren}
+        <br />
+        {entreprise.departement}
+      </p>
+    </div>
+
+    <nav class="pied__nav" aria-label="Plan du site">
+      <ul>
+        {liens.map((lien) => (
+          <li>
+            <a href={lien.href}>{lien.libelle}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="pied__legal">
+      <ul>
+        <li>
+          <a href="/mentions-legales/">Mentions légales</a>
+        </li>
+        <li>
+          <a href="/confidentialite/">Politique de confidentialité</a>
+        </li>
+        <li>
+          <button type="button" class="pied__cookies" hidden data-gerer-cookies>
+            Gérer les cookies
+          </button>
+        </li>
+        <li>
+          <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
+            LinkedIn<span class="sr-only"> (nouvel onglet)</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="container pied__bas">
+    <p>© {annee} GLM</p>
+  </div>
+</footer>
+
+<style>
+  .pied {
+    padding-block: var(--space-8) var(--space-6);
+    border-top: var(--border) solid var(--trait);
+  }
+
+  .pied__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  .pied__marque {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+  }
+
+  .pied__identite,
+  .pied__bas {
+    font-size: var(--fs-petit);
+    color: var(--texte-doux);
+  }
+
+  .pied ul {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .pied a,
+  .pied__cookies {
+    display: inline-block;
+    padding-block: var(--space-1);
+    font-size: var(--fs-petit);
+    color: var(--texte);
+    text-decoration: none;
+  }
+
+  .pied a:hover,
+  .pied__cookies:hover {
+    text-decoration: underline;
+  }
+
+  .pied__cookies {
+    background: none;
+    border: 0;
+    padding-inline: 0;
+    cursor: pointer;
+  }
+
+  .pied__cookies[hidden] {
+    display: none;
+  }
+
+  .pied__bas {
+    margin-top: var(--space-7);
+    padding-top: var(--space-5);
+    border-top: var(--border) solid var(--trait);
+  }
+
+  @media (max-width: 48rem) {
+    .pied__inner {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .pied__marque {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

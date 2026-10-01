@@ -1,0 +1,24 @@
+---
+import { calibres, type CalibreId } from '../data/site';
+
+/** Repère texte d’une offre : « 01 · Web & communication ». La couleur est portée par la barre de la carte, pas par le texte. */
+interface Props {
+  calibre: CalibreId;
+}
+
+const { numero, nom } = calibres[Astro.props.calibre];
+---
+
+<p class="repere">
+  {numero} · {nom}
+</p>
+
+<style>
+  .repere {
+    font-size: var(--fs-surtitre);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-surtitre);
+    text-transform: uppercase;
+    color: var(--texte-doux);
+  }
+</style>

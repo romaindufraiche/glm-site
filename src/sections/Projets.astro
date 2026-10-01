@@ -1,0 +1,161 @@
+---
+import EnTeteSection from '../components/EnTeteSection.astro';
+import CarteProjet from '../components/CarteProjet.astro';
+import { projets } from '../data/site';
+---
+
+<!--
+  Desktop : la section reste épinglée sous la navigation. Le titre reste fixe à gauche et le défilement de
+  la page fait monter la colonne de projets à droite ; on passe à la section suivante une fois tous les
+  projets vus. Sans JavaScript, sur mobile/tablette ou avec « mouvement réduit » : grille simple.
+-->
+<section class="projets surface-nuit" id="projets" aria-labelledby="projets-titre" data-projets>
+  <div class="projets__piste" data-projets-piste>
+    <div class="container projets__scene">
+      <div class="projets__tete">
+        <EnTeteSection surtitre="Projets" titre="Une histoire vraie vaut dix promesses." id="projets-titre" />
+        <div class="projets__pied" aria-hidden="true">
+          <!-- Barre de progression : le filet tricolore de la charte (p. 25) se remplit au fil du défilement. -->
+          <div class="projets__progression">
+            <span class="projets__progression-remplie" data-projets-barre>
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </div>
+          <p class="projets__consigne">Faites défiler pour parcourir les projets</p>
+        </div>
+      </div>
+
+      <div class="projets__fenetre" data-projets-fenetre>
+        <ul class="projets__liste" data-projets-liste>
+          {projets.map((projet) => (
+            <li class="projets__item" data-projets-item>
+              <CarteProjet projet={projet} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initDefilementProjets } from '../scripts/projets-defilement';
+  initDefilementProjets();
+</script>
+
+<style>
+  /* ---------- Par défaut : grille simple (mobile, mouvement réduit, sans JavaScript) ---------- */
+  .projets {
+    padding-block: var(--section-y);
+  }
+
+  .projets__liste {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  .projets__pied {
+    display: none;
+  }
+
+  @media (max-width: 40rem) {
+    .projets__liste {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---------- Desktop : section épinglée, une colonne de projets qui monte ---------- */
+  .projets.is-epingle {
+    /* La hauteur de la piste (écran + longueur du trajet) est calculée en JavaScript. */
+    padding-block: 0;
+  }
+
+  .is-epingle .projets__scene {
+    position: sticky;
+    top: var(--nav-h);
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    /* Une seule rangée bornée à la hauteur de l’écran : la colonne de projets déborde et est coupée. */
+    grid-template-rows: minmax(0, 1fr);
+    gap: var(--space-8);
+    height: calc(100vh - var(--nav-h));
+    min-height: 32rem;
+  }
+
+  .is-epingle .projets__tete {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-7);
+  }
+
+  .is-epingle .projets__tete :global(.en-tete) {
+    margin-bottom: 0;
+  }
+
+  /* Seul le débordement vertical est coupé : les cartes entrent et sortent par le haut et le bas. */
+  .is-epingle .projets__fenetre {
+    position: relative;
+    overflow-y: clip;
+    overflow-x: visible;
+  }
+
+  .is-epingle .projets__liste {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-5);
+    max-width: 40rem;
+  }
+
+  .is-epingle .projets__item {
+    will-change: transform;
+    transition: opacity 400ms var(--ease);
+  }
+
+  .is-epingle .projets__item :global(.carte) {
+    min-height: 16rem;
+  }
+
+  /* Cartes à moitié sorties du cadre : atténuées. */
+  .is-epingle .projets__item.is-hors-champ {
+    opacity: 0.35;
+  }
+
+  .is-epingle .projets__pied {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .projets__progression {
+    position: relative;
+    height: 3px;
+    background: var(--trait);
+  }
+
+  .projets__progression-remplie {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .projets__progression-remplie span {
+    flex: 1;
+  }
+  .projets__progression-remplie span:nth-child(1) {
+    background: var(--corail);
+  }
+  .projets__progression-remplie span:nth-child(2) {
+    background: var(--jade);
+  }
+  .projets__progression-remplie span:nth-child(3) {
+    background: var(--bleu);
+  }
+
+  .projets__consigne {
+    font-size: var(--fs-petit);
+    color: var(--texte-doux);
+  }
+</style>

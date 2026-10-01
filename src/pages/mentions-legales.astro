@@ -1,0 +1,114 @@
+---
+import PageTexte from '../layouts/PageTexte.astro';
+import { contact, entreprise, siteMeta } from '../data/site';
+
+const domaine = siteMeta.url.replace('https://', '');
+const telephoneLien = `tel:${entreprise.telephone.replace(/\s/g, '')}`;
+---
+
+<PageTexte
+  titre="Mentions légales"
+  surtitre="Informations légales"
+  description="Mentions légales du site GLM : éditeur, directeur de la publication, hébergeur, propriété intellectuelle."
+  miseAJour={entreprise.miseAJourLegale}
+>
+  <p>
+    Conformément à l’article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie
+    numérique (LCEN) et à l’article R123-237 du Code de commerce, voici les informations relatives à l’éditeur
+    et à l’hébergeur du site {domaine}.
+  </p>
+
+  <h2>Éditeur du site</h2>
+  <dl>
+    <dt>Dénomination sociale</dt>
+    <dd>{entreprise.raisonSociale}</dd>
+    <dt>Forme juridique et capital</dt>
+    <dd>
+      Société par actions simplifiée ({entreprise.forme}) au capital de {entreprise.capital}
+    </dd>
+    <dt>Siège social</dt>
+    <dd>{entreprise.adresse}</dd>
+    <dt>Immatriculation</dt>
+    <dd>{entreprise.rcs}</dd>
+    <dt>TVA intracommunautaire</dt>
+    <dd>{entreprise.tva}</dd>
+    <dt>E-mail</dt>
+    <dd>
+      <a href={`mailto:${contact.email}`}>{contact.email}</a>
+    </dd>
+    <dt>Téléphone</dt>
+    <dd>
+      <a href={telephoneLien}>{entreprise.telephone}</a>
+    </dd>
+  </dl>
+
+  <h2>Directeur de la publication</h2>
+  <p>{entreprise.directeurPublication}</p>
+
+  <h2>Hébergeur</h2>
+  <dl>
+    <dt>{entreprise.hebergeur.nom}</dt>
+    <dd>
+      {entreprise.hebergeur.adresse}
+      <br />
+      Téléphone : {entreprise.hebergeur.telephone} ·{' '}
+      <a href={entreprise.hebergeur.url}>{entreprise.hebergeur.url.replace('https://', '')}</a>
+    </dd>
+  </dl>
+
+  <h2>Propriété intellectuelle</h2>
+  <p>
+    L’ensemble du site (nom GLM, logo, textes, charte graphique, photographies et code) est la propriété
+    exclusive de {entreprise.raisonSociale}, sauf mention contraire. Toute reproduction, représentation ou
+    adaptation, totale ou partielle, sans autorisation écrite préalable est interdite et constitue une
+    contrefaçon (articles L335-2 et suivants du Code de la propriété intellectuelle).
+  </p>
+  <p>
+    Les polices Libre Caslon Display et IBM Plex Sans sont utilisées sous licence SIL Open Font License 1.1.
+    Les marques et logos LinkedIn et WhatsApp appartiennent à leurs propriétaires respectifs.
+  </p>
+
+  <h2>Responsabilité</h2>
+  <p>
+    {entreprise.raisonSociale} s’efforce de fournir des informations exactes et à jour, sans pouvoir garantir
+    l’absence d’erreur ou d’omission. Les projets présentés le sont à titre d’illustration et ne constituent
+    pas une offre contractuelle. {entreprise.raisonSociale} ne saurait être tenue responsable d’une
+    interruption du site ou d’un dommage résultant de son utilisation.
+  </p>
+
+  <h2>Liens hypertextes</h2>
+  <p>
+    Le site peut contenir des liens vers d’autres sites (LinkedIn, WhatsApp…). {entreprise.raisonSociale}{' '}
+    n’exerce aucun contrôle sur leur contenu et décline toute responsabilité à leur égard. La création d’un
+    lien vers le site {domaine} est libre, à condition de ne pas porter atteinte à l’image de{' '}
+    {entreprise.raisonSociale}.
+  </p>
+
+  <h2>Données personnelles et cookies</h2>
+  <p>
+    Le traitement des données transmises via le formulaire de contact et l’usage des cookies sont décrits dans
+    la <a href="/confidentialite/">politique de confidentialité</a>. Vous pouvez modifier vos choix en matière
+    de cookies à tout moment via le lien « Gérer les cookies » en bas de page.
+  </p>
+
+  <h2>Médiation et litiges</h2>
+  {entreprise.mediateur ? (
+    <p>
+      Conformément à l’article L612-1 du Code de la consommation, tout consommateur peut recourir gratuitement
+      au médiateur de la consommation : <a href={entreprise.mediateur.url}>{entreprise.mediateur.nom}</a>,
+      après avoir tenté de résoudre le litige directement auprès de {entreprise.raisonSociale}.
+    </p>
+  ) : (
+    <p>
+      Les prestations de {entreprise.raisonSociale} s’adressent aux professionnels. Pour toute réclamation,
+      écrivez-nous à <a href={`mailto:${contact.email}`}>{contact.email}</a> : nous cherchons toujours une
+      solution amiable en priorité.
+    </p>
+  )}
+
+  <h2>Droit applicable</h2>
+  <p>
+    Les présentes mentions légales sont régies par le droit français. En cas de litige, et à défaut de
+    solution amiable, les tribunaux français sont seuls compétents.
+  </p>
+</PageTexte>

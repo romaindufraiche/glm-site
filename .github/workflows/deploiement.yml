@@ -1,0 +1,115 @@
+name: Déploiement OVH
+
+# Met le site en ligne sur l’hébergement OVH à chaque mise à jour de main (fusion d’une PR),
+# ou à la demande (onglet Actions → Déploiement OVH → Run workflow).
+#
+# Secrets à créer une fois dans GitHub (Settings → Secrets and variables → Actions) :
+#   OVH_SSH_HOST         serveur SSH, ex. ssh.cluster131.hosting.ovh.net
+#   OVH_SSH_USER         identifiant SSH de l’hébergement
+#   OVH_SSH_KEY          clé privée SSH dédiée au déploiement (voir README)
+#   OVH_SSH_KNOWN_HOSTS  facultatif : empreinte du serveur (sortie de « ssh-keyscan <serveur> »)
+# Aucun identifiant n’est écrit dans le dépôt.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Un seul déploiement à la fois ; un déploiement en cours n’est jamais interrompu.
+concurrency:
+  group: deploiement-production
+  cancel-in-progress: false
+
+jobs:
+  verifier:
+    uses: ./.github/workflows/ci.yml
+
+  deployer:
+    needs: verifier
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://www.glmprime.com
+    env:
+      # Dossier racine du site sur l’hébergement, relatif au dossier personnel.
+      DOSSIER_DISTANT: www
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Récupérer le site vérifié
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Refuser tout contenu provisoire
+        run: npm run verifier:production
+
+      - name: Vérifier les secrets
+        env:
+          OVH_SSH_HOST: ${{ secrets.OVH_SSH_HOST }}
+          OVH_SSH_USER: ${{ secrets.OVH_SSH_USER }}
+          OVH_SSH_KEY: ${{ secrets.OVH_SSH_KEY }}
+        run: |
+          manquants=""
+          [ -n "$OVH_SSH_HOST" ] || manquants="$manquants OVH_SSH_HOST"
+          [ -n "$OVH_SSH_USER" ] || manquants="$manquants OVH_SSH_USER"
+          [ -n "$OVH_SSH_KEY" ] || manquants="$manquants OVH_SSH_KEY"
+          if [ -n "$manquants" ]; then
+            echo "::error::Secrets manquants :$manquants (voir README, « Déploiement automatique »)."
+            exit 1
+          fi
+
+      - name: Préparer la connexion SSH
+        env:
+          OVH_SSH_HOST: ${{ secrets.OVH_SSH_HOST }}
+          OVH_SSH_KEY: ${{ secrets.OVH_SSH_KEY }}
+          OVH_SSH_KNOWN_HOSTS: ${{ secrets.OVH_SSH_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$OVH_SSH_KEY" > ~/.ssh/deploiement
+          chmod 600 ~/.ssh/deploiement
+          if [ -n "$OVH_SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$OVH_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            echo "::warning::OVH_SSH_KNOWN_HOSTS absent : empreinte du serveur lue à la volée (voir README)."
+            ssh-keyscan -t ed25519,rsa "$OVH_SSH_HOST" > ~/.ssh/known_hosts
+            ssh-keygen -lf ~/.ssh/known_hosts
+          fi
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Transférer le site
+        env:
+          OVH_SSH_HOST: ${{ secrets.OVH_SSH_HOST }}
+          OVH_SSH_USER: ${{ secrets.OVH_SSH_USER }}
+        run: |
+          ssh_cmd="ssh -i $HOME/.ssh/deploiement -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
+          cible="$OVH_SSH_USER@$OVH_SSH_HOST"
+          # Le dossier du site doit exister ; rsync doit être disponible sur l’hébergement.
+          $ssh_cmd "$cible" "test -d '$DOSSIER_DISTANT' && command -v rsync >/dev/null" || {
+            echo "::error::Dossier '$DOSSIER_DISTANT' introuvable ou rsync absent sur l’hébergement."
+            exit 1
+          }
+          # Le dossier distant devient une copie exacte de dist/ (anciens fichiers supprimés).
+          # La configuration du formulaire et le dossier des limites d’envoi sont à côté de www/ :
+          # ils ne sont jamais touchés. .well-known/ (validation de certificats) est préservé.
+          rsync --recursive --links --perms --chmod=D755,F644 --compress --checksum \
+            --delete --delay-updates --exclude='.well-known/' --itemize-changes \
+            -e "$ssh_cmd" dist/ "$cible:$DOSSIER_DISTANT/"
+
+      - name: Nettoyer la clé
+        if: always()
+        run: rm -f ~/.ssh/deploiement
+
+      - name: Contrôler le site en ligne
+        run: |
+          url="https://www.glmprime.com/"
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$url" || true)
+          if [ "$code" = "200" ]; then
+            echo "Site en ligne : $url ($code)"
+          else
+            echo "::warning::$url répond $code (domaine pas encore relié à l’hébergement ?)."
+          fi

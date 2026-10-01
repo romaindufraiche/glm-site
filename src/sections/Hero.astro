@@ -1,0 +1,94 @@
+---
+import Symbole from '../components/Symbole.astro';
+import Surtitre from '../components/Surtitre.astro';
+import Bouton from '../components/Bouton.astro';
+---
+
+<section class="hero surface-nuit" aria-labelledby="hero-titre">
+  <div class="container hero__inner">
+    <div class="hero__texte">
+      <Surtitre>Architectes de la tech</Surtitre>
+      <h1 id="hero-titre" class="hero__titre">
+        On conçoit et on construit les systèmes numériques des entreprises.
+      </h1>
+      <p class="lead hero__lead">
+        Du site web à l’automatisation et à l’intelligence artificielle, et demain jusqu’aux robots. Une seule
+        équipe, du premier échange à la mise en service.
+      </p>
+      <div class="hero__actions">
+        <Bouton href="#contact" fleche>
+          Parlons de votre projet
+        </Bouton>
+        <Bouton href="#projets" variante="secondaire">
+          Voir nos projets
+        </Bouton>
+      </div>
+    </div>
+
+    <div class="hero__logo">
+      <Symbole size={420} anime class="hero__symbole" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(4rem, 2rem + 8vw, 8.5rem) clamp(4.5rem, 3rem + 7vw, 9rem);
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .hero__texte {
+    display: grid;
+    gap: var(--space-6);
+    justify-items: start;
+  }
+
+  .hero__titre {
+    font-size: var(--fs-hero);
+    max-width: 14ch;
+  }
+
+  .hero__lead {
+    max-width: 34rem;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    padding-top: var(--space-2);
+  }
+
+  .hero__logo {
+    display: grid;
+    justify-items: center;
+  }
+
+  /* Sur fond Nuit, le carré se fond dans le fond (charte p. 15) : seules les bandes ressortent. */
+  .hero__logo :global(.hero__symbole) {
+    width: min(100%, 26rem);
+    height: auto;
+  }
+
+  @media (max-width: 60rem) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-7);
+    }
+
+    .hero__logo {
+      order: -1;
+      justify-items: start;
+    }
+
+    .hero__logo :global(.hero__symbole) {
+      width: clamp(6rem, 30vw, 9rem);
+    }
+  }
+</style>

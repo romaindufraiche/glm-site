@@ -1,0 +1,99 @@
+---
+/**
+ * Bandeau de consentement RGPD, limité aux contenus LinkedIn intégrés (seuls éléments tiers du site).
+ * « Accepter » et « Refuser » ont le même poids visuel (exigence CNIL).
+ * Rouvrable depuis le lien « Gérer les cookies » du pied de page.
+ */
+---
+
+<section class="consentement surface-nuit" aria-labelledby="consentement-titre" hidden data-consentement>
+  <div class="container consentement__inner">
+    <div class="consentement__texte">
+      <h2 id="consentement-titre" class="consentement__titre">
+        Cookies LinkedIn
+      </h2>
+      <p>
+        Nos actualités sont des posts LinkedIn intégrés. LinkedIn peut déposer des cookies lorsqu’ils
+        s’affichent. Vous pouvez accepter ou refuser, et changer d’avis à tout moment.
+        <a href="/confidentialite/">En savoir plus</a>
+      </p>
+    </div>
+    <div class="consentement__actions">
+      <button type="button" class="consentement__bouton" data-consentement-choix="refuse">
+        Refuser
+      </button>
+      <button type="button" class="consentement__bouton" data-consentement-choix="accepte">
+        Accepter
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initBandeauConsentement } from '../scripts/bandeau-consentement';
+  initBandeauConsentement();
+</script>
+
+<style>
+  .consentement {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: var(--z-consent);
+    padding-block: var(--space-5);
+    border-top: var(--bar) solid var(--ivoire);
+  }
+
+  .consentement[hidden] {
+    display: none;
+  }
+
+  .consentement__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .consentement__texte {
+    display: grid;
+    gap: var(--space-2);
+    max-width: 46rem;
+    font-size: var(--fs-petit);
+  }
+
+  .consentement__titre {
+    font-size: 1.375rem;
+  }
+
+  .consentement__actions {
+    display: flex;
+    gap: var(--space-3);
+    flex-shrink: 0;
+  }
+
+  .consentement__bouton {
+    min-width: 8rem;
+    min-height: 2.75rem;
+    padding: 0 var(--space-5);
+    background: var(--ivoire);
+    color: var(--nuit);
+    border: 0;
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .consentement__bouton:hover {
+    background: var(--pierre);
+  }
+
+  @media (max-width: 48rem) {
+    .consentement__inner {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .consentement__bouton {
+      flex: 1;
+    }
+  }
+</style>

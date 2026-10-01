@@ -1,0 +1,90 @@
+---
+import '../styles/global.css';
+import Nav from '../sections/Nav.astro';
+import Footer from '../sections/Footer.astro';
+import BandeauConsentement from '../components/BandeauConsentement.astro';
+import { siteMeta, entreprise, contact, postsLinkedIn } from '../data/site';
+import caslon from '@fontsource/libre-caslon-display/files/libre-caslon-display-latin-400-normal.woff2?url';
+import plex from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2?url';
+
+interface Props {
+  /** Titre de la page (sans le suffixe « · GLM »). Absent sur l’accueil. */
+  titre?: string;
+  description?: string;
+  /** Pages utilitaires (confirmation, 404) : exclues de l’indexation. */
+  noindex?: boolean;
+}
+
+const { titre, description = siteMeta.description, noindex = false } = Astro.props;
+const titreComplet = titre ? `${titre} · GLM` : siteMeta.titre;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/og-image.png', Astro.site);
+
+const donneesStructurees = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteMeta.nom,
+  legalName: `${entreprise.raisonSociale} ${entreprise.forme}`,
+  url: siteMeta.url,
+  logo: new URL('/favicon-512.png', Astro.site).href,
+  description: siteMeta.description,
+  email: contact.email,
+  sameAs: [contact.linkedin],
+  address: { '@type': 'PostalAddress', addressRegion: entreprise.departement, addressCountry: 'FR' },
+};
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{titreComplet}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <link rel="preload" href={caslon} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plex} as="font" type="font/woff2" crossorigin />
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0B1533" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={siteMeta.locale} />
+    <meta property="og:site_name" content={siteMeta.nom} />
+    <meta property="og:title" content={titreComplet} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Logo GLM : un carré bleu nuit et trois bandes corail, jade et bleu."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(donneesStructurees)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">
+      Aller au contenu
+    </a>
+    <Nav />
+    <main id="contenu" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    {postsLinkedIn.length > 0 && <BandeauConsentement />}
+  </body>
+</html>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+</style>
