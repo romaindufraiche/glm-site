@@ -5,10 +5,9 @@ import { projets } from '../data/site';
 ---
 
 <!--
-  Desktop : la section reste épinglée sous la navigation. Le défilement de la page fait monter la colonne
-  de gauche et descendre celle de droite ; on passe à la section suivante une fois tous les projets vus.
-  Une seule liste dans le HTML (ordre de lecture naturel) : le décalage des colonnes est appliqué en
-  JavaScript. Sans JavaScript, sur mobile/tablette ou avec « mouvement réduit » : grille simple.
+  Desktop : la section reste épinglée sous la navigation. Le titre reste fixe à gauche et le défilement de
+  la page fait monter la colonne de projets à droite ; on passe à la section suivante une fois tous les
+  projets vus. Sans JavaScript, sur mobile/tablette ou avec « mouvement réduit » : grille simple.
 -->
 <section class="projets surface-nuit" id="projets" aria-labelledby="projets-titre" data-projets>
   <div class="projets__piste" data-projets-piste>
@@ -68,7 +67,7 @@ import { projets } from '../data/site';
     }
   }
 
-  /* ---------- Desktop : section épinglée, deux colonnes en sens opposés ---------- */
+  /* ---------- Desktop : section épinglée, une colonne de projets qui monte ---------- */
   .projets.is-epingle {
     /* La hauteur de la piste (écran + longueur du trajet) est calculée en JavaScript. */
     padding-block: 0;
@@ -79,6 +78,8 @@ import { projets } from '../data/site';
     top: var(--nav-h);
     display: grid;
     grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    /* Une seule rangée bornée à la hauteur de l’écran : la colonne de projets déborde et est coupée. */
+    grid-template-rows: minmax(0, 1fr);
     gap: var(--space-8);
     height: calc(100vh - var(--nav-h));
     min-height: 32rem;
@@ -103,8 +104,9 @@ import { projets } from '../data/site';
   }
 
   .is-epingle .projets__liste {
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-5);
-    align-items: start;
+    max-width: 40rem;
   }
 
   .is-epingle .projets__item {
@@ -113,7 +115,7 @@ import { projets } from '../data/site';
   }
 
   .is-epingle .projets__item :global(.carte) {
-    min-height: 20rem;
+    min-height: 16rem;
   }
 
   /* Cartes à moitié sorties du cadre : atténuées. */

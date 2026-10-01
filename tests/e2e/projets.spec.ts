@@ -8,7 +8,7 @@ const decalage = (page: Page, index: number) =>
     .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m42);
 
 test.describe('Défilement des projets', () => {
-  test('desktop : section épinglée, une colonne monte et l’autre descend', async ({ page, isMobile }) => {
+  test('desktop : section épinglée, la colonne de projets monte', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Défilement épinglé réservé au desktop');
     await page.goto('/');
     await expect(page.locator('[data-projets]')).toHaveClass(/is-epingle/);
@@ -27,17 +27,14 @@ test.describe('Défilement des projets', () => {
 
     await page.evaluate((y) => window.scrollTo(0, y), debut);
     await expect.poll(() => decalage(page, 0)).toBeGreaterThan(0);
-    const gaucheDebut = await decalage(page, 0);
-    const droiteDebut = await decalage(page, 1);
+    const depart = await decalage(page, 0);
 
-    // À la fin du trajet : la colonne de gauche est montée, celle de droite est descendue, d’autant.
+    // À la fin du trajet : toute la colonne est montée d’un seul bloc.
     await page.evaluate((y) => window.scrollTo(0, y), debut + distance);
-    await expect.poll(() => decalage(page, 0)).toBeLessThan(gaucheDebut - 100);
+    await expect.poll(() => decalage(page, 0)).toBeLessThan(depart - 100);
     await page.waitForTimeout(800);
-    const montee = gaucheDebut - (await decalage(page, 0));
-    const descente = (await decalage(page, 1)) - droiteDebut;
-    expect(montee).toBeGreaterThan(100);
-    expect(descente).toBeCloseTo(montee, 0);
+    const premier = await decalage(page, 0);
+    expect(await decalage(page, 3)).toBeCloseTo(premier, 0);
     await expect(page.locator('#projets-titre')).toBeInViewport();
 
     // Au-delà, la page reprend son défilement normal.

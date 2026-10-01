@@ -1,18 +1,17 @@
 /**
- * Projets : deux colonnes qui défilent en sens opposés, pilotées par le défilement de la page (desktop).
+ * Projets : une colonne de projets qui défile de bas en haut, pilotée par le défilement de la page (desktop).
  *
- * La section est épinglée (position: sticky) dans une « piste » dont la hauteur vaut l’écran plus la
- * longueur du trajet : chaque pixel de défilement fait avancer les colonnes d’un pixel. La colonne de
- * gauche monte (de bas en haut), celle de droite descend (de haut en bas). Une légère inertie
+ * La section est épinglée (position: sticky) dans une « piste » dont la hauteur couvre le trajet de la
+ * colonne : le titre reste fixe à gauche pendant que les projets montent à droite. Une légère inertie
  * (interpolation vers la cible à chaque image) rend le mouvement fluide.
  *
  * Désactivé (grille simple) sur mobile/tablette et avec prefers-reduced-motion.
  */
 const INERTIE = 0.12;
-/** Décalage de départ des colonnes, en part de la hauteur du cadre : les deux colonnes démarrent décalées. */
+/** Marge de départ et d’arrivée de la colonne, en part de la hauteur du cadre. */
 const AMPLITUDE = 0.18;
-/** Pixels de défilement de la page par pixel de mouvement des colonnes : plus grand = plus lent. */
-const RALENTI = 1.8;
+/** Pixels de défilement de la page par pixel de mouvement de la colonne : plus grand = plus lent. */
+const RALENTI = 1.3;
 const CONDITION = '(min-width: 60.0625rem) and (prefers-reduced-motion: no-preference)';
 
 export function initDefilementProjets(): void {
@@ -55,14 +54,11 @@ export function initDefilementProjets(): void {
   };
 
   const appliquer = (): void => {
-    const parcours = progression * distance;
-    // Colonne de gauche : de +marge à -(trajet + marge). Colonne de droite : le mouvement inverse.
-    const montee = marge - parcours;
-    const descente = -(trajet + marge) + parcours;
+    // La colonne monte de +marge (premier projet un peu bas) à -(trajet + marge) (dernier projet passé).
+    const decalage = marge - progression * distance;
     const cadre = fenetre.getBoundingClientRect();
 
-    items.forEach((item, index) => {
-      const decalage = index % 2 === 0 ? montee : descente;
+    items.forEach((item) => {
       item.style.transform = `translate3d(0, ${decalage}px, 0)`;
       // Carte dont moins de 60 % est dans le cadre : atténuée.
       const rect = item.getBoundingClientRect();
@@ -90,15 +86,13 @@ export function initDefilementProjets(): void {
     if (!actif || !(event.target instanceof HTMLElement)) return;
     const item = event.target.closest<HTMLElement>('[data-projets-item]');
     if (!item || distance === 0) return;
-    const index = items.indexOf(item);
     const hauteurCadre = fenetre.clientHeight;
     const cadre = fenetre.getBoundingClientRect();
     const rect = item.getBoundingClientRect();
     if (rect.top >= cadre.top && rect.bottom <= cadre.bottom) return;
     for (let pas = 0; pas <= 40; pas += 1) {
       const p = pas / 40;
-      const decalage = index % 2 === 0 ? marge - p * distance : -(trajet + marge) + p * distance;
-      const haut = item.offsetTop + decalage;
+      const haut = item.offsetTop + marge - p * distance;
       if (haut >= 0 && haut + item.offsetHeight <= hauteurCadre) {
         window.scrollTo({ top: debut + p * distance * RALENTI, behavior: 'auto' });
         return;
