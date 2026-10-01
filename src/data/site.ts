@@ -86,23 +86,20 @@ export const siteMeta = {
 export const entreprise = {
   raisonSociale: 'GLM',
   forme: 'SAS',
-  // TODO: vérifier le SIREN (repris de l’ancien site).
+  // Informations reprises de l’extrait Kbis du 28 juillet 2026.
   siren: '108 105 529',
-  // TODO: compléter le RCS (ville du greffe), ex. « RCS Pontoise 108 105 529 ».
-  rcs: 'TODO: RCS',
-  // TODO: compléter le capital social.
-  capital: 'TODO: capital social',
-  // TODO: compléter l’adresse du siège social.
-  adresse: 'TODO: adresse du siège social',
-  // TODO: compléter le numéro de TVA intracommunautaire.
-  tva: 'TODO: numéro de TVA intracommunautaire',
+  rcs: 'RCS Pontoise 108 105 529',
+  capital: '300 €',
+  adresse: '51 rue Pierre-Émile Lesacq, 95110 Sannois',
+  // Numéro calculé à partir du SIREN (clé 09) : à vérifier dans l’espace professionnel impots.gouv.fr.
+  tva: 'FR09 108 105 529',
   // Numéro obligatoire dans les mentions légales (LCEN art. 6) : numéro WhatsApp de GLM, à confirmer.
   telephone: '+33 6 51 28 01 91',
   departement: 'Val-d’Oise',
   /** Directeur de la publication : en SAS, le représentant légal (le Président). */
   directeurPublication: 'Romain Dufraiche, Président',
-  // TODO: indiquer la date de mise en ligne des pages légales (ex. « 15 octobre 2026 »).
-  miseAJourLegale: 'TODO: date de mise en ligne',
+  /** Date de dernière mise à jour des pages légales : à changer à chaque modification de leur contenu. */
+  miseAJourLegale: '1er octobre 2026',
   /**
    * Médiateur de la consommation : obligatoire uniquement si GLM vend à des particuliers
    * (Code de la consommation, art. L612-1). Laisser vide tant que les prestations sont réservées aux professionnels.
@@ -110,8 +107,7 @@ export const entreprise = {
   mediateur: undefined as { nom: string; url: string } | undefined,
   /** Données du formulaire de contact. */
   donnees: {
-    // TODO: préciser le fournisseur de la messagerie contact@glmprime.com (ex. « OVHcloud, France » ou « Google Workspace »).
-    messagerie: 'TODO: fournisseur de messagerie',
+    messagerie: 'OVHcloud, France',
     // Durée recommandée par la CNIL pour les échanges avec des prospects : à ajuster si besoin.
     conservation: '3 ans à compter du dernier échange',
   },
