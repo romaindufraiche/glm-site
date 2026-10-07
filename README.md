@@ -5,6 +5,8 @@ Site vitrine d’une page de GLM, conforme à la charte graphique v0.5 (voir [`d
 - **Astro** (génération statique) : du HTML pur, environ 8 Ko de JavaScript au total, sans librairie.
 - **Hébergement** : mutualisé OVH, dépôt par FTP du dossier `dist/`.
 - **Formulaire de contact** : script PHP `contact.php` qui envoie un e-mail via le serveur OVH (aucun service tiers).
+- **Espace équipe** (`/admin/`, lien « Se connecter ») : publication des démos clients sur `demo.glmprime.com`
+  sans FTP (voir « Démos clients » plus bas).
 
 ## Modifier le contenu
 
@@ -57,15 +59,16 @@ src/
   components/         primitives de marque : Symbole, Logotype, Filet, Surtitre, Bouton, cartes
   sections/           sections de la page (Nav, Hero, Expertises, Projets, Méthode, Équipe…)
   layouts/            gabarits (base SEO + pages de texte)
-  pages/              accueil, mentions légales, confidentialité, confirmations, 404, robots.txt
+  pages/              accueil, mentions légales, confidentialité, confirmations, 404, robots.txt, admin
   lib/                logique isolée et testée (validation du formulaire, consentement, LinkedIn)
   scripts/            comportements côté navigateur (menu, défilement des projets, formulaire, consentement)
 public/
   contact.php         point d’entrée du formulaire
+  admin/api.php       API de l’espace équipe (connexion, publication des démos)
   _serveur/           logique PHP (non accessible depuis le web)
   .htaccess           HTTPS, en-têtes de sécurité (CSP stricte), cache, 404
   sw.js               désinstalle le service worker de l’ancien site (à supprimer d’ici quelques mois)
-config/               modèle de configuration du formulaire (le vrai fichier n’est jamais commité)
+config/               modèles de configuration (formulaire, démos) et fichiers du sous-domaine demo.glmprime.com
 tests/                unit/ (Vitest), php/, e2e/ (Playwright + axe-core)
 ```
 
@@ -159,6 +162,81 @@ commit avec `git checkout <commit> && npm ci && npm run build`) et la redéposer
 
 **Surveillance** : les erreurs du formulaire (configuration absente, échec d’envoi) sont écrites dans les
 journaux PHP de l’hébergement (espace client OVH → Statistiques et logs), sans aucune donnée personnelle.
+
+## Démos clients (demo.glmprime.com)
+
+Le lien **Se connecter** de la navigation mène à `/admin/`, l’espace équipe. Il remplace le dépôt manuel par FTP :
+
+1. se connecter ;
+2. saisir le nom du client (l’identifiant de l’adresse est proposé automatiquement) ;
+3. choisir l’archive `.zip` du site → **Publier la démo** ;
+4. **Copier le lien** (`https://demo.glmprime.com/<client>/`) et l’envoyer au client.
+
+**Mettre à jour** publie une nouvelle version au même lien (l’ancienne est remplacée d’un coup) ;
+**Supprimer** retire la démo une fois le site livré sur le domaine du client.
+
+Règles appliquées aux archives : un `index.html` à la racine (ou dans un unique dossier, retiré
+automatiquement), sites **statiques** uniquement (`.php`, `.htaccess` et scripts serveur refusés),
+chemins `../` refusés, 500 Mo décompressés au plus. Les démos étant servies dans un sous-dossier, le site
+doit utiliser des chemins relatifs (`assets/style.css` et non `/assets/style.css` ; Vite : `base: './'`),
+sinon passer à l’option « une démo par sous-domaine » ci-dessous.
+
+### Mise en place sur OVH (une seule fois)
+
+1. **Dossier des démos**, à créer **à côté de `www/`**, jamais dedans (le déploiement synchronise `www/`
+   avec `dist/` et effacerait les démos) : par exemple `/home/<compte>/demo`.
+2. **Sous-domaine** : espace client OVH → Hébergement → Multisite → Ajouter un domaine → `demo.glmprime.com`,
+   dossier racine `demo`, SSL activé. Si la zone DNS n’est pas chez OVH, y ajouter l’enregistrement indiqué.
+3. Déposer dans ce dossier le contenu de `config/sous-domaine-demo/` (`.htaccess` et `index.html`) :
+   HTTPS, aucune indexation par les moteurs de recherche, aucun script serveur exécuté.
+4. **Configuration** : copier `config/glm-demos-config.example.php` à côté de `www/` sous le nom
+   `glm-demos-config.php` et compléter :
+   - `utilisateurs` : un identifiant par personne et l’empreinte de son mot de passe
+     (`php -r 'echo password_hash("MotDePasse", PASSWORD_DEFAULT), PHP_EOL;'`) ;
+   - `dossier_demos` : le chemin absolu du dossier de l’étape 1 ;
+   - `sel` : une chaîne aléatoire (`php -r "echo bin2hex(random_bytes(32));"`).
+5. Vérifier la taille d’envoi maximale affichée sous le champ « Archive » : si elle est trop basse,
+   l’augmenter (`upload_max_filesize`, `post_max_size`) dans la configuration PHP de l’hébergement.
+
+Sécurité : mots de passe stockés sous forme d’empreinte, session limitée à `/admin/` (`HttpOnly`, `Secure`,
+`SameSite=Strict`), jeton CSRF et contrôle de l’origine sur chaque action, 5 échecs de connexion par IP
+bloquent 15 minutes (IP hachée). La page `/admin/` est exclue du sitemap et de l’indexation.
+
+### Automatiser depuis le dépôt d’un site client
+
+Avec `jeton_api` renseigné dans `glm-demos-config.php`, une démo se publie sans passer par la page :
+
+```bash
+curl -fsS -H "Authorization: Bearer $GLM_DEMOS_JETON" -F action=publier \
+     -F slug=boulangerie-martin -F client="Boulangerie Martin" -F archive=@site.zip \
+     https://www.glmprime.com/admin/api.php
+```
+
+Dans le dépôt GitHub d’un site client (secret `GLM_DEMOS_JETON`), la démo suit alors chaque push sur `main` :
+
+```yaml
+name: Démo client
+on:
+  push:
+    branches: [main]
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Site avec une étape de build : la lancer ici, puis zipper le dossier produit (dist/, build/…).
+      - run: zip -r site.zip . -x '.git/*' '.github/*'
+      - run: >
+          curl -fsS -H "Authorization: Bearer ${{ secrets.GLM_DEMOS_JETON }}" -F action=publier
+          -F slug=boulangerie-martin -F client="Boulangerie Martin" -F archive=@site.zip
+          https://www.glmprime.com/admin/api.php
+```
+
+### Option : une démo par sous-domaine (`client.demo.glmprime.com`)
+
+Pour les sites qui utilisent des chemins absolus : ajouter `*.demo.glmprime.com` (DNS et certificat), pointant
+vers le même dossier, décommenter le bloc correspondant dans le `.htaccess` du dossier des démos, puis indiquer
+`'modele_url' => 'https://{slug}.demo.glmprime.com/'` dans la configuration.
 
 ## Contenus à compléter avant la mise en ligne
 

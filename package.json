@@ -12,7 +12,7 @@
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "test": "vitest run && npm run test:php",
-    "test:php": "php tests/php/contact.test.php",
+    "test:php": "php tests/php/contact.test.php && php tests/php/demos.test.php",
     "test:e2e": "playwright test",
     "images": "node scripts/generer-images.mjs",
     "verifier:production": "node scripts/verifier-production.mjs"

@@ -11,6 +11,7 @@ playwright-report/
 .env
 .env.*
 glm-contact-config.php
+glm-demos-config.php
 
 # Système
 .DS_Store

@@ -24,7 +24,7 @@ export default defineConfig({
     sitemap({
       // Pages utilitaires exclues du sitemap (elles portent aussi une balise noindex).
       filter: (page) =>
-        !['/404', '/message-envoye', '/message-non-envoye'].some((chemin) => page.includes(chemin)),
+        !['/404', '/message-envoye', '/message-non-envoye', '/admin'].some((chemin) => page.includes(chemin)),
     }),
   ],
 });

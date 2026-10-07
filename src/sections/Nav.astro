@@ -37,6 +37,9 @@ const liens = [
           </li>
         ))}
       </ul>
+      <a class="nav__connexion" href="/admin/">
+        Se connecter
+      </a>
       <Bouton href="/#contact" class="nav__cta">
         Parlons de votre projet
       </Bouton>
@@ -92,6 +95,19 @@ const liens = [
   .nav__liens a:hover {
     color: var(--texte);
     border-bottom-color: currentColor;
+  }
+
+  /* Accès à l’espace équipe : discret, l’action principale reste « Parlons de votre projet ». */
+  .nav__connexion {
+    font-size: var(--fs-petit);
+    font-weight: var(--fw-medium);
+    color: var(--texte-doux);
+    text-underline-offset: 0.3em;
+    transition: color var(--dur-court) var(--ease);
+  }
+
+  .nav__connexion:hover {
+    color: var(--texte);
   }
 
   .nav__toggle {
@@ -161,6 +177,10 @@ const liens = [
       font-size: 1.125rem;
       color: var(--texte);
       border-bottom: var(--border) solid var(--trait);
+    }
+
+    .nav__connexion {
+      font-size: 1rem;
     }
   }
 </style>

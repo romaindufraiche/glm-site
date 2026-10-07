@@ -1,0 +1,35 @@
+# Racine du sous-domaine demo.glmprime.com — à déposer une seule fois dans le dossier des démos.
+# Chaque démo client y est publiée dans un sous-dossier par l'espace équipe (www.glmprime.com/admin/).
+
+Options -Indexes
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # HTTPS obligatoire.
+  RewriteCond %{SERVER_PORT} 80
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+  # --- Option « une démo par sous-domaine » : https://client.demo.glmprime.com/ ---
+  # Nécessite un DNS *.demo.glmprime.com et un certificat couvrant ces sous-domaines,
+  # et 'modele_url' => 'https://{slug}.demo.glmprime.com/' dans glm-demos-config.php.
+  # Avantage : les sites qui utilisent des chemins absolus (/assets/…) fonctionnent sans modification.
+  # RewriteCond %{ENV:REDIRECT_STATUS} ^$
+  # RewriteCond %{HTTP_HOST} ^([a-z0-9-]+)\.demo\.glmprime\.com$ [NC]
+  # RewriteRule ^(.*)$ /%1/$1 [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Les démos ne doivent jamais apparaître dans les moteurs de recherche.
+  Header always set X-Robots-Tag "noindex, nofollow"
+  Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+
+# Dossiers de publication en cours (.publication-*, .ancienne-*) et fichiers cachés : jamais servis.
+# .well-known/ reste accessible pour la validation du certificat HTTPS.
+RedirectMatch 404 "/\.(?!well-known/)"
+
+# Les démos sont des sites statiques : aucun script serveur n'est exécuté ici.
+<FilesMatch "\.(php\d?|phtml|pht|phar|cgi|pl|py|sh)$">
+  Require all denied
+</FilesMatch>

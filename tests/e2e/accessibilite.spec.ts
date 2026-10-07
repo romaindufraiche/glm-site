@@ -2,7 +2,14 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 // Audit automatique WCAG 2.1 AA (contrastes, libellés, structure, ARIA) sur chaque page publique.
-for (const chemin of ['/', '/mentions-legales/', '/confidentialite/', '/message-envoye/', '/404']) {
+for (const chemin of [
+  '/',
+  '/mentions-legales/',
+  '/confidentialite/',
+  '/message-envoye/',
+  '/404',
+  '/admin/',
+]) {
   test(`aucune violation WCAG AA détectée sur ${chemin}`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(chemin);

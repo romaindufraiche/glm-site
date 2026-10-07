@@ -1,0 +1,403 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Surtitre from '../components/Surtitre.astro';
+import Bouton from '../components/Bouton.astro';
+---
+
+<!--
+  Espace équipe : publication des démos clients sur demo.glmprime.com.
+  Page statique ; la connexion et les actions passent par /admin/api.php (voir public/admin/api.php).
+-->
+<BaseLayout
+  titre="Espace équipe"
+  description="Espace réservé à l’équipe GLM : publication des démos clients."
+  noindex
+>
+  <section class="admin surface-ivoire" data-admin>
+    <div class="container admin__inner">
+      <header class="admin__tete">
+        <Surtitre>Espace équipe</Surtitre>
+        <h1 class="admin__titre">Démos clients</h1>
+        <p class="admin__intro">
+          Publiez le site d’un client sur <strong>demo.glmprime.com</strong> et envoyez-lui le lien, sans
+          passer par le FTP.
+        </p>
+      </header>
+
+      <p class="admin__etat" role="status" data-admin-chargement>
+        Chargement de l’espace équipe…
+      </p>
+      <noscript>
+        <p class="admin__alerte">L’espace équipe nécessite JavaScript.</p>
+      </noscript>
+      <p class="admin__alerte" role="alert" hidden data-admin-indisponible></p>
+
+      <!-- Connexion -->
+      <form class="admin__carte admin__connexion" hidden data-admin-connexion novalidate>
+        <h2 class="admin__h2">Connexion</h2>
+        <p class="admin__alerte" role="alert" hidden data-admin-erreur-connexion></p>
+        <div class="champ">
+          <label for="identifiant">Identifiant</label>
+          <input id="identifiant" name="identifiant" type="text" autocomplete="username" required />
+        </div>
+        <div class="champ">
+          <label for="mot-de-passe">Mot de passe</label>
+          <input
+            id="mot-de-passe"
+            name="motDePasse"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+        <div>
+          <Bouton type="submit" data-admin-bouton-connexion>
+            Se connecter
+          </Bouton>
+        </div>
+      </form>
+
+      <!-- Tableau de bord -->
+      <div class="admin__tableau" hidden data-admin-tableau>
+        <div class="admin__session">
+          <p>
+            Connecté en tant que <strong data-admin-utilisateur></strong>
+          </p>
+          <Bouton variante="secondaire" data-admin-deconnexion>
+            Se déconnecter
+          </Bouton>
+        </div>
+
+        <form class="admin__carte admin__publication" novalidate data-admin-publication>
+          <h2 class="admin__h2">Publier une démo</h2>
+          <p class="admin__note">
+            Archive <strong>.zip</strong> du site, avec un fichier <strong>index.html</strong> à la racine. Si
+            l’identifiant existe déjà, la démo est remplacée par la nouvelle version et le lien ne change pas.
+          </p>
+          <div class="admin__grille">
+            <div class="champ">
+              <label for="client">Nom du client</label>
+              <input id="client" name="client" type="text" maxlength="120" required data-admin-client />
+            </div>
+            <div class="champ">
+              <label for="slug">Identifiant dans l’adresse</label>
+              <input
+                id="slug"
+                name="slug"
+                type="text"
+                maxlength="60"
+                required
+                aria-describedby="apercu-lien"
+                data-admin-slug
+              />
+            </div>
+          </div>
+          <p class="admin__apercu" id="apercu-lien">
+            Lien de la démo :{' '}
+            <span class="admin__url" data-admin-apercu>
+              —
+            </span>
+            <span class="admin__remplace" hidden data-admin-remplace>
+              remplace la version en ligne
+            </span>
+          </p>
+          <div class="champ">
+            <label for="archive">Archive du site (.zip)</label>
+            <input
+              id="archive"
+              name="archive"
+              type="file"
+              accept=".zip,application/zip"
+              required
+              aria-describedby="limite-envoi"
+              data-admin-archive
+            />
+            <p class="admin__note" id="limite-envoi" data-admin-limite></p>
+          </div>
+          <p class="admin__alerte" role="alert" hidden data-admin-erreur-publication></p>
+          <div class="admin__envoi">
+            <Bouton type="submit" data-admin-bouton-publier>
+              Publier la démo
+            </Bouton>
+            <progress class="admin__progression" max="100" value="0" hidden data-admin-progression></progress>
+            <span class="admin__note" role="status" data-admin-progression-texte></span>
+          </div>
+        </form>
+
+        <p class="admin__succes" role="status" tabindex="-1" hidden data-admin-succes></p>
+
+        <section class="admin__carte" aria-labelledby="titre-demos">
+          <h2 class="admin__h2" id="titre-demos">
+            Démos en ligne{' '}
+            <span class="admin__compte" data-admin-compte>
+              0
+            </span>
+          </h2>
+          <p class="admin__note" data-admin-vide>
+            Aucune démo pour le moment.
+          </p>
+          <ul class="admin__liste" data-admin-liste></ul>
+        </section>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { initEspaceEquipe } from '../scripts/admin';
+  initEspaceEquipe();
+</script>
+
+<style>
+  .admin {
+    padding-block: var(--section-y);
+    min-height: 70vh;
+  }
+
+  .admin__inner {
+    display: grid;
+    gap: var(--space-6);
+    max-width: calc(56rem + 2 * var(--gutter));
+  }
+
+  .admin__tete {
+    display: grid;
+    gap: var(--space-4);
+    padding-bottom: var(--space-6);
+    border-bottom: var(--border) solid var(--pierre);
+  }
+
+  .admin__titre {
+    font-size: var(--fs-h2);
+  }
+
+  .admin__intro {
+    font-size: var(--fs-lead);
+    color: var(--texte-doux);
+    max-width: var(--measure);
+  }
+
+  .admin__h2 {
+    font-size: var(--fs-h3);
+  }
+
+  .admin__carte {
+    display: grid;
+    gap: var(--space-5);
+    padding: var(--space-6);
+    border: var(--border) solid var(--pierre);
+  }
+
+  .admin__connexion {
+    max-width: 28rem;
+  }
+
+  .admin__tableau {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .admin__tableau[hidden],
+  .admin__carte[hidden],
+  [data-admin] [hidden] {
+    display: none;
+  }
+
+  .admin__session {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  .admin__grille {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  .admin__note,
+  .admin__etat {
+    font-size: var(--fs-petit);
+    color: var(--texte-doux);
+  }
+
+  .admin__apercu {
+    font-size: var(--fs-petit);
+    overflow-wrap: anywhere;
+  }
+
+  .admin__url {
+    font-weight: var(--fw-semibold);
+  }
+
+  .admin__remplace {
+    display: inline-block;
+    margin-left: var(--space-2);
+    padding: 0 var(--space-2);
+    border-left: var(--bar) solid var(--corail);
+    font-weight: var(--fw-medium);
+  }
+
+  .admin__alerte {
+    padding: var(--space-4) var(--space-5);
+    border-left: var(--bar) solid var(--erreur);
+    background: rgb(166 60 41 / 0.06);
+    color: var(--erreur);
+    font-weight: var(--fw-medium);
+  }
+
+  .admin__succes {
+    padding: var(--space-4) var(--space-5);
+    border-left: var(--bar) solid var(--succes);
+    background: rgb(29 110 77 / 0.06);
+    color: var(--succes);
+    font-weight: var(--fw-medium);
+    overflow-wrap: anywhere;
+  }
+
+  .admin__succes:focus {
+    outline: none;
+  }
+
+  .admin__envoi {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .admin__progression {
+    flex: 1;
+    min-width: 8rem;
+    height: 6px;
+    accent-color: var(--nuit);
+  }
+
+  .admin__compte {
+    font-family: var(--font-texte);
+    font-size: var(--fs-petit);
+    color: var(--texte-doux);
+  }
+
+  .champ {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+  }
+
+  .champ label {
+    font-weight: var(--fw-medium);
+  }
+
+  .champ input {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.75rem var(--space-4);
+    background: var(--ivoire);
+    border: var(--border) solid var(--trait-clair);
+    border-radius: var(--radius);
+    color: var(--encre);
+    font-size: 1rem;
+  }
+
+  .champ input[type='file'] {
+    padding: var(--space-3) var(--space-4);
+    cursor: pointer;
+  }
+
+  .champ input:hover {
+    border-color: var(--encre);
+  }
+
+  .champ input:focus-visible {
+    outline: 2px solid var(--nuit);
+    outline-offset: 0;
+    border-color: var(--nuit);
+  }
+
+  .champ input[aria-invalid='true'] {
+    border-color: var(--erreur);
+    border-width: 2px;
+  }
+
+  /* Liste construite par le script : styles globaux limités à l’espace équipe. */
+  .admin__liste {
+    display: grid;
+  }
+
+  .admin__liste :global(.demo) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-top: var(--border) solid var(--pierre);
+  }
+
+  .admin__liste :global(.demo__infos) {
+    display: grid;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .admin__liste :global(.demo__client) {
+    font-weight: var(--fw-semibold);
+  }
+
+  .admin__liste :global(.demo__lien) {
+    overflow-wrap: anywhere;
+  }
+
+  .admin__liste :global(.demo__meta) {
+    font-size: var(--fs-petit);
+    color: var(--texte-doux);
+  }
+
+  .admin__liste :global(.demo__actions) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .admin__liste :global(.demo__action) {
+    min-height: 2.5rem;
+    padding: var(--space-2) var(--space-4);
+    background: transparent;
+    border: var(--border) solid currentColor;
+    border-radius: var(--radius);
+    color: var(--encre);
+    font-size: var(--fs-petit);
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+    transition:
+      background-color var(--dur-court) var(--ease),
+      color var(--dur-court) var(--ease);
+  }
+
+  .admin__liste :global(.demo__action:hover) {
+    background: var(--encre);
+    color: var(--ivoire);
+  }
+
+  .admin__liste :global(.demo__action--danger) {
+    color: var(--erreur);
+  }
+
+  .admin__liste :global(.demo__action--danger:hover) {
+    background: var(--erreur);
+    color: var(--ivoire);
+  }
+
+  @media (max-width: 40rem) {
+    .admin__grille {
+      grid-template-columns: 1fr;
+    }
+
+    .admin__carte {
+      padding: var(--space-5);
+    }
+  }
+</style>
