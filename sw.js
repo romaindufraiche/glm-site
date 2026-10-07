@@ -1,4 +1,4 @@
-const CACHE = 'glm-site-v1';
+const CACHE = 'glm-site-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -22,6 +22,8 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  // Espace admin : toujours servi par le réseau, jamais mis en cache.
+  if (new URL(e.request.url).pathname.includes('/admin/')) return;
   e.respondWith(
     caches.match(e.request).then((cached) => {
       const fetchPromise = fetch(e.request)

@@ -1,2 +1,5 @@
 .DS_Store
 *.log
+admin/config.php
+admin/data/*
+!admin/data/.htaccess

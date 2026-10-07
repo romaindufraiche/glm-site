@@ -1,0 +1,27 @@
+# Racine de demo.glmprime.com — à copier une seule fois à la racine du sous-domaine.
+# Chaque démo client est publiée dans un sous-dossier par l'espace admin (glmprime.com/admin/).
+
+Options -Indexes
+
+# Les démos ne doivent pas être indexées par les moteurs de recherche.
+<IfModule mod_headers.c>
+  Header always set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+# Dossiers temporaires de publication (.tmp-*, .old-*) et fichiers cachés : jamais servis.
+RedirectMatch 404 "/\.(?!well-known/)"
+
+# Les démos sont des sites statiques : aucun script serveur n'est exécuté ici.
+<FilesMatch "\.(php\d?|phtml|pht|phar|cgi|pl|py|sh)$">
+  Require all denied
+</FilesMatch>
+
+# --- Option « sous-domaines » : https://client.demo.glmprime.com/ ---
+# Nécessite un DNS wildcard *.demo.glmprime.com et un certificat SSL wildcard,
+# et 'demo_url_pattern' => 'https://{slug}.demo.glmprime.com/' dans admin/config.php.
+# Avantage : les sites qui utilisent des chemins absolus (/assets/...) fonctionnent sans modification.
+#
+# RewriteEngine On
+# RewriteCond %{ENV:REDIRECT_STATUS} ^$
+# RewriteCond %{HTTP_HOST} ^([a-z0-9-]+)\.demo\.glmprime\.com$ [NC]
+# RewriteRule ^(.*)$ /%1/$1 [L]

@@ -1,0 +1,2 @@
+# Données internes de l'espace admin : jamais accessibles depuis le web.
+Require all denied

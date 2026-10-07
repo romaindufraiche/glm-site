@@ -40,7 +40,7 @@
   const I18N = {
     fr: {
       'nav.ia_data': 'IA & Data', 'nav.robotique': 'Robotique', 'nav.saas_web': 'SaaS & Web', 'nav.contact': 'Contact',
-      'nav.search': 'Recherche rapide', 'nav.cta': 'Démarrer un projet',
+      'nav.search': 'Recherche rapide', 'nav.cta': 'Démarrer un projet', 'nav.login': 'Se connecter',
       'hero.title': 'On transforme vos <span class="grad-text">idées</span> en produits qui tournent.',
       'hero.subtitle': 'GLM conçoit, développe et déploie des solutions <strong>IA</strong>, <strong>SaaS</strong>, <strong>Data</strong>, <strong>Web</strong> et <strong>Robotique</strong> — du cadrage à la mise en production, avec une équipe qui code autant qu\'elle conseille.',
       'hero.cta_primary': 'Discuter de mon projet',
@@ -70,7 +70,7 @@
     },
     en: {
       'nav.ia_data': 'AI & Data', 'nav.robotique': 'Robotics', 'nav.saas_web': 'SaaS & Web', 'nav.contact': 'Contact',
-      'nav.search': 'Quick search', 'nav.cta': 'Start a project',
+      'nav.search': 'Quick search', 'nav.cta': 'Start a project', 'nav.login': 'Log in',
       'hero.title': 'We turn your <span class="grad-text">ideas</span> into products that ship.',
       'hero.subtitle': 'GLM designs, builds and ships <strong>AI</strong>, <strong>SaaS</strong>, <strong>Data</strong>, <strong>Web</strong> and <strong>Robotics</strong> solutions — from scoping to production, with a team that codes as much as it advises.',
       'hero.cta_primary': 'Discuss my project',
@@ -100,7 +100,7 @@
     },
     zh: {
       'nav.ia_data': 'AI 与数据', 'nav.robotique': '机器人', 'nav.saas_web': 'SaaS 与网页', 'nav.contact': '联系方式',
-      'nav.search': '快速搜索', 'nav.cta': '开启项目',
+      'nav.search': '快速搜索', 'nav.cta': '开启项目', 'nav.login': '登录',
       'hero.title': '我们将您的<span class="grad-text">创意</span>转化为真正运转的产品。',
       'hero.subtitle': 'GLM设计、开发并交付<strong>人工智能</strong>、<strong>SaaS</strong>、<strong>数据</strong>、<strong>网页</strong>与<strong>机器人</strong>解决方案——从需求梳理到上线部署,我们的团队既提供咨询,也亲自编写代码。',
       'hero.cta_primary': '讨论我的项目',
@@ -529,6 +529,7 @@
     { label: 'Écrire sur WhatsApp', hint: 'action', action: () => window.open('https://wa.me/33651280191', '_blank', 'noopener') },
     { label: 'Envoyer un email', hint: 'action', action: () => { window.location.href = 'mailto:romain.dufraiche@gmail.com'; } },
     { label: 'Afficher les raccourcis clavier', hint: 'aide', action: () => openShortcuts() },
+    { label: 'Se connecter à l\'espace GLM', hint: 'compte', action: () => { window.location.href = 'admin/'; } },
     { label: 'Copier l\'email de contact', hint: 'action', action: () => navigator.clipboard?.writeText('romain.dufraiche@gmail.com') },
   ];
   function scrollTo(sel) { document.querySelector(sel).scrollIntoView({ behavior: 'smooth' }); }
