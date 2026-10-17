@@ -1,6 +1,9 @@
 ---
 import PageTexte from '../layouts/PageTexte.astro';
 import { contact, entreprise } from '../data/site';
+import { hebergement } from '../lib/hebergement';
+
+const hebergeur = hebergement.hebergeur;
 ---
 
 <PageTexte
@@ -22,45 +25,99 @@ import { contact, entreprise } from '../data/site';
     {entreprise.directeurPublication}. Contact : <a href={`mailto:${contact.email}`}>{contact.email}</a>.
   </p>
 
-  <h2>Données collectées via le formulaire de contact</h2>
-  <dl>
-    <dt>Données</dt>
-    <dd>Nom, adresse e-mail, entreprise (facultatif), sujet et contenu du message.</dd>
-    <dt>Finalité</dt>
-    <dd>
-      Répondre à votre demande et, le cas échéant, préparer une proposition commerciale. Vos données ne sont
-      ni vendues, ni cédées, ni utilisées pour de la prospection non sollicitée.
-    </dd>
-    <dt>Base légale</dt>
-    <dd>
-      Mesures précontractuelles prises à votre demande (article 6.1.b du RGPD) et intérêt légitime de{' '}
-      {entreprise.raisonSociale} à répondre aux sollicitations reçues (article 6.1.f).
-    </dd>
-    <dt>Destinataires</dt>
-    <dd>
-      Les associés de {entreprise.raisonSociale} uniquement. Le message est transmis par e-mail depuis notre
-      hébergeur ({entreprise.hebergeur.nom}, France) vers notre messagerie ({entreprise.donnees.messagerie}).
-    </dd>
-    <dt>Durée de conservation</dt>
-    <dd>{entreprise.donnees.conservation}, puis suppression.</dd>
-  </dl>
-  <p>
-    Si vous nous contactez par WhatsApp, LinkedIn ou téléphone, les échanges sont traités de la même manière,
-    pour les mêmes finalités et la même durée.
-  </p>
+  {hebergement.formulaire ? (
+    <Fragment>
+      <h2>Données collectées via le formulaire de contact</h2>
+      <dl>
+        <dt>Données</dt>
+        <dd>Nom, adresse e-mail, entreprise (facultatif), sujet et contenu du message.</dd>
+        <dt>Finalité</dt>
+        <dd>
+          Répondre à votre demande et, le cas échéant, préparer une proposition commerciale. Vos données ne
+          sont ni vendues, ni cédées, ni utilisées pour de la prospection non sollicitée.
+        </dd>
+        <dt>Base légale</dt>
+        <dd>
+          Mesures précontractuelles prises à votre demande (article 6.1.b du RGPD) et intérêt légitime de{' '}
+          {entreprise.raisonSociale} à répondre aux sollicitations reçues (article 6.1.f).
+        </dd>
+        <dt>Destinataires</dt>
+        <dd>
+          Les associés de {entreprise.raisonSociale} uniquement. Le message est transmis par e-mail depuis
+          notre hébergeur ({hebergeur.nom}, France) vers notre messagerie ({entreprise.donnees.messagerie}).
+        </dd>
+        <dt>Durée de conservation</dt>
+        <dd>{entreprise.donnees.conservation}, puis suppression.</dd>
+      </dl>
+      <p>
+        Si vous nous contactez par WhatsApp, LinkedIn ou téléphone, les échanges sont traités de la même
+        manière, pour les mêmes finalités et la même durée.
+      </p>
+    </Fragment>
+  ) : (
+    <Fragment>
+      <h2>Données transmises quand vous nous contactez</h2>
+      <dl>
+        <dt>Données</dt>
+        <dd>
+          Ce que vous nous transmettez par e-mail, WhatsApp ou LinkedIn : en général votre nom, vos
+          coordonnées, votre entreprise et le contenu de votre message.
+        </dd>
+        <dt>Finalité</dt>
+        <dd>
+          Répondre à votre demande et, le cas échéant, préparer une proposition commerciale. Vos données ne
+          sont ni vendues, ni cédées, ni utilisées pour de la prospection non sollicitée.
+        </dd>
+        <dt>Base légale</dt>
+        <dd>
+          Mesures précontractuelles prises à votre demande (article 6.1.b du RGPD) et intérêt légitime de{' '}
+          {entreprise.raisonSociale} à répondre aux sollicitations reçues (article 6.1.f).
+        </dd>
+        <dt>Destinataires</dt>
+        <dd>
+          Les associés de {entreprise.raisonSociale} uniquement. Les e-mails sont reçus sur notre messagerie (
+          {entreprise.donnees.messagerie}).
+        </dd>
+        <dt>Durée de conservation</dt>
+        <dd>{entreprise.donnees.conservation}, puis suppression.</dd>
+      </dl>
+    </Fragment>
+  )}
 
-  <h2>Sécurité et protection contre les abus</h2>
-  <p>
-    Le site est servi exclusivement en HTTPS et hébergé en France. Pour limiter les envois abusifs du
-    formulaire, l’adresse IP de l’expéditeur est enregistrée sous forme chiffrée (non réversible) pendant une
-    heure au maximum, puis supprimée automatiquement. Les journaux techniques du serveur ne contiennent aucune
-    donnée saisie dans le formulaire.
-  </p>
+  {hebergement.formulaire ? (
+    <Fragment>
+      <h2>Sécurité et protection contre les abus</h2>
+      <p>
+        Le site est servi exclusivement en HTTPS et hébergé en France. Pour limiter les envois abusifs du
+        formulaire, l’adresse IP de l’expéditeur est enregistrée sous forme chiffrée (non réversible) pendant
+        une heure au maximum, puis supprimée automatiquement. Les journaux techniques du serveur ne
+        contiennent aucune donnée saisie dans le formulaire.
+      </p>
+    </Fragment>
+  ) : (
+    <Fragment>
+      <h2>Hébergement et sécurité</h2>
+      <p>
+        Le site est servi exclusivement en HTTPS. Il est hébergé par {hebergeur.nom}, aux États-Unis. Comme
+        tout hébergeur, GitHub enregistre l’adresse IP des visiteurs dans ses journaux techniques pour assurer
+        le fonctionnement et la sécurité du service, dans le cadre de ses propres garanties pour les
+        transferts hors de l’Union européenne. Voir la
+        <a
+          href="https://docs.github.com/fr/site-policy/privacy-policies/github-general-privacy-statement"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          déclaration de confidentialité de GitHub<span class="sr-only"> (nouvel onglet)</span>
+        </a>
+        . GLM n’a pas accès à ces journaux.
+      </p>
+    </Fragment>
+  )}
 
   <h2 id="cookies">Cookies et contenus intégrés</h2>
   <p>
-    Ce site n’utilise aucun cookie publicitaire ni outil de mesure d’audience. Les polices sont hébergées sur
-    notre serveur : aucune donnée n’est envoyée à un service tiers au chargement des pages.
+    Ce site n’utilise aucun cookie publicitaire ni outil de mesure d’audience. Les polices sont servies avec
+    le site : aucune donnée n’est envoyée à un autre service au chargement des pages.
   </p>
   <dl>
     <dt>Choix de consentement (stockage local du navigateur)</dt>

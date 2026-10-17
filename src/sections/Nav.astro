@@ -1,19 +1,20 @@
 ---
 import Logotype from '../components/Logotype.astro';
 import Bouton from '../components/Bouton.astro';
+import { lien, projetsAffiches } from '../lib/hebergement';
 
 const liens = [
-  { href: '/#expertises', libelle: 'Expertises' },
-  { href: '/#projets', libelle: 'Projets' },
-  { href: '/#equipe', libelle: 'Équipe' },
-  { href: '/#actualites', libelle: 'Actualités' },
-  { href: '/#contact', libelle: 'Contact' },
+  { href: lien('/#expertises'), libelle: 'Expertises' },
+  ...(projetsAffiches.length > 0 ? [{ href: lien('/#projets'), libelle: 'Projets' }] : []),
+  { href: lien('/#equipe'), libelle: 'Équipe' },
+  { href: lien('/#actualites'), libelle: 'Actualités' },
+  { href: lien('/#contact'), libelle: 'Contact' },
 ];
 ---
 
 <header class="nav surface-nuit" data-nav>
   <div class="container nav__inner">
-    <Logotype href="/" />
+    <Logotype href={lien('/')} />
 
     <button
       class="nav__toggle"
@@ -37,7 +38,7 @@ const liens = [
           </li>
         ))}
       </ul>
-      <Bouton href="/#contact" class="nav__cta">
+      <Bouton href={lien('/#contact')} class="nav__cta">
         Parlons de votre projet
       </Bouton>
     </nav>

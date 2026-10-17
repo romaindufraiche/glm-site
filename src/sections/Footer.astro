@@ -4,18 +4,19 @@ import { entreprise, contact } from '../data/site';
 
 const annee = new Date().getFullYear();
 const liens = [
-  { href: '/#expertises', libelle: 'Expertises' },
-  { href: '/#projets', libelle: 'Projets' },
-  { href: '/#equipe', libelle: 'Équipe' },
-  { href: '/#actualites', libelle: 'Actualités' },
-  { href: '/#contact', libelle: 'Contact' },
+  { href: lien('/#expertises'), libelle: 'Expertises' },
+  ...(projetsAffiches.length > 0 ? [{ href: lien('/#projets'), libelle: 'Projets' }] : []),
+  { href: lien('/#equipe'), libelle: 'Équipe' },
+  { href: lien('/#actualites'), libelle: 'Actualités' },
+  { href: lien('/#contact'), libelle: 'Contact' },
 ];
+import { lien, projetsAffiches } from '../lib/hebergement';
 ---
 
 <footer class="pied surface-nuit">
   <div class="container pied__inner">
     <div class="pied__marque">
-      <Logotype href="/" />
+      <Logotype href={lien('/')} />
       <p class="pied__identite">
         {entreprise.raisonSociale} · {entreprise.forme}
         <br />
@@ -38,10 +39,10 @@ const liens = [
     <div class="pied__legal">
       <ul>
         <li>
-          <a href="/mentions-legales/">Mentions légales</a>
+          <a href={lien('/mentions-legales/')}>Mentions légales</a>
         </li>
         <li>
-          <a href="/confidentialite/">Politique de confidentialité</a>
+          <a href={lien('/confidentialite/')}>Politique de confidentialité</a>
         </li>
         <li>
           <button type="button" class="pied__cookies" hidden data-gerer-cookies>

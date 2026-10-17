@@ -3,8 +3,10 @@
 Site vitrine d’une page de GLM, conforme à la charte graphique v0.5 (voir [`docs/charte-v05.md`](docs/charte-v05.md)).
 
 - **Astro** (génération statique) : du HTML pur, environ 8 Ko de JavaScript au total, sans librairie.
-- **Hébergement** : mutualisé OVH, dépôt par FTP du dossier `dist/`.
-- **Formulaire de contact** : script PHP `contact.php` qui envoie un e-mail via le serveur OVH (aucun service tiers).
+- **Hébergement actuel** : GitHub Pages (https://romaindufraiche.github.io/glm-site/), publié automatiquement
+  à chaque mise à jour de `main`. Pas de PHP sur GitHub Pages : le contact passe par e-mail, WhatsApp et LinkedIn.
+- **Hébergement prévu** : mutualisé OVH, avec le formulaire de contact en PHP (`contact.php`, aucun service tiers).
+  Le même code sert les deux : la variable `PUBLIC_HEBERGEMENT` adapte le site au moment du build.
 
 ## Modifier le contenu
 
@@ -81,6 +83,24 @@ Choix techniques :
 - Les règles de validation existent en deux exemplaires (`src/lib/validation-contact.ts` et
   `public/_serveur/contact-lib.php`) : toute modification doit être reportée dans les deux.
 
+## Mise en ligne sur GitHub Pages (actuel)
+
+Le workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) relance toutes les vérifications puis
+publie le site à chaque mise à jour de `main`, ou à la demande (onglet **Actions → Publication GitHub Pages**).
+
+**Une seule fois** : Settings → Pages → Build and deployment → Source : **GitHub Actions**. Sans ce réglage,
+GitHub Pages servirait les fichiers bruts de `main` (le README) au lieu du site construit.
+
+Cette version est construite avec :
+
+| Variable                  | Valeur                                            | Effet                                                                          |
+| ------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `SITE_URL`, `BASE_PATH`   | `https://romaindufraiche.github.io`, `/glm-site/` | Liens et balises SEO sous `/glm-site/`                                         |
+| `PUBLIC_HEBERGEMENT`      | `github-pages`                                    | Pas de formulaire ; GitHub nommé hébergeur dans les pages légales              |
+| `PUBLIC_MASQUER_EXEMPLES` | `oui`                                             | Projets d’exemple retirés ; la section Projets disparaît s’il n’en reste aucun |
+
+Tout lien interne passe par `lien()` (`src/lib/hebergement.ts`) pour rester valable sous `/glm-site/`.
+
 ## Mise en ligne sur OVH
 
 ### Première installation
@@ -98,6 +118,10 @@ Choix techniques :
    (OVH propose l’enregistrement SPF par défaut) pour éviter les spams.
 
 ### Déploiement automatique (recommandé)
+
+Tant que le site est publié sur GitHub Pages, ce workflow ne se déclenche qu’à la demande. Pour qu’il
+tourne à chaque mise à jour de `main`, créer la variable de dépôt `DEPLOIEMENT_OVH` = `oui`
+(Settings → Secrets and variables → Actions → Variables).
 
 Le workflow [`.github/workflows/deploiement.yml`](.github/workflows/deploiement.yml) met le site en ligne
 à chaque mise à jour de `main` (fusion d’une PR), ou à la demande (onglet **Actions → Déploiement OVH →
@@ -187,5 +211,6 @@ Tous sont marqués `TODO:` dans le code ; `npm run verifier:production` les dét
 
 **Hébergement**
 
+- [ ] Téléphone de GitHub dans les mentions légales (`hebergeurs.githubPages.telephone`, relevé dans l’annuaire ARIN) à confirmer
 - [ ] Redirection du domaine sans `www` vers `www` (ou l’inverse) dans `public/.htaccess`
 - [ ] Activation de `Strict-Transport-Security` une fois HTTPS vérifié

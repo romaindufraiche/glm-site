@@ -4,6 +4,7 @@
  * « Accepter » et « Refuser » ont le même poids visuel (exigence CNIL).
  * Rouvrable depuis le lien « Gérer les cookies » du pied de page.
  */
+import { lien } from '../lib/hebergement';
 ---
 
 <section class="consentement surface-nuit" aria-labelledby="consentement-titre" hidden data-consentement>
@@ -15,7 +16,7 @@
       <p>
         Nos actualités sont des posts LinkedIn intégrés. LinkedIn peut déposer des cookies lorsqu’ils
         s’affichent. Vous pouvez accepter ou refuser, et changer d’avis à tout moment.
-        <a href="/confidentialite/">En savoir plus</a>
+        <a href={lien('/confidentialite/')}>En savoir plus</a>
       </p>
     </div>
     <div class="consentement__actions">

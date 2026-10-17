@@ -1,6 +1,7 @@
 ---
 import PageTexte from '../layouts/PageTexte.astro';
 import Bouton from '../components/Bouton.astro';
+import { lien } from '../lib/hebergement';
 ---
 
 <PageTexte
@@ -11,7 +12,7 @@ import Bouton from '../components/Bouton.astro';
 >
   <p>Cette page n’existe pas ou a été déplacée.</p>
   <p>
-    <Bouton href="/" fleche>
+    <Bouton href={lien('/')} fleche>
       Retour à l’accueil
     </Bouton>
   </p>

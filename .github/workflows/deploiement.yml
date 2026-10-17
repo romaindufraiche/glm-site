@@ -1,7 +1,9 @@
 name: Déploiement OVH
 
-# Met le site en ligne sur l’hébergement OVH à chaque mise à jour de main (fusion d’une PR),
-# ou à la demande (onglet Actions → Déploiement OVH → Run workflow).
+# Met le site en ligne sur l’hébergement OVH, à la demande (onglet Actions → Déploiement OVH →
+# Run workflow), ou à chaque mise à jour de main une fois la variable de dépôt DEPLOIEMENT_OVH réglée
+# sur « oui » (Settings → Secrets and variables → Actions → Variables). Tant que le site est publié
+# sur GitHub Pages (voir pages.yml), ce workflow reste inactif sur main.
 #
 # Secrets à créer une fois dans GitHub (Settings → Secrets and variables → Actions) :
 #   OVH_SSH_HOST         serveur SSH, ex. ssh.cluster131.hosting.ovh.net
@@ -25,6 +27,7 @@ concurrency:
 
 jobs:
   verifier:
+    if: github.event_name == 'workflow_dispatch' || vars.DEPLOIEMENT_OVH == 'oui'
     uses: ./.github/workflows/ci.yml
 
   deployer:

@@ -2,9 +2,11 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import { siteMeta } from './src/data/site';
 
-// Site 100 % statique : le dossier dist/ est déposé tel quel sur l'hébergement OVH (FTP).
+// Site 100 % statique. Par défaut, construit pour la racine d'un domaine (OVH) ; SITE_URL et BASE_PATH
+// l'adaptent à un sous-dossier, comme GitHub Pages (https://romaindufraiche.github.io/glm-site/).
 export default defineConfig({
-  site: siteMeta.url,
+  site: process.env['SITE_URL'] ?? siteMeta.url,
+  base: process.env['BASE_PATH'] ?? '/',
   trailingSlash: 'ignore',
   // La compression HTML d'Astro supprime l'espace entre un texte et un lien placé à la ligne :
   // désactivée pour préserver la typographie (le serveur compresse déjà en gzip).

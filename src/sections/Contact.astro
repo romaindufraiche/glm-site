@@ -3,6 +3,7 @@ import Surtitre from '../components/Surtitre.astro';
 import FormulaireContact from '../components/FormulaireContact.astro';
 import BoutonReseau from '../components/BoutonReseau.astro';
 import { contact } from '../data/site';
+import { hebergement } from '../lib/hebergement';
 
 const lienWhatsApp = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}`;
 ---
@@ -13,7 +14,13 @@ const lienWhatsApp = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponen
   aria-labelledby="contact-titre"
   data-email-direct={contact.email}
 >
-  <div class="container contact__inner">
+  <div
+    class:list={[
+      'container',
+      'contact__inner',
+      { 'contact__inner--sans-formulaire': !hebergement.formulaire },
+    ]}
+  >
     <div class="contact__intro">
       <Surtitre>Contact</Surtitre>
       <h2 id="contact-titre" class="contact__titre">
@@ -39,7 +46,7 @@ const lienWhatsApp = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponen
       </div>
     </div>
 
-    <FormulaireContact />
+    {hebergement.formulaire && <FormulaireContact />}
   </div>
 </section>
 
@@ -49,6 +56,10 @@ const lienWhatsApp = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponen
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: var(--space-8);
     align-items: start;
+  }
+
+  .contact__inner--sans-formulaire {
+    grid-template-columns: minmax(0, 40rem);
   }
 
   .contact__intro {

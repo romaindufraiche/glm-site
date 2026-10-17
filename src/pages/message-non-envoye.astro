@@ -2,6 +2,7 @@
 import PageTexte from '../layouts/PageTexte.astro';
 import Bouton from '../components/Bouton.astro';
 import { contact } from '../data/site';
+import { lien } from '../lib/hebergement';
 ---
 
 <!-- Erreur affichée lorsque le formulaire est envoyé sans JavaScript et que l’envoi échoue. -->
@@ -16,6 +17,6 @@ import { contact } from '../data/site';
     directement à <a href={`mailto:${contact.email}`}>{contact.email}</a>.
   </p>
   <p>
-    <Bouton href="/#contact">Revenir au formulaire</Bouton>
+    <Bouton href={lien('/#contact')}>Revenir au formulaire</Bouton>
   </p>
 </PageTexte>

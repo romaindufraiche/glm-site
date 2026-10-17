@@ -4,6 +4,7 @@ import { contact, entreprise, siteMeta } from '../data/site';
 
 const domaine = siteMeta.url.replace('https://', '');
 const telephoneLien = `tel:${entreprise.telephone.replace(/\s/g, '')}`;
+import { hebergement, lien } from '../lib/hebergement';
 ---
 
 <PageTexte
@@ -47,12 +48,12 @@ const telephoneLien = `tel:${entreprise.telephone.replace(/\s/g, '')}`;
 
   <h2>Hébergeur</h2>
   <dl>
-    <dt>{entreprise.hebergeur.nom}</dt>
+    <dt>{hebergement.hebergeur.nom}</dt>
     <dd>
-      {entreprise.hebergeur.adresse}
+      {hebergement.hebergeur.adresse}
       <br />
-      Téléphone : {entreprise.hebergeur.telephone} ·{' '}
-      <a href={entreprise.hebergeur.url}>{entreprise.hebergeur.url.replace('https://', '')}</a>
+      Téléphone : {hebergement.hebergeur.telephone} ·{' '}
+      <a href={hebergement.hebergeur.url}>{hebergement.hebergeur.url.replace('https://', '')}</a>
     </dd>
   </dl>
 
@@ -86,9 +87,9 @@ const telephoneLien = `tel:${entreprise.telephone.replace(/\s/g, '')}`;
 
   <h2>Données personnelles et cookies</h2>
   <p>
-    Le traitement des données transmises via le formulaire de contact et l’usage des cookies sont décrits dans
-    la <a href="/confidentialite/">politique de confidentialité</a>. Vous pouvez modifier vos choix en matière
-    de cookies à tout moment via le lien « Gérer les cookies » en bas de page.
+    Le traitement des données que vous nous transmettez et l’usage des cookies sont décrits dans la{' '}
+    <a href={lien('/confidentialite/')}>politique de confidentialité</a>. Vous pouvez modifier vos choix en
+    matière de cookies à tout moment via le lien « Gérer les cookies » en bas de page.
   </p>
 
   <h2>Médiation et litiges</h2>

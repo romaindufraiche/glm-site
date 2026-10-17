@@ -2,6 +2,13 @@
 import Symbole from '../components/Symbole.astro';
 import Surtitre from '../components/Surtitre.astro';
 import Bouton from '../components/Bouton.astro';
+import { projetsAffiches } from '../lib/hebergement';
+
+// Sans projet publié, le second bouton mène à l’équipe plutôt qu’à une section absente.
+const second =
+  projetsAffiches.length > 0
+    ? { href: '#projets', libelle: 'Voir nos projets' }
+    : { href: '#equipe', libelle: 'Rencontrer l’équipe' };
 ---
 
 <section class="hero surface-nuit" aria-labelledby="hero-titre">
@@ -19,8 +26,8 @@ import Bouton from '../components/Bouton.astro';
         <Bouton href="#contact" fleche>
           Parlons de votre projet
         </Bouton>
-        <Bouton href="#projets" variante="secondaire">
-          Voir nos projets
+        <Bouton href={second.href} variante="secondaire">
+          {second.libelle}
         </Bouton>
       </div>
     </div>

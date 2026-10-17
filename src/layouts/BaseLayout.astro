@@ -4,6 +4,7 @@ import Nav from '../sections/Nav.astro';
 import Footer from '../sections/Footer.astro';
 import BandeauConsentement from '../components/BandeauConsentement.astro';
 import { siteMeta, entreprise, contact, postsLinkedIn } from '../data/site';
+import { lien } from '../lib/hebergement';
 import caslon from '@fontsource/libre-caslon-display/files/libre-caslon-display-latin-400-normal.woff2?url';
 import plex from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2?url';
 
@@ -18,15 +19,15 @@ interface Props {
 const { titre, description = siteMeta.description, noindex = false } = Astro.props;
 const titreComplet = titre ? `${titre} · GLM` : siteMeta.titre;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL('/og-image.png', Astro.site);
+const ogImage = new URL(lien('/og-image.png'), Astro.site);
 
 const donneesStructurees = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: siteMeta.nom,
   legalName: `${entreprise.raisonSociale} ${entreprise.forme}`,
-  url: siteMeta.url,
-  logo: new URL('/favicon-512.png', Astro.site).href,
+  url: new URL(lien('/'), Astro.site).href,
+  logo: new URL(lien('/favicon-512.png'), Astro.site).href,
   description: siteMeta.description,
   email: contact.email,
   sameAs: [contact.linkedin],
@@ -47,9 +48,9 @@ const donneesStructurees = {
     <link rel="preload" href={caslon} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={plex} as="font" type="font/woff2" crossorigin />
 
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href={lien('/favicon.ico')} sizes="32x32" />
+    <link rel="icon" href={lien('/favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={lien('/apple-touch-icon.png')} />
     <meta name="theme-color" content="#0B1533" />
 
     <meta property="og:type" content="website" />
@@ -67,7 +68,7 @@ const donneesStructurees = {
     />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" href={lien('/sitemap-index.xml')} />
     <script type="application/ld+json" set:html={JSON.stringify(donneesStructurees)} />
   </head>
   <body>

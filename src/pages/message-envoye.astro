@@ -1,6 +1,7 @@
 ---
 import PageTexte from '../layouts/PageTexte.astro';
 import Bouton from '../components/Bouton.astro';
+import { lien } from '../lib/hebergement';
 ---
 
 <!-- Confirmation affichée lorsque le formulaire est envoyé sans JavaScript (redirection depuis contact.php). -->
@@ -12,7 +13,7 @@ import Bouton from '../components/Bouton.astro';
 >
   <p>Merci. On a bien reçu votre message et on revient vers vous rapidement.</p>
   <p>
-    <Bouton href="/" variante="secondaire">
+    <Bouton href={lien('/')} variante="secondaire">
       Retour à l’accueil
     </Bouton>
   </p>

@@ -2,12 +2,13 @@
 import Bouton from './Bouton.astro';
 import { contact, entreprise } from '../data/site';
 import { LIMITES, SUJETS } from '../lib/validation-contact';
+import { lien } from '../lib/hebergement';
 ---
 
 <div class="formulaire" data-formulaire>
   <form
     class="formulaire__form"
-    action={contact.endpoint}
+    action={lien(contact.endpoint)}
     method="post"
     novalidate
     aria-describedby="formulaire-note"
@@ -107,7 +108,7 @@ import { LIMITES, SUJETS } from '../lib/validation-contact';
         GLM traite ces informations uniquement pour répondre à votre demande et les conserve{' '}
         {entreprise.donnees.conservation.replace('à compter du', 'après le')}. Vous pouvez y accéder, les
         rectifier ou les faire supprimer en écrivant à <a href={`mailto:${contact.email}`}>{contact.email}</a>
-        .<a href="/confidentialite/">Politique de confidentialité</a>
+        .<a href={lien('/confidentialite/')}>Politique de confidentialité</a>
       </p>
     </div>
   </form>
