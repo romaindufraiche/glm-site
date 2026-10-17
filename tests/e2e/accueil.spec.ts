@@ -17,13 +17,14 @@ test.describe('Page d’accueil', () => {
     expect(erreurs).toEqual([]);
   });
 
-  test('présente la série « T’as cru ? » avec Hugo et Nora', async ({ page }) => {
+  test('présente la série vidéo « T’as cru ? » avec des miniatures d’épisodes', async ({ page }) => {
     await page.goto('/');
     const section = page.locator('#tas-cru');
     await expect(section.getByRole('heading', { level: 2 })).toContainText('T’as cru');
-    await expect(section.getByRole('listitem')).toHaveText([/Hugo/, /Nora/]);
-    await expect(section.locator('svg.personnage')).toHaveCount(2);
-    await expect(section.getByRole('link', { name: /Suivre la série sur LinkedIn/ })).toHaveAttribute(
+    await expect(section).toContainText('une vidéo par jour');
+    const miniatures = section.getByRole('img', { name: /^Miniature T’as cru/ });
+    await expect(miniatures).toHaveCount(4);
+    await expect(section.getByRole('link', { name: /Voir les vidéos sur LinkedIn/ })).toHaveAttribute(
       'href',
       'https://www.linkedin.com/company/glmprime/',
     );
