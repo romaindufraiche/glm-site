@@ -1,0 +1,198 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import EnTeteSection from '../components/EnTeteSection.astro';
+import { equipe } from '../data/site';
+
+// Photos déposées dans src/assets/equipe/ : optimisées au build (WebP, tailles adaptées à l’écran).
+const photos = import.meta.glob<{ default: ImageMetadata }>('../assets/equipe/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+});
+
+function photoDe(fichier: string | undefined): ImageMetadata | undefined {
+  if (!fichier) return undefined;
+  const image = photos[`../assets/equipe/${fichier}`];
+  if (!image) {
+    throw new Error(`Photo introuvable : src/assets/equipe/${fichier} (voir equipe dans src/data/site.ts).`);
+  }
+  return image.default;
+}
+
+const TAILLE_PHOTO = 88;
+---
+
+<section class="section surface-nuit" id="equipe" aria-labelledby="equipe-titre">
+  <div class="container">
+    <EnTeteSection surtitre="Équipe" titre={equipe.titre} id="equipe-titre">
+      <p>{equipe.texte}</p>
+    </EnTeteSection>
+
+    <ul class="associes">
+      {equipe.associes.map((associe) => {
+        const nomComplet = `${associe.prenom} ${associe.nom}`;
+        const photo = photoDe(associe.photo);
+        const idNom = `associe-${associe.prenom}-${associe.nom}`.toLowerCase();
+        return (
+          <li class={`associe accent-${associe.accent}`}>
+            <article class="associe__carte" aria-labelledby={idNom}>
+              <header class="associe__tete">
+                {photo ? (
+                  <Image
+                    src={photo}
+                    alt={`Portrait de ${nomComplet}`}
+                    width={TAILLE_PHOTO}
+                    height={TAILLE_PHOTO}
+                    densities={[1, 2]}
+                    loading="lazy"
+                    class="associe__photo"
+                  />
+                ) : (
+                  <span class="associe__photo associe__initiales" aria-hidden="true">
+                    {associe.prenom.charAt(0)}
+                    {associe.nom.charAt(0)}
+                  </span>
+                )}
+                <div>
+                  <h3 class="associe__nom" id={idNom}>
+                    {nomComplet}
+                  </h3>
+                  <p class="associe__role">{associe.role}</p>
+                </div>
+              </header>
+
+              {associe.formation && <p class="associe__formation">{associe.formation}</p>}
+              <p class="associe__bio">{associe.bio}</p>
+
+              {associe.expertises.length > 0 && (
+                <ul class="associe__expertises" aria-label={`Expertises de ${associe.prenom}`}>
+                  {associe.expertises.map((expertise) => (
+                    <li>{expertise}</li>
+                  ))}
+                </ul>
+              )}
+
+              {associe.linkedin && (
+                <a
+                  class="associe__linkedin"
+                  href={associe.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Profil LinkedIn de ${nomComplet} (nouvel onglet)`}
+                >
+                  Profil LinkedIn <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </article>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .associes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  .accent-corail {
+    --accent: var(--corail);
+  }
+  .accent-jade {
+    --accent: var(--jade);
+  }
+  .accent-bleu {
+    --accent: var(--bleu);
+  }
+
+  /* Colonne flexible : le lien LinkedIn reste aligné en bas des trois fiches. */
+  .associe__carte {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+    height: 100%;
+    padding: var(--space-5) var(--space-5) var(--space-6);
+    border: var(--border) solid var(--trait);
+    border-top: var(--bar) solid var(--accent);
+  }
+
+  .associe__tete {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  /* Petite photo ronde, cadrée sur le visage. */
+  .associe__tete :global(.associe__photo) {
+    flex-shrink: 0;
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 35%;
+    background: var(--trait);
+  }
+
+  .associe__initiales {
+    display: grid;
+    place-items: center;
+    font-family: var(--font-titre);
+    font-size: 1.75rem;
+    color: var(--texte);
+  }
+
+  .associe__nom {
+    font-size: 1.5rem;
+    line-height: 1.15;
+  }
+
+  .associe__role {
+    margin-top: var(--space-1);
+    font-size: var(--fs-surtitre);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-surtitre);
+    text-transform: uppercase;
+    color: var(--texte-doux);
+  }
+
+  .associe__formation {
+    font-weight: var(--fw-medium);
+  }
+
+  .associe__bio {
+    color: var(--texte-doux);
+  }
+
+  .associe__expertises {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .associe__expertises li {
+    padding: 0.125rem var(--space-3);
+    border: var(--border) solid var(--trait);
+    font-size: var(--fs-petit);
+  }
+
+  .associe__linkedin {
+    margin-top: auto;
+    padding-block: var(--space-1);
+    font-weight: var(--fw-medium);
+  }
+
+  @media (max-width: 60rem) {
+    .associes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .associes {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

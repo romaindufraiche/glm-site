@@ -1,0 +1,38 @@
+---
+import Surtitre from './Surtitre.astro';
+
+/** En-tête commun des sections : surtitre avec filet, titre H2 et texte d’introduction facultatif. */
+interface Props {
+  surtitre: string;
+  titre: string;
+  id: string;
+  class?: string;
+}
+
+const { surtitre, titre, id, class: className } = Astro.props;
+---
+
+<header class:list={['en-tete', className]}>
+  <Surtitre>{surtitre}</Surtitre>
+  <h2 id={id} class="en-tete__titre">
+    {titre}
+  </h2>
+  {Astro.slots.has('default') && (
+    <div class="lead">
+      <slot />
+    </div>
+  )}
+</header>
+
+<style>
+  .en-tete {
+    display: grid;
+    gap: var(--space-5);
+    max-width: 48rem;
+    margin-bottom: clamp(var(--space-7), 5vw, var(--space-8));
+  }
+
+  .en-tete__titre {
+    font-size: var(--fs-h2);
+  }
+</style>

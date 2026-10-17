@@ -1,0 +1,57 @@
+---
+import Symbole from './Symbole.astro';
+
+/** Logotype : symbole + « GLM » en Libre Caslon Display, lettres légèrement espacées. */
+interface Props {
+  href?: string;
+  size?: 'md' | 'lg';
+  class?: string;
+}
+
+const { href, size = 'md', class: className } = Astro.props;
+const Tag = href ? 'a' : 'span';
+const symbole = size === 'lg' ? 40 : 32;
+---
+
+<Tag
+  class:list={['logotype', `logotype--${size}`, className]}
+  href={href}
+  aria-label={href ? 'GLM, accueil' : undefined}
+>
+  <Symbole size={symbole} />
+  <span class="logotype__nom" aria-hidden={href ? 'true' : undefined}>
+    GLM
+  </span>
+</Tag>
+
+<style>
+  .logotype {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    /* Zone de protection : une largeur de bande autour du logo (1/6 du symbole). */
+    padding: calc(var(--logo-symbole, 32px) / 6);
+    margin: calc(var(--logo-symbole, 32px) / -6);
+    color: var(--texte);
+    text-decoration: none;
+  }
+
+  .logotype--md {
+    --logo-symbole: 32px;
+    font-size: 1.625rem;
+  }
+
+  .logotype--lg {
+    --logo-symbole: 40px;
+    font-size: 2rem;
+  }
+
+  .logotype__nom {
+    font-family: var(--font-titre);
+    line-height: 1;
+    letter-spacing: var(--ls-logotype);
+    /* Compense l’espacement après la dernière lettre pour garder le logotype centré. */
+    margin-right: calc(-1 * var(--ls-logotype));
+    padding-top: 0.08em;
+  }
+</style>

@@ -1,2 +1,17 @@
+# Dépendances et builds
+node_modules/
+dist/
+.astro/
+
+# Tests
+test-results/
+playwright-report/
+
+# Environnement et secrets : ne jamais committer
+.env
+.env.*
+glm-contact-config.php
+
+# Système
 .DS_Store
 *.log

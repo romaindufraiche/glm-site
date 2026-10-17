@@ -1,0 +1,66 @@
+---
+import EnTeteSection from '../components/EnTeteSection.astro';
+import { methode } from '../data/site';
+---
+
+<section class="section surface-ivoire" id="methode" aria-labelledby="methode-titre">
+  <div class="container">
+    <EnTeteSection surtitre="Méthode" titre={methode.idee} id="methode-titre" />
+
+    <ol class="etapes">
+      {methode.etapes.map((etape, index) => (
+        <li class="etape">
+          <span class="etape__numero" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <h3 class="etape__titre">{etape.titre}</h3>
+          <p class="etape__texte">{etape.texte}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .etapes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  .etape {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: var(--border) solid var(--encre);
+  }
+
+  .etape__numero {
+    font-family: var(--font-titre);
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: var(--space-3);
+  }
+
+  .etape__titre {
+    font-size: var(--fs-h3);
+  }
+
+  .etape__texte {
+    color: var(--texte-doux);
+  }
+
+  @media (max-width: 60rem) {
+    .etapes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: var(--space-7);
+    }
+  }
+
+  @media (max-width: 36rem) {
+    .etapes {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

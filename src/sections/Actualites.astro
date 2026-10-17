@@ -1,0 +1,128 @@
+---
+import EnTeteSection from '../components/EnTeteSection.astro';
+import BoutonReseau from '../components/BoutonReseau.astro';
+import { contact, postsLinkedIn } from '../data/site';
+import { analyserPostLinkedIn } from '../lib/linkedin';
+
+const posts = postsLinkedIn.map(analyserPostLinkedIn);
+---
+
+<section class="section surface-ivoire" id="actualites" aria-labelledby="actualites-titre">
+  <div class="container">
+    <EnTeteSection surtitre="Actualités" titre="Ce qui avance chez GLM." id="actualites-titre" />
+
+    {posts.length > 0 ? (
+      <ul class="posts">
+        {posts.map((post, index) => (
+          <li class="post" data-post-linkedin data-embed={post.embed}>
+            <div class="post__remplacement" data-post-remplacement>
+              <p class="post__source">Post LinkedIn</p>
+              <p>
+                Ce contenu est hébergé par LinkedIn, qui peut déposer des cookies. Il s’affiche seulement si
+                vous l’acceptez.
+              </p>
+              <div class="post__actions">
+                <button class="post__afficher" type="button" data-consentement-accepter>
+                  Afficher les posts LinkedIn
+                </button>
+                <a href={post.lien} target="_blank" rel="noopener noreferrer">
+                  Voir le post sur LinkedIn<span class="sr-only"> (nouvel onglet)</span>
+                  <span aria-hidden="true"> ↗</span>
+                </a>
+              </div>
+            </div>
+            <template data-post-iframe>
+              <iframe
+                src={post.embed}
+                title={`Post LinkedIn de GLM (${index + 1} sur ${posts.length})`}
+                loading="lazy"
+                width="504"
+                height="560"
+                allowfullscreen
+              />
+            </template>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p class="posts__vide">Nos dernières nouvelles sont publiées sur notre page LinkedIn.</p>
+    )}
+
+    <div class="actualites__suivre">
+      <BoutonReseau reseau="linkedin" href={contact.linkedin}>
+        Suivre GLM sur LinkedIn
+      </BoutonReseau>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { initPostsLinkedIn } from '../scripts/linkedin';
+  initPostsLinkedIn();
+</script>
+
+<style>
+  .posts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    gap: var(--space-5);
+    align-items: start;
+  }
+
+  .post {
+    border: var(--border) solid var(--pierre);
+    border-top: var(--bar) solid var(--nuit);
+  }
+
+  .post :global(iframe) {
+    display: block;
+    width: 100%;
+    min-height: 35rem;
+    border: 0;
+  }
+
+  .post__remplacement {
+    display: grid;
+    gap: var(--space-4);
+    padding: var(--space-5);
+  }
+
+  .post__source {
+    font-size: var(--fs-surtitre);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-surtitre);
+    text-transform: uppercase;
+  }
+
+  .post__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+    font-weight: var(--fw-medium);
+  }
+
+  .post__afficher {
+    min-height: 2.75rem;
+    padding: 0 var(--space-4);
+    background: var(--nuit);
+    color: var(--ivoire);
+    border: 0;
+    font-weight: var(--fw-medium);
+    cursor: pointer;
+  }
+
+  .post__afficher:hover {
+    background: var(--encre);
+  }
+
+  .posts__vide {
+    max-width: var(--measure);
+    color: var(--texte-doux);
+    font-size: var(--fs-lead);
+  }
+
+  .actualites__suivre {
+    margin-top: var(--space-7);
+  }
+</style>

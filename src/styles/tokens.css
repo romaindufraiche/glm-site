@@ -1,0 +1,113 @@
+/*
+ * Design tokens GLM — charte graphique v0.5.
+ * Toute valeur visuelle du site vient d'ici. Aucune couleur hors palette,
+ * à l'exception des tons dérivés (mélanges de la palette) et des deux couleurs fonctionnelles,
+ * tous documentés et vérifiés WCAG AA (ratios indiqués entre crochets).
+ */
+:root {
+  /* ---------- Palette de marque ---------- */
+  --nuit: #0b1533; /* fond principal */
+  --ivoire: #f4efe4; /* fond clair, texte sur Nuit [15.7:1] */
+  --encre: #16181d; /* texte sur fond clair [15.5:1] */
+  --corail: #e9674f; /* accent IA & data : touches uniquement */
+  --jade: #2fa877; /* accent robotique : touches uniquement */
+  --bleu: #3f63f2; /* accent web : touches uniquement, jamais en texte sur Nuit */
+  --pierre: #d9d6ce; /* filets et bordures décoratives sur fond clair */
+
+  /* ---------- Tons dérivés (mélanges de la palette) ---------- */
+  --ivoire-doux: #bab9b8; /* Ivoire 75 % sur Nuit : texte secondaire sur Nuit [9.2:1] */
+  --encre-douce: #4e4e4f; /* Encre 75 % sur Ivoire : texte secondaire sur Ivoire [7.3:1] */
+  --trait-clair: #7a7977; /* bordure des champs sur Ivoire, contraste composant [3.8:1] */
+  --trait-nuit: #3a4156; /* filets décoratifs sur Nuit */
+
+  /* ---------- Couleurs fonctionnelles (formulaire uniquement) ---------- */
+  --erreur: #a63c29; /* corail assombri, texte sur Ivoire [5.5:1] */
+  --succes: #1d6e4d; /* jade assombri, texte sur Ivoire [5.4:1] */
+
+  /* ---------- Typographie ---------- */
+  --font-titre: 'Libre Caslon Display', 'Libre Caslon Text', Georgia, 'Times New Roman', serif;
+  --font-texte: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Échelle fluide : mobile (360 px) → desktop (1440 px). Hiérarchie de la charte p. 23. */
+  --fs-hero: clamp(2.5rem, 1.6rem + 4vw, 5.25rem); /* 40 → 84 px */
+  --fs-h2: clamp(2rem, 1.55rem + 2vw, 3.5rem); /* 32 → 56 px */
+  --fs-h3: clamp(1.5rem, 1.35rem + 0.65vw, 1.875rem); /* 24 → 30 px */
+  --fs-numero: clamp(3.5rem, 2.9rem + 2.6vw, 5.25rem); /* chiffres des Calibres */
+  --fs-lead: clamp(1.125rem, 1.07rem + 0.25vw, 1.3125rem); /* 18 → 21 px */
+  --fs-texte: 1.0625rem; /* 17 px */
+  --fs-petit: 0.9375rem; /* 15 px */
+  --fs-surtitre: 0.8125rem; /* 13 px, capitales espacées */
+
+  --lh-titre: 1.08;
+  --lh-texte: 1.6;
+  --ls-surtitre: 0.14em;
+  --ls-logotype: 0.14em;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  /* ---------- Espacements (base 4 px) ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --section-y: clamp(4.5rem, 3rem + 6vw, 9rem);
+
+  /* ---------- Mise en page ---------- */
+  --container: 76rem; /* 1216 px */
+  --gutter: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+  --measure: 38rem; /* longueur de ligne confortable (~70 caractères) */
+  --nav-h: 4.5rem;
+
+  /* ---------- Formes ---------- */
+  --radius: 0; /* bords droits partout, comme le carré du logo */
+  --border: 1px;
+  --bar: 4px; /* repère de couleur des Calibres */
+
+  /* ---------- Filet tricolore ---------- */
+  --filet-segment: 0.75rem;
+  --filet-h: 3px;
+
+  /* ---------- Mouvement ---------- */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --dur-court: 150ms;
+  --dur-logo: 700ms;
+
+  /* ---------- Plans ---------- */
+  --z-nav: 50;
+  --z-consent: 60;
+  --z-skip: 100;
+}
+
+/* Surfaces : chaque section déclare son fond, les composants lisent ces variables. */
+.surface-nuit {
+  --fond: var(--nuit);
+  --texte: var(--ivoire);
+  --texte-doux: var(--ivoire-doux);
+  --trait: var(--trait-nuit);
+  --focus: var(--ivoire);
+  --btn-fond: var(--ivoire);
+  --btn-texte: var(--nuit);
+  --btn-survol: var(--pierre);
+  background-color: var(--fond);
+  color: var(--texte);
+}
+
+.surface-ivoire {
+  --fond: var(--ivoire);
+  --texte: var(--encre);
+  --texte-doux: var(--encre-douce);
+  --trait: var(--pierre);
+  --focus: var(--nuit);
+  --btn-fond: var(--nuit);
+  --btn-texte: var(--ivoire);
+  --btn-survol: var(--encre);
+  background-color: var(--fond);
+  color: var(--texte);
+}

@@ -1,0 +1,84 @@
+---
+import Surtitre from '../components/Surtitre.astro';
+import Filet from '../components/Filet.astro';
+import { vision } from '../data/site';
+---
+
+<section class="vision surface-nuit" aria-labelledby="vision-titre">
+  <div class="container vision__inner">
+    <Surtitre>Vision</Surtitre>
+    <h2 id="vision-titre" class="vision__texte">
+      {vision.cap}
+    </h2>
+    <Filet taille="lg" />
+
+    <ul class="principes">
+      {vision.principes.map((principe) => (
+        <li class={`principe principe--${principe.accent}`}>
+          <h3 class="principe__titre">{principe.titre}</h3>
+          <p class="principe__texte">{principe.texte}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .vision {
+    padding-block: var(--section-y);
+  }
+
+  .vision__inner {
+    display: grid;
+    gap: var(--space-6);
+    justify-items: start;
+  }
+
+  .vision__texte {
+    max-width: 22ch;
+    font-size: var(--fs-h2);
+    line-height: 1.15;
+  }
+
+  .principes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+    width: 100%;
+    margin-top: var(--space-5);
+  }
+
+  .principe {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: var(--bar) solid var(--accent);
+  }
+
+  .principe--corail {
+    --accent: var(--corail);
+  }
+
+  .principe--jade {
+    --accent: var(--jade);
+  }
+
+  .principe--bleu {
+    --accent: var(--bleu);
+  }
+
+  .principe__titre {
+    font-size: var(--fs-h3);
+  }
+
+  .principe__texte {
+    color: var(--texte-doux);
+  }
+
+  @media (max-width: 48rem) {
+    .principes {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

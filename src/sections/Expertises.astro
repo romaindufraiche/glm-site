@@ -1,0 +1,107 @@
+---
+import EnTeteSection from '../components/EnTeteSection.astro';
+import { calibres, expertises } from '../data/site';
+---
+
+<section class="section surface-ivoire" id="expertises" aria-labelledby="expertises-titre">
+  <div class="container">
+    <EnTeteSection surtitre="Expertises" titre="Un champ large, un rôle précis." id="expertises-titre">
+      <p>
+        Comme un architecte, on écoute, on conçoit l’ensemble et on pilote la construction jusqu’à ce que tout
+        tourne.
+      </p>
+    </EnTeteSection>
+
+    <ul class="calibres">
+      {expertises.map((expertise) => {
+        const calibre = calibres[expertise.calibre];
+        return (
+          <li class={`calibre surface-nuit accent-${calibre.accent}`}>
+            <p class="calibre__numero" aria-hidden="true">
+              {calibre.numero}
+            </p>
+            <h3 class="calibre__titre">
+              {expertise.titre}
+              <span class="calibre__nom">{calibre.nom}</span>
+            </h3>
+            <p class="calibre__texte">{expertise.texte}</p>
+            {expertise.statut && <p class="calibre__statut">{expertise.statut}</p>}
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .calibres {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+  }
+
+  .calibre {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6) var(--space-6) var(--space-7);
+    border-top: var(--bar) solid var(--accent);
+  }
+
+  .accent-corail {
+    --accent: var(--corail);
+    --accent-texte: var(--corail);
+  }
+  .accent-jade {
+    --accent: var(--jade);
+    --accent-texte: var(--jade);
+  }
+  /* Bleu interdit en texte sur Nuit : le chiffre du Calibre 01 passe en Ivoire, la barre porte le bleu. */
+  .accent-bleu {
+    --accent: var(--bleu);
+    --accent-texte: var(--ivoire);
+  }
+
+  .calibre__numero {
+    font-family: var(--font-titre);
+    font-size: var(--fs-numero);
+    line-height: 1;
+    color: var(--accent-texte);
+    margin-bottom: var(--space-3);
+  }
+
+  .calibre__titre {
+    display: grid;
+    gap: var(--space-2);
+    font-size: var(--fs-h3);
+  }
+
+  .calibre__nom {
+    font-family: var(--font-texte);
+    font-size: var(--fs-petit);
+    font-weight: var(--fw-semibold);
+    line-height: 1.4;
+  }
+
+  .calibre__texte {
+    color: var(--texte-doux);
+    max-width: 30ch;
+  }
+
+  .calibre__statut {
+    margin-top: auto;
+    padding-top: var(--space-4);
+    font-size: var(--fs-petit);
+    font-style: italic;
+  }
+
+  @media (max-width: 60rem) {
+    .calibres {
+      grid-template-columns: 1fr;
+    }
+
+    .calibre__texte {
+      max-width: none;
+    }
+  }
+</style>
