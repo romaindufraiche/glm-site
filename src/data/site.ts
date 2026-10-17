@@ -111,11 +111,25 @@ export const entreprise = {
     // Durée recommandée par la CNIL pour les échanges avec des prospects : à ajuster si besoin.
     conservation: '3 ans à compter du dernier échange',
   },
-  hebergeur: {
+} as const;
+
+/**
+ * Hébergeurs possibles du site (LCEN art. 6 : nom, adresse et téléphone de l’hébergeur).
+ * Le build choisit le bon avec la variable PUBLIC_HEBERGEMENT (voir src/lib/hebergement.ts).
+ */
+export const hebergeurs = {
+  ovh: {
     nom: 'OVH SAS',
     adresse: '2 rue Kellermann, 59100 Roubaix, France',
     telephone: '1007',
     url: 'https://www.ovhcloud.com',
+  },
+  githubPages: {
+    nom: 'GitHub, Inc. (service GitHub Pages)',
+    adresse: '88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis',
+    // TODO: numéro relevé dans l’annuaire ARIN (contact « Office » de GitHub), à confirmer auprès de GitHub.
+    telephone: '+1 415 857 5430',
+    url: 'https://github.com',
   },
 } as const;
 
@@ -296,6 +310,26 @@ export const vision: { cap: string; principes: { titre: string; texte: string; a
     },
   ],
 };
+
+/* ------------------------------------------------------------------ */
+/* Média « T’as cru ? »                                               */
+/* ------------------------------------------------------------------ */
+
+/** Série de carrousels LinkedIn de vulgarisation publiée par GLM (bible de la série, octobre 2026). */
+export const media = {
+  nom: 'T’as cru\u00a0?',
+  surtitre: 'Notre série LinkedIn',
+  accroche: 'Une idée reçue sur la tech, démontée en 9 slides.',
+  texte:
+    'Chaque épisode part d’une phrase qu’on entend partout sur l’IA, la data ou l’entreprise. Hugo y croit, Nora explique ce qui se passe vraiment, et vous repartez avec une astuce concrète.',
+  personnages: [
+    { id: 'hugo', nom: 'Hugo', role: 'le curieux' },
+    { id: 'nora', nom: 'Nora', role: 'l’experte' },
+  ],
+  hashtag: '#TasCru',
+  /** Page où suivre la série : la page LinkedIn de GLM. */
+  lien: 'https://www.linkedin.com/company/glmprime/',
+} as const;
 
 /* ------------------------------------------------------------------ */
 /* Actualités LinkedIn                                                */

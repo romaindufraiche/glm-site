@@ -6,17 +6,20 @@ import Projets from '../sections/Projets.astro';
 import Methode from '../sections/Methode.astro';
 import Equipe from '../sections/Equipe.astro';
 import Actualites from '../sections/Actualites.astro';
+import TasCru from '../sections/TasCru.astro';
 import Vision from '../sections/Vision.astro';
 import Contact from '../sections/Contact.astro';
+import { projetsAffiches } from '../lib/hebergement';
 ---
 
 <BaseLayout>
   <Hero />
   <Expertises />
-  <Projets />
+  {projetsAffiches.length > 0 && <Projets />}
   <Methode />
   <Equipe />
   <Actualites />
+  <TasCru />
   <Vision />
   <Contact />
 </BaseLayout>

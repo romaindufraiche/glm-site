@@ -17,6 +17,18 @@ test.describe('Page d’accueil', () => {
     expect(erreurs).toEqual([]);
   });
 
+  test('présente la série « T’as cru ? » avec Hugo et Nora', async ({ page }) => {
+    await page.goto('/');
+    const section = page.locator('#tas-cru');
+    await expect(section.getByRole('heading', { level: 2 })).toContainText('T’as cru');
+    await expect(section.getByRole('listitem')).toHaveText([/Hugo/, /Nora/]);
+    await expect(section.locator('svg.personnage')).toHaveCount(2);
+    await expect(section.getByRole('link', { name: /Suivre la série sur LinkedIn/ })).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/company/glmprime/',
+    );
+  });
+
   test('propose un lien d’évitement au premier appui sur Tab', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Navigation clavier testée sur desktop');
     await page.goto('/');

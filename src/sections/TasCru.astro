@@ -1,0 +1,139 @@
+---
+import Surtitre from '../components/Surtitre.astro';
+import Personnage from '../components/Personnage.astro';
+import BoutonReseau from '../components/BoutonReseau.astro';
+import { media } from '../data/site';
+---
+
+<section class="tascru surface-ivoire" id="tas-cru" aria-labelledby="tascru-titre">
+  <div class="container">
+    <div class="tascru__carte surface-nuit">
+      <div class="tascru__texte">
+        <Surtitre>{media.surtitre}</Surtitre>
+        <h2 id="tascru-titre" class="tascru__titre">
+          <span class="tascru__tampon">{media.nom}</span>
+          <span class="tascru__accroche">{media.accroche}</span>
+        </h2>
+        <p class="tascru__description">{media.texte}</p>
+        <div class="tascru__actions">
+          <BoutonReseau reseau="linkedin" href={media.lien}>
+            Suivre la série sur LinkedIn
+          </BoutonReseau>
+          <span class="tascru__hashtag">{media.hashtag}</span>
+        </div>
+      </div>
+
+      <ul class="tascru__duo" aria-label="Les personnages de la série">
+        {media.personnages.map((personnage) => (
+          <li class={`tascru__personnage tascru__personnage--${personnage.id}`}>
+            <Personnage nom={personnage.id} />
+            <p>
+              <strong>{personnage.nom}</strong>, {personnage.role}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tascru {
+    padding-block: 0 var(--section-y);
+  }
+
+  .tascru__carte {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-7);
+    align-items: end;
+    padding: var(--space-8) var(--space-8) 0;
+    border-top: var(--bar) solid var(--corail);
+  }
+
+  .tascru__texte {
+    display: grid;
+    gap: var(--space-5);
+    justify-items: start;
+    padding-bottom: var(--space-8);
+  }
+
+  .tascru__titre {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+    font-size: var(--fs-h2);
+    line-height: 1.1;
+  }
+
+  .tascru__tampon {
+    padding: 0.1em 0.35em 0.18em;
+    background: var(--corail);
+    color: var(--nuit);
+  }
+
+  .tascru__accroche {
+    max-width: 20ch;
+  }
+
+  .tascru__description {
+    max-width: 52ch;
+    color: var(--texte-doux);
+  }
+
+  .tascru__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4) var(--space-5);
+  }
+
+  .tascru__hashtag {
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-surtitre);
+    color: var(--texte-doux);
+  }
+
+  .tascru__duo {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+    align-items: end;
+    margin: 0;
+    padding: var(--space-6) var(--space-5) 0;
+    list-style: none;
+    background: var(--ivoire);
+    color: var(--encre);
+  }
+
+  .tascru__personnage {
+    display: grid;
+    gap: var(--space-3);
+    justify-items: center;
+    padding-bottom: var(--space-4);
+  }
+
+  .tascru__personnage :global(.personnage) {
+    max-width: 9rem;
+  }
+
+  .tascru__personnage p {
+    font-size: var(--fs-petit);
+  }
+
+  @media (max-width: 52rem) {
+    .tascru__carte {
+      grid-template-columns: 1fr;
+      padding: var(--space-6) var(--space-5) var(--space-5);
+      gap: var(--space-6);
+    }
+
+    .tascru__texte {
+      padding-bottom: 0;
+    }
+
+    .tascru__personnage :global(.personnage) {
+      max-width: 7rem;
+    }
+  }
+</style>
