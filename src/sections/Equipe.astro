@@ -136,6 +136,27 @@ const TAILLE_PHOTO = 88;
     background: var(--trait);
   }
 
+  /*
+   * Photos légèrement floutées par défaut : elles deviennent nettes au survol de la fiche,
+   * ou quand le clavier atteint son lien LinkedIn. Le clip garde un bord de rond net malgré le flou.
+   */
+  .associe__tete :global(img.associe__photo) {
+    clip-path: circle(50%);
+    filter: blur(3px);
+    transition: filter var(--dur-court) var(--ease);
+  }
+
+  .associe:hover :global(img.associe__photo),
+  .associe:focus-within :global(img.associe__photo) {
+    filter: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .associe__tete :global(img.associe__photo) {
+      transition: none;
+    }
+  }
+
   .associe__initiales {
     display: grid;
     place-items: center;

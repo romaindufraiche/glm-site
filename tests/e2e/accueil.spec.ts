@@ -30,6 +30,20 @@ test.describe('Page d’accueil', () => {
     );
   });
 
+  test('les photos de l’équipe sont floues, puis nettes au survol de la fiche', async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, 'Survol testé sur desktop');
+    await page.goto('/');
+    const fiche = page.locator('.associe').first();
+    const photo = fiche.locator('img');
+    await fiche.scrollIntoViewIfNeeded();
+    expect(await photo.evaluate((img) => getComputedStyle(img).filter)).toContain('blur');
+    await fiche.hover();
+    await expect.poll(() => photo.evaluate((img) => getComputedStyle(img).filter)).toBe('none');
+  });
+
   test('propose un lien d’évitement au premier appui sur Tab', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Navigation clavier testée sur desktop');
     await page.goto('/');
