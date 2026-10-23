@@ -5,9 +5,9 @@ Ce document décrit les protections du site et la marche à suivre quand un filt
 
 ## Ce que le site fait déjà
 
-- **Aucun script tiers** : polices, images et scripts sont servis par le site lui-même. La politique de
-  sécurité du contenu (`public/.htaccess`) interdit tout le reste ; seules les publications LinkedIn
-  peuvent s’afficher, et seulement après accord du visiteur.
+- **Aucun contenu tiers** : polices, images, vidéos et scripts (dont three.js pour la scène 3D) sont servis
+  par le site lui-même. La politique de sécurité du contenu (`public/.htaccess`) interdit tout le reste,
+  y compris les cadres (`frame-src 'none'`). Aucun cookie, aucune mesure d’audience.
 - **Formulaire de contact sans service tiers** : `contact.php` valide tout côté serveur, limite les envois
   et lit sa configuration hors du dossier public.
 - **En-têtes de sécurité** : HTTPS imposé (HSTS), une seule adresse (`https://www.glmprime.com`, la variante
@@ -40,6 +40,7 @@ serveur), rarement d’un examen manuel. Dans l’ordre :
 
 ## Liens externes du site
 
-Tous les liens sortants pointent vers des services connus : LinkedIn (profils, page et publications de
-GLM), WhatsApp (`wa.me`, contact direct), la CNIL et OVHcloud (pages légales). Les liens qui ouvrent un
+Tous les liens sortants pointent vers des services connus : LinkedIn (profils et page de GLM), WhatsApp
+(`wa.me`, contact direct), les démos des projets de GLM sur `krokow.github.io`, la CNIL et OVHcloud
+(pages légales). Les liens qui ouvrent un
 nouvel onglet portent `rel="noopener noreferrer"`.
