@@ -670,7 +670,7 @@ button:focus-visible {
 /* Projets : la maquette, un mur courbe qui tourne autour de vous    */
 /* ================================================================ */
 #projets {
-  height: 420vh;
+  height: 600vh;
 }
 .projets__tete {
   position: absolute;
@@ -729,13 +729,32 @@ button:focus-visible {
   background: var(--nuit);
   overflow: hidden;
 }
-.projet__ecran img {
+/* Le cadre garde le format des captures (16:10) et couvre l’écran : les animations restent calées. */
+.projet__ecran {
+  container-type: size;
+}
+.projet__cadre {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: max(100cqw, 160cqh);
+  aspect-ratio: 16 / 10;
+  transform: translateX(-50%);
+}
+.projet__cadre img,
+.projet__video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 0;
+}
+.projet__video {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.projet.est-active .projet__video {
+  opacity: 1;
 }
 .projet__infos {
   display: grid;
@@ -755,30 +774,22 @@ button:focus-visible {
   font-weight: 500;
   text-align: right;
 }
-/* Les trois repères de chaque projet : le besoin, ce que fait l’outil, ce que ça change. */
-.projet__reperes {
-  display: grid;
+/* Ce qu’on a construit : quelques mots-clés, en pastilles. */
+.projet__points {
+  display: flex;
+  flex-wrap: wrap;
   gap: 0.3rem;
-  margin: 0.25rem 0 0;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  list-style: none;
 }
-.projet__reperes div {
-  display: grid;
-  grid-template-columns: 7.5rem 1fr;
-  gap: 0.75rem;
-  padding-top: 0.3rem;
-  border-top: 1px solid var(--pierre);
-}
-.projet__reperes dt {
+.projet__points li {
+  padding: 0.1rem 0.5rem;
+  border: 1px solid var(--pierre);
   font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.6;
+  font-weight: 500;
+  line-height: 1.5;
   color: var(--encre);
-}
-.projet__reperes dd {
-  margin: 0;
-  color: var(--encre-douce);
-  font-size: 0.8125rem;
-  line-height: 1.45;
 }
 .projet__lien {
   justify-self: start;
@@ -797,7 +808,7 @@ button:focus-visible {
 }
 .projet p {
   color: var(--encre-douce);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 .projet__ombre {
@@ -892,17 +903,13 @@ button:focus-visible {
   height: 100%;
   object-fit: cover;
   object-position: 50% 28%;
-  /* Léger flou par défaut : le portrait devient net au survol ou au focus de la fiche. */
-  filter: grayscale(1) contrast(1.05) blur(3px);
-  transform: scale(1.04);
-  transition:
-    filter 0.4s ease,
-    transform 0.4s ease;
+  /* Portraits nets, en noir et blanc ; ils passent en couleur au survol ou au focus de la fiche. */
+  filter: grayscale(1) contrast(1.05);
+  transition: filter 0.4s ease;
 }
 .associe:hover .associe__photo img,
 .associe:focus-within .associe__photo img {
-  filter: grayscale(0) contrast(1.05) blur(0);
-  transform: none;
+  filter: none;
 }
 .associe__texte {
   display: grid;
@@ -1335,11 +1342,13 @@ button:focus-visible {
   max-width: 44rem;
 }
 
-/* Fiches projets sur petit écran : chaque repère passe sous son intitulé. */
+/* Fiches projets sur petit écran : texte resserré. */
 @media (max-width: 47.99rem) {
-  .projet__reperes div {
-    grid-template-columns: 1fr;
-    gap: 0;
+  .projet p {
+    font-size: 0.8125rem;
+  }
+  .projet__points li {
+    font-size: 0.6875rem;
   }
   .projet__infos {
     padding: 0.75rem 1rem 1rem;

@@ -29,7 +29,7 @@ test.describe('Page d’accueil', () => {
     expect(erreurs).toEqual([]);
   });
 
-  test('présente les vrais projets avec leurs trois repères, sans exemple', async ({ page }) => {
+  test('présente les vrais projets avec leur description, sans exemple', async ({ page }) => {
     await page.goto('/');
     const cartes = page.locator('#anneau .projet');
     expect(await cartes.count()).toBeGreaterThan(0);
@@ -37,11 +37,28 @@ test.describe('Page d’accueil', () => {
       `01 / ${String(await cartes.count()).padStart(2, '0')}`,
     );
     for (const carte of await cartes.all()) {
-      await expect(carte.locator('dt')).toHaveText(['Le besoin', 'Ce qu’il fait', 'Ce que ça change']);
-      await expect(carte.locator('img')).toHaveCount(1);
+      await expect(carte.locator('h3')).toHaveCount(1);
+      await expect(carte.locator('.projet__description')).not.toBeEmpty();
+      expect(await carte.locator('.projet__points li').count()).toBeGreaterThan(0);
+      // Chaque carte montre une capture ou une illustration animée.
+      expect(await carte.locator('img, svg[role="img"]').count()).toBeGreaterThan(0);
     }
     await expect(page.getByText('Exemple', { exact: true })).toHaveCount(0);
     await expect(page.locator('#anneau')).not.toContainText('[client]');
+  });
+
+  test('le survol d’une carte projet lance son animation', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'Survol testé sur desktop');
+    await page.goto('/');
+    await expect(page.locator('html')).not.toHaveClass(/chargement/, { timeout: 10_000 });
+    await aller(page, '#projets', 0.1);
+    const carte = page.locator('#anneau .projet').first();
+    await expect(carte).not.toHaveClass(/est-active/);
+    await page.mouse.move(0, 0);
+    const boite = await carte.boundingBox();
+    if (!boite) throw new Error('Carte introuvable');
+    await page.mouse.move(boite.x + boite.width / 2, boite.y + boite.height / 2);
+    await expect(carte).toHaveClass(/est-active/);
   });
 
   test('l’anneau des projets tourne avec le défilement', async ({ page }) => {
@@ -65,10 +82,7 @@ test.describe('Page d’accueil', () => {
     );
   });
 
-  test('les photos de l’équipe sont floues, puis nettes au survol de la fiche', async ({
-    page,
-    isMobile,
-  }) => {
+  test('les photos de l’équipe sont nettes, et passent en couleur au survol', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Survol testé sur desktop');
     await page.goto('/');
     await expect(page.locator('html')).not.toHaveClass(/chargement/, { timeout: 10_000 });
@@ -76,9 +90,9 @@ test.describe('Page d’accueil', () => {
     const fiche = page.locator('.associe').last();
     const photo = fiche.locator('img');
     await expect(fiche).toBeVisible();
-    expect(await photo.evaluate((img) => getComputedStyle(img).filter)).toContain('blur(3px)');
+    expect(await photo.evaluate((img) => getComputedStyle(img).filter)).not.toContain('blur');
     await fiche.locator('.associe__fiche').hover();
-    await expect.poll(() => photo.evaluate((img) => getComputedStyle(img).filter)).toContain('blur(0px)');
+    await expect.poll(() => photo.evaluate((img) => getComputedStyle(img).filter)).toBe('none');
   });
 
   test('propose un lien d’évitement au premier appui sur Tab', async ({ page, isMobile }) => {

@@ -1,5 +1,6 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+import AnimationProjet from '../components/AnimationProjet.astro';
 import '../styles/accueil.css';
 import EnTete from '../components/EnTete.astro';
 import {
@@ -44,16 +45,15 @@ const dessins = [
 
 const chapitres = expertises.map((expertise) => ({ ...expertise, ...calibres[expertise.calibre] }));
 
-const projets = projetsAffiches.map((projet) => ({
-  ...projet,
-  calibreInfo: calibres[projet.calibre],
-  capture: projet.image ? imageDe('projets', projet.image.fichier) : undefined,
-  reperes: [
-    { titre: 'Le besoin', texte: projet.besoin },
-    { titre: 'Ce qu’il fait', texte: projet.capacite },
-    { titre: 'Ce que ça change', texte: projet.gain },
-  ],
-}));
+const projets = await Promise.all(
+  projetsAffiches.map(async (projet) => {
+    const capture = projet.image ? imageDe('projets', projet.image.fichier) : undefined;
+    // La vidéo se lance au survol ; son affiche est la capture, au même cadrage 16:10.
+    const affiche =
+      capture && projet.video ? await getImage({ src: capture, width: 960, format: 'webp' }) : undefined;
+    return { ...projet, calibreInfo: calibres[projet.calibre], capture, affiche };
+  }),
+);
 
 // Le manège tourne en boucle : les épisodes sont répétés, les copies sont masquées aux lecteurs d’écran.
 const episodes = media.episodes.map((episode) => ({
@@ -274,26 +274,43 @@ const lettresContact = [...accueil.contact.titre];
                         <span class="projet__client">{projet.client}</span>
                       </p>
                       <div class="projet__ecran">
-                        {projet.capture && projet.image && (
-                          <Image
-                            src={projet.capture}
-                            alt={projet.image.alt}
-                            widths={[480, 720, 1080]}
-                            sizes="(max-width: 48rem) 84vw, 36rem"
-                            loading="lazy"
-                          />
-                        )}
+                        <div class="projet__cadre">
+                          {projet.capture && projet.image && (
+                            <Image
+                              src={projet.capture}
+                              alt={projet.image.alt}
+                              widths={[480, 720, 1080]}
+                              sizes="(max-width: 48rem) 84vw, 36rem"
+                              loading="lazy"
+                            />
+                          )}
+                          {projet.video && projet.affiche && (
+                            <video
+                              class="projet__video"
+                              muted
+                              loop
+                              playsinline
+                              preload="none"
+                              poster={projet.affiche.src}
+                              aria-hidden="true"
+                            >
+                              <source src={lien(`/videos/${projet.video}.webm`)} type="video/webm" />
+                              <source src={lien(`/videos/${projet.video}.mp4`)} type="video/mp4" />
+                            </video>
+                          )}
+                          {projet.animation && projet.animation !== 'jeu' && (
+                            <AnimationProjet type={projet.animation} />
+                          )}
+                        </div>
                       </div>
                       <div class="projet__infos">
                         <h3>{projet.nom}</h3>
-                        <dl class="projet__reperes">
-                          {projet.reperes.map((repere) => (
-                            <div>
-                              <dt>{repere.titre}</dt>
-                              <dd>{repere.texte}</dd>
-                            </div>
+                        <p class="projet__description">{projet.description}</p>
+                        <ul class="projet__points" role="list">
+                          {projet.points.map((point) => (
+                            <li>{point}</li>
                           ))}
-                        </dl>
+                        </ul>
                         {projet.lien && (
                           <a class="projet__lien" href={projet.lien.url} target="_blank" rel="noopener">
                             {projet.lien.libelle}
