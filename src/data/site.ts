@@ -32,19 +32,26 @@ export interface Expertise {
   statut?: string;
 }
 
+/** Animation jouée au survol de la carte projet (voir src/components/AnimationProjet.astro). */
+export type AnimationProjet = 'adpvo' | 'crocomix' | 'infohub' | 'jeu' | 'echiquier' | 'synapse' | 'pepites';
+
 export interface Projet {
   nom: string;
-  /** Pour qui : le client, ou « Projet GLM » pour un outil développé en interne. */
+  /** Pour qui : le client, « Projet GLM » pour un outil interne, « Projet R&D »… */
   client: string;
   calibre: CalibreId;
-  /** Le problème de départ, en une phrase. */
-  besoin: string;
-  /** Ce que fait l’outil : sa capacité phare. */
-  capacite: string;
-  /** Ce que la personne y gagne (temps, argent, productivité…). */
-  gain: string;
-  /** Capture d’écran déposée dans src/assets/projets/ (format paysage). */
+  /** Présentation du projet en deux ou trois phrases. */
+  description: string;
+  /** Ce qu’on a construit, en quelques mots-clés courts. */
+  points: string[];
+  /**
+   * Capture d’écran déposée dans src/assets/projets/, recadrée au format 16:10 (1440 × 900) :
+   * les animations sont calées sur ce cadrage. Sans image, l’animation sert d’illustration.
+   */
   image?: { fichier: string; alt: string };
+  /** Vidéo courte (muette, en boucle) déposée dans public/videos/ : <nom>.webm et <nom>.mp4. */
+  video?: string;
+  animation?: AnimationProjet;
   lien?: { url: string; libelle: string };
   /** Projet d’exemple : la carte affiche la mention « Exemple ». À retirer une fois le vrai projet saisi. */
   exemple?: boolean;
@@ -207,72 +214,122 @@ export const expertises: Expertise[] = [
 /* Projets                                                            */
 /* ------------------------------------------------------------------ */
 
-// Projets décrits par les associés (message vocal du 23 octobre 2026), captures du dossier Drive « Site / Projets ».
+// Projets décrits par les associés, captures du dossier Drive « Site / Projets ».
 export const projets: Projet[] = [
   {
-    nom: 'ADPVO, le site de l’Amicale des Policiers du Val-d’Oise',
-    client: 'Amicale des Policiers du Val-d’Oise',
+    nom: 'ADPVO, l’amicale des PME du Val-d’Oise',
+    client: 'Amicale des PME du Val-d’Oise',
     calibre: 'web',
-    besoin: 'Donner à l’Amicale un vrai site de CSE, que le bureau fait vivre seul.',
-    capacite:
-      'Billetterie avec commande en ligne, adhésion via HelloAsso, annonces entre collègues, posts « À la une » et espace bureau complet.',
-    gain: 'Le bureau publie offres et actualités lui-même et reçoit les commandes déjà triées, export compris.',
+    description:
+      'Un projet complet, de l’étude à la mise en ligne. Les adhérents achètent leurs billets et profitent des offres partenaires ; le bureau publie, suit les commandes et gère la billetterie depuis son espace.',
+    points: [
+      'Étude et conception',
+      'Parcours d’achat de billets',
+      'Paiement en ligne',
+      'Espace administrateur',
+      'Publication des offres',
+      'Commandes et billetterie',
+      'Génération des fichiers',
+    ],
     image: {
       fichier: 'adpvo.webp',
-      alt: 'Page d’accueil du site de l’ADPVO : bandeau bleu, blanc, rouge et catégories d’offres.',
+      alt: 'Page d’accueil du site de l’ADPVO : bandeau bleu, blanc, rouge, catégories d’offres et offres à la une.',
     },
-    lien: { url: 'https://adpvo.fr', libelle: 'Voir le site' },
-  },
-  {
-    nom: 'Atelier, l’organisateur de projets',
-    client: 'Projet GLM',
-    calibre: 'web',
-    besoin: 'Suivre plusieurs projets, leurs tâches et le temps passé, sans jongler entre plusieurs outils.',
-    capacite:
-      'Projets, tâches épinglées, réunions, suivi des heures, tableau de bord, boîte de réception et calendrier au même endroit.',
-    gain: 'Moins de temps à s’organiser, plus à produire : on s’en sert nous-mêmes au quotidien.',
-    image: {
-      fichier: 'atelier.webp',
-      alt: 'Écran d’Atelier : liste de tâches d’un projet, avec dates, étiquettes et tâches épinglées.',
-    },
+    animation: 'adpvo',
   },
   {
     nom: 'CrocoMix, le studio de remix',
     client: 'Projet GLM',
     calibre: 'ia',
-    besoin: 'Retravailler un morceau quand on n’a que le fichier final.',
-    capacite:
-      'L’IA sépare la voix, la basse, la batterie, la guitare et le piano. Chaque piste se règle, se coupe et reçoit ses propres effets.',
-    gain: 'Remixer, s’entraîner sur un instrument ou enregistrer sa propre partie, directement dans le navigateur.',
+    description:
+      'Nous avons développé un algorithme qui sépare la voix, les instruments et chaque son d’un morceau pour isoler chaque piste audio. Nous avons aussi dessiné le logiciel et l’avons mis en production : on remixe, on crée du contenu, directement dans le navigateur.',
+    points: [
+      'Séparation des pistes par IA',
+      'Une piste par instrument',
+      'Design du logiciel',
+      'Mise en production',
+    ],
     image: {
       fichier: 'crocomix.webp',
-      alt: 'Console de CrocoMix : une piste par instrument, effets, oscilloscope et égaliseur.',
+      alt: 'Console de CrocoMix : forme d’onde du morceau, une tranche par instrument, effets et oscilloscope.',
     },
+    animation: 'crocomix',
   },
   {
-    nom: 'InfoHub, le tableau de bord personnel',
+    nom: 'InfoHub, le tableau de bord de la journée',
     client: 'Projet GLM',
     calibre: 'ia',
-    besoin: 'Avoir l’essentiel de sa journée sur un seul écran.',
-    capacite:
-      'Météo, marchés, actualités, sport, musique et état de l’ordinateur, alimentés en direct par de nombreuses sources de données.',
-    gain: 'Un coup d’œil au lieu de passer d’un site à l’autre.',
+    description:
+      'Un écran qui rassemble l’actualité financière et géopolitique, la météo, les tendances des réseaux sociaux, la playlist du moment et les résultats sportifs. Pensé pour l’écran de la maison ou l’ordinateur de bord d’une voiture : le récapitulatif de sa journée en un coup d’œil.',
+    points: [
+      'Finance et géopolitique',
+      'Météo',
+      'Tendances sociales',
+      'Musique',
+      'Sport',
+      'Données en direct',
+    ],
     image: {
       fichier: 'infohub.webp',
-      alt: 'Tableau de bord InfoHub au style néon : météo, crypto, actualités, musique et sport.',
+      alt: 'Tableau de bord InfoHub au style néon : météo, crypto, actualités, musique, sport et suivi de l’ISS.',
     },
+    animation: 'infohub',
   },
   {
-    nom: 'Un jeu roguelike dans le navigateur',
+    nom: 'Ombres & Reliques, un jeu vidéo dans le navigateur',
     client: 'Projet GLM',
     calibre: 'web',
-    besoin: 'Prouver qu’un jeu complet peut tourner sans rien installer.',
-    capacite: 'Cinq classes, plus de neuf niveaux, un mode infini et de nombreux objets à collectionner.',
-    gain: 'On ouvre un lien et on joue, sur n’importe quel ordinateur.',
+    description:
+      'Nous avons créé un jeu vidéo qui tourne directement dans le navigateur, de la conception graphique au gameplay, en passant par les mondes et les objets. Il est en ligne et 100 % fonctionnel.',
+    points: ['Conception graphique', 'Gameplay', 'Mondes et objets', 'En production'],
     image: {
-      fichier: 'roguelike.webp',
-      alt: 'Partie du roguelike : le héros affronte des monstres dans une salle de donjon.',
+      fichier: 'ombres-reliques.webp',
+      alt: 'Partie d’Ombres & Reliques : le héros affronte une horde de goules dans une salle du donjon.',
     },
+    video: 'ombres-reliques',
+    animation: 'jeu',
+    lien: { url: 'https://krokow.github.io/Ombres-Reliques', libelle: 'Jouer' },
+  },
+  {
+    nom: 'L’échiquier autonome',
+    client: 'Projet R&D',
+    calibre: 'robotique',
+    description:
+      'Une intelligence artificielle qui joue aux échecs, et l’échiquier qui va avec. Nous avons conçu et fabriqué toute son architecture : un chariot aimanté sur deux axes déplace les pièces, des LED indiquent les coups, et l’on joue à la voix contre notre moteur ou contre Stockfish.',
+    points: ['Moteur d’échecs (Minimax)', 'Commande vocale', 'Mécanique sur deux axes', 'Éclairage LED'],
+    animation: 'echiquier',
+  },
+  {
+    nom: 'Synapse, le home cinéma personnalisé',
+    client: 'Projet GLM',
+    calibre: 'web',
+    description:
+      'Nous avons construit une grande base de films qui rassemble les films disponibles et les centralise dans un home cinéma : bandes-annonces, où les regarder, notes et recommandations personnalisées. Toute l’interface graphique est faite maison.',
+    points: ['Base de films', 'Recommandations', 'Application installable', 'Design de l’interface'],
+    image: {
+      fichier: 'synapse.webp',
+      alt: 'Accueil de Synapse au style cyberpunk : film à la une et rangée des tendances de la semaine.',
+    },
+    animation: 'synapse',
+    lien: { url: 'https://krokow.github.io/synapse/', libelle: 'Voir l’application' },
+  },
+  {
+    nom: 'Pépites, l’analyse de portefeuille',
+    client: 'Projet GLM',
+    calibre: 'ia',
+    description:
+      'Un algorithme qui analyse l’actualité et un portefeuille financier, puis propose des signaux d’achat ou de vente sur une sélection d’actions définie à l’avance. C’est un outil d’aide à la décision, pas un conseil en investissement.',
+    points: [
+      'Analyse de l’actualité',
+      'Suivi de portefeuille',
+      'Indicateurs techniques',
+      'Signaux d’achat et de vente',
+    ],
+    image: {
+      fichier: 'pepites.webp',
+      alt: 'Écran de Pépites : graphique en chandeliers d’une action avec moyennes mobiles, volumes et RSI.',
+    },
+    animation: 'pepites',
   },
 ];
 
