@@ -315,20 +315,43 @@ export const vision: { cap: string; principes: { titre: string; texte: string; a
 /* Média « T’as cru ? »                                               */
 /* ------------------------------------------------------------------ */
 
-/** Série de carrousels LinkedIn de vulgarisation publiée par GLM (bible de la série, octobre 2026). */
+/** Série vidéo quotidienne de vulgarisation publiée par GLM sur LinkedIn. */
 export const media = {
   nom: 'T’as cru\u00a0?',
-  surtitre: 'Notre série LinkedIn',
-  accroche: 'Une idée reçue sur la tech, démontée en 9 slides.',
+  surtitre: 'Notre média · Une vidéo par jour',
+  accroche: 'Une idée reçue, démontée chaque jour en vidéo.',
   texte:
-    'Chaque épisode part d’une phrase qu’on entend partout sur l’IA, la data ou l’entreprise. Hugo y croit, Nora explique ce qui se passe vraiment, et vous repartez avec une astuce concrète.',
-  personnages: [
-    { id: 'hugo', nom: 'Hugo', role: 'le curieux' },
-    { id: 'nora', nom: 'Nora', role: 'l’experte' },
-  ],
+    'Chaque jour, une courte vidéo de vulgarisation scientifique, technologique et financière. Hugo, le curieux, part d’une idée reçue qu’on entend partout. Nora, l’experte, explique ce qui se passe vraiment.',
+  rythme: 'Un thème par semaine, une vidéo par jour.',
   hashtag: '#TasCru',
   /** Page où suivre la série : la page LinkedIn de GLM. */
   lien: 'https://www.linkedin.com/company/glmprime/',
+  /**
+   * Miniatures d’épisodes déjà publiés ou prêts, déposées dans src/assets/tascru/ (format 1080 × 1350).
+   * `question` sert de texte alternatif : la phrase que la miniature met en avant.
+   */
+  episodes: [
+    {
+      miniature: 'semaine2-ep1.png',
+      question:
+        'L’IA est en panne\u00a0? Hugo\u00a0: « Elle m’a juste écrit un texte au lieu de réserver\u00a0! »',
+    },
+    {
+      miniature: 'semaine2-ep2.png',
+      question:
+        'ChatGPT recopie ses réponses\u00a0? Hugo\u00a0: « C’est une énorme base de données de réponses\u00a0! »',
+    },
+    {
+      miniature: 'semaine2-ep3.png',
+      question:
+        'L’IA a un vrai cerveau\u00a0? Hugo\u00a0: « Elle a des neurones, donc elle pense comme nous\u00a0! »',
+    },
+    {
+      miniature: 'semaine2-ep4.png',
+      question:
+        'Je l’ai corrigée, elle a appris\u00a0? Hugo\u00a0: « Demain, il le saura pour tout le monde\u00a0! »',
+    },
+  ],
 } as const;
 
 /* ------------------------------------------------------------------ */
