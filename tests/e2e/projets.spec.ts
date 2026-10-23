@@ -8,6 +8,10 @@ const decalage = (page: Page, index: number) =>
     .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m42);
 
 test.describe('Défilement des projets', () => {
+  test.skip(
+    process.env['PUBLIC_MASQUER_EXEMPLES'] === 'oui',
+    'Aucun projet publié (projets d’exemple masqués)',
+  );
   test('desktop : section épinglée, la colonne de projets monte', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Défilement épinglé réservé au desktop');
     await page.goto('/');

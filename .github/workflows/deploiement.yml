@@ -29,6 +29,9 @@ jobs:
   verifier:
     if: github.event_name == 'workflow_dispatch' || vars.DEPLOIEMENT_OVH == 'oui'
     uses: ./.github/workflows/ci.yml
+    # Version de production : sans les projets d’exemple (« [client] »), qui ne doivent jamais être en ligne.
+    with:
+      production: true
 
   deployer:
     needs: verifier
@@ -98,9 +101,10 @@ jobs:
           }
           # Le dossier distant devient une copie exacte de dist/ (anciens fichiers supprimés).
           # La configuration du formulaire et le dossier des limites d’envoi sont à côté de www/ :
-          # ils ne sont jamais touchés. .well-known/ (validation de certificats) est préservé.
+          # ils ne sont jamais touchés. .well-known/acme-challenge/ (validation des certificats) est
+          # préservé ; le reste de .well-known/ (security.txt) vient du site construit.
           rsync --recursive --links --perms --chmod=D755,F644 --compress --checksum \
-            --delete --delay-updates --exclude='.well-known/' --itemize-changes \
+            --delete --delay-updates --exclude='.well-known/acme-challenge/' --itemize-changes \
             -e "$ssh_cmd" dist/ "$cible:$DOSSIER_DISTANT/"
 
       - name: Nettoyer la clé

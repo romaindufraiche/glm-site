@@ -1,0 +1,120 @@
+name: Audit de l’hébergement
+
+# Contrôle de sécurité de l’hébergement OVH, en lecture seule : rien n’est modifié ni supprimé.
+# À lancer à la demande (onglet Actions → Audit de l’hébergement → Run workflow), par exemple avant de
+# demander l’ouverture du site à un filtre de sécurité, ou après un dépôt manuel par FTP.
+#
+# Le rapport (résumé du workflow) liste :
+#   1. les fichiers présents sur le serveur mais absents du site construit (restes d’un ancien site,
+#      fichiers déposés par un tiers) ;
+#   2. les fichiers du serveur qui diffèrent du site construit ;
+#   3. les fichiers PHP de tout l’hébergement, et ceux qui contiennent des motifs typiques de code
+#      malveillant (code chiffré exécuté, porte dérobée, redirection injectée) ;
+#   4. les fichiers modifiés ces 30 derniers jours.
+# Il réutilise les secrets du déploiement (OVH_SSH_HOST, OVH_SSH_USER, OVH_SSH_KEY, OVH_SSH_KNOWN_HOSTS).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  auditer:
+    runs-on: ubuntu-latest
+    env:
+      DOSSIER_DISTANT: www
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Construire le site de référence
+        env:
+          PUBLIC_MASQUER_EXEMPLES: oui
+        run: npm ci && npm run build
+
+      - name: Préparer la connexion SSH
+        env:
+          OVH_SSH_HOST: ${{ secrets.OVH_SSH_HOST }}
+          OVH_SSH_KEY: ${{ secrets.OVH_SSH_KEY }}
+          OVH_SSH_KNOWN_HOSTS: ${{ secrets.OVH_SSH_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$OVH_SSH_HOST" ] || [ -z "$OVH_SSH_KEY" ]; then
+            echo "::error::Secrets SSH manquants (voir README, « Déploiement automatique »)."
+            exit 1
+          fi
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$OVH_SSH_KEY" > ~/.ssh/deploiement
+          chmod 600 ~/.ssh/deploiement
+          if [ -n "$OVH_SSH_KNOWN_HOSTS" ]; then
+            printf '%s\n' "$OVH_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -t ed25519,rsa "$OVH_SSH_HOST" > ~/.ssh/known_hosts
+          fi
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Auditer le serveur
+        env:
+          OVH_SSH_HOST: ${{ secrets.OVH_SSH_HOST }}
+          OVH_SSH_USER: ${{ secrets.OVH_SSH_USER }}
+        run: |
+          ssh_cmd="ssh -i $HOME/.ssh/deploiement -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o BatchMode=yes"
+          cible="$OVH_SSH_USER@$OVH_SSH_HOST"
+          rapport="$GITHUB_STEP_SUMMARY"
+          section() { printf '\n### %s\n\n' "$1" >> "$rapport"; }
+          bloc() { if [ -s "$1" ]; then { echo '```'; head -n 300 "$1"; echo '```'; } >> "$rapport"; else echo "$2" >> "$rapport"; fi; }
+
+          echo "## Audit de l’hébergement ($(date -u +'%Y-%m-%d %H:%M UTC'))" >> "$rapport"
+
+          # 1 et 2. Comparaison avec le site construit, sans rien transférer (--dry-run).
+          rsync --dry-run --recursive --checksum --delete --itemize-changes \
+            --exclude='.well-known/acme-challenge/' \
+            -e "$ssh_cmd" dist/ "$cible:$DOSSIER_DISTANT/" > rsync.txt || true
+          grep '^\*deleting' rsync.txt | sed 's/^\*deleting *//' > en-trop.txt || true
+          grep -E '^[<>]f[^+]' rsync.txt | awk '{print $2}' > differents.txt || true
+          section "1. Fichiers en trop sur le serveur (absents du site)"
+          bloc en-trop.txt "Aucun : le serveur ne contient que les fichiers du site."
+          section "2. Fichiers différents du site construit"
+          bloc differents.txt "Aucun."
+
+          # 3. Fichiers PHP de tout l’hébergement et motifs de code malveillant (lecture seule).
+          $ssh_cmd "$cible" 'find "$HOME" -type f -name "*.php" -not -path "*/.cache/*" 2>/dev/null' > php.txt || true
+          section "3a. Fichiers PHP de l’hébergement"
+          echo "Attendus : www/contact.php, www/_serveur/contact-lib.php et glm-contact-config.php (à côté de www/)." >> "$rapport"
+          bloc php.txt "Aucun fichier PHP."
+          $ssh_cmd "$cible" 'bash -s' > suspects.txt <<'DISTANT' || true
+          grep -rIlE --include='*.php' --include='*.js' --include='*.html' --include='.htaccess' \
+            -e 'eval *\( *(base64_decode|gzinflate|gzuncompress|str_rot13)' \
+            -e '(assert|system|passthru|shell_exec|popen|proc_open) *\( *\$_(GET|POST|REQUEST|COOKIE)' \
+            -e 'preg_replace *\(.*/e' \
+            -e 'document\.write *\( *unescape' \
+            -e 'HTTP_REFERER.*(google|bing|yahoo)' \
+            "$HOME" 2>/dev/null
+          DISTANT
+          section "3b. Fichiers contenant des motifs de code malveillant"
+          bloc suspects.txt "Aucun motif suspect trouvé."
+
+          # 4. Activité récente.
+          $ssh_cmd "$cible" "find \"\$HOME/$DOSSIER_DISTANT\" -type f -mtime -30 -printf '%TY-%Tm-%Td %TH:%TM  %p\n' 2>/dev/null | sort -r" > recents.txt || true
+          section "4. Fichiers modifiés ces 30 derniers jours (dans $DOSSIER_DISTANT/)"
+          bloc recents.txt "Aucun."
+
+          {
+            echo
+            echo "---"
+            echo "Que faire : un fichier en trop ou suspect se supprime par le workflow « Déploiement OVH »"
+            echo "(il rend www/ identique au site construit) ; un fichier suspect hors de www/ se supprime à la"
+            echo "main par FTP après vérification. Voir docs/securite.md."
+          } >> "$rapport"
+
+          if [ -s suspects.txt ]; then
+            echo "::warning::Motifs de code malveillant trouvés : voir le rapport."
+          fi
+
+      - name: Nettoyer la clé
+        if: always()
+        run: rm -f ~/.ssh/deploiement
