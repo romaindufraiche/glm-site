@@ -300,9 +300,7 @@ const lettresContact = [...accueil.contact.titre];
                               <source src={lien(`/videos/${projet.video}.mp4`)} type="video/mp4" />
                             </video>
                           )}
-                          {projet.animation && projet.animation !== 'jeu' && (
-                            <AnimationProjet type={projet.animation} />
-                          )}
+                          {projet.animation && <AnimationProjet type={projet.animation} />}
                         </div>
                       </div>
                       <div class="projet__infos">
