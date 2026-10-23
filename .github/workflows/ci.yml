@@ -6,6 +6,11 @@ on:
     branches-ignore: [main]
   pull_request:
   workflow_call:
+    inputs:
+      production:
+        description: Construire la version de production (sans projets d’exemple)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -39,6 +44,8 @@ jobs:
         run: npm test
 
       - name: Typecheck et build
+        env:
+          PUBLIC_MASQUER_EXEMPLES: ${{ inputs.production && 'oui' || '' }}
         run: npm run build
 
       # Le déploiement met en ligne exactement ce site construit et vérifié.
@@ -54,6 +61,8 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Tests de bout en bout et accessibilité
+        env:
+          PUBLIC_MASQUER_EXEMPLES: ${{ inputs.production && 'oui' || '' }}
         run: npm run test:e2e
 
       - name: Audit des dépendances

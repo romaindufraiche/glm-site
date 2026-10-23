@@ -1,0 +1,6 @@
+# Signaler une faille de sécurité sur ce site (RFC 9116).
+Contact: mailto:contact@glmprime.com
+Expires: 2027-10-23T00:00:00.000Z
+Preferred-Languages: fr, en
+Canonical: https://www.glmprime.com/.well-known/security.txt
+Policy: https://www.glmprime.com/mentions-legales/

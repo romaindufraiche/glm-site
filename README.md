@@ -101,6 +101,11 @@ Cette version est construite avec :
 
 Tout lien interne passe par `lien()` (`src/lib/hebergement.ts`) pour rester valable sous `/glm-site/`.
 
+## Sécurité
+
+Protections du site, audit de l’hébergement et marche à suivre si un filtre de sécurité refuse
+d’ouvrir le site : voir [docs/securite.md](docs/securite.md).
+
 ## Mise en ligne sur OVH
 
 ### Première installation
