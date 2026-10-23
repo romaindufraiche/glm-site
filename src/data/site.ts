@@ -28,7 +28,7 @@ export interface Expertise {
   calibre: CalibreId;
   titre: string;
   texte: string;
-  /** Mention affichée sous le texte, par exemple « En préparation ». */
+  /** Mention affichée sous le texte, par exemple « En développement ». */
   statut?: string;
 }
 
@@ -194,19 +194,19 @@ export const expertises: Expertise[] = [
     calibre: 'web',
     titre: 'La façade',
     texte:
-      'Sites web, e-commerce, applications, ERP, CRM, personal branding, campagnes de prospection et de communication. Ce qui vous rend visible et construit votre image.',
+      'Sites web, e-commerce, applications, personal branding, campagnes de prospection et de communication. Ce qui vous rend visible et construit votre image.',
   },
   {
     calibre: 'ia',
     titre: 'La structure',
     texte:
-      'Process automatisés, data, IA intégrée à vos outils, assistants personnels. Ce qui fait tourner l’entreprise et vous fait gagner du temps et de l’argent.',
+      'Process automatisés, ERP, CRM, data, IA intégrée à vos outils, assistants personnels. Ce qui fait tourner l’entreprise et vous fait gagner du temps et de l’argent.',
   },
   {
     calibre: 'robotique',
     titre: 'L’extension',
     texte: 'Robots autonomes pilotés par IA. Ce qui prend en charge le travail physique.',
-    statut: 'En préparation',
+    statut: 'En développement',
   },
 ];
 
@@ -415,7 +415,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
 /* ------------------------------------------------------------------ */
 
 export const vision: { cap: string; principes: { titre: string; texte: string; accent: Accent }[] } = {
-  cap: 'Notre cap\u00a0: faciliter votre quotidien, vous faire gagner du temps et de l’argent et développer votre activité, pour que votre métier reste une passion. Le tout, par la technologie.',
+  cap: 'Notre cap\u00a0: faciliter votre quotidien, vous faire gagner du temps et de l’argent, et développer votre activité, pour que votre métier reste une passion. Le tout, par la tech.',
   // Principes reformulés à partir des réponses des associés (octobre 2026).
   principes: [
     {
