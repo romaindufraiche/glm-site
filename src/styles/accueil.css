@@ -903,17 +903,13 @@ button:focus-visible {
   height: 100%;
   object-fit: cover;
   object-position: 50% 28%;
-  /* Léger flou par défaut : le portrait devient net au survol ou au focus de la fiche. */
-  filter: grayscale(1) contrast(1.05) blur(3px);
-  transform: scale(1.04);
-  transition:
-    filter 0.4s ease,
-    transform 0.4s ease;
+  /* Portraits nets, en noir et blanc ; ils passent en couleur au survol ou au focus de la fiche. */
+  filter: grayscale(1) contrast(1.05);
+  transition: filter 0.4s ease;
 }
 .associe:hover .associe__photo img,
 .associe:focus-within .associe__photo img {
-  filter: grayscale(0) contrast(1.05) blur(0);
-  transform: none;
+  filter: none;
 }
 .associe__texte {
   display: grid;

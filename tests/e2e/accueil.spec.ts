@@ -82,10 +82,7 @@ test.describe('Page d’accueil', () => {
     );
   });
 
-  test('les photos de l’équipe sont floues, puis nettes au survol de la fiche', async ({
-    page,
-    isMobile,
-  }) => {
+  test('les photos de l’équipe sont nettes, et passent en couleur au survol', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Survol testé sur desktop');
     await page.goto('/');
     await expect(page.locator('html')).not.toHaveClass(/chargement/, { timeout: 10_000 });
@@ -93,9 +90,9 @@ test.describe('Page d’accueil', () => {
     const fiche = page.locator('.associe').last();
     const photo = fiche.locator('img');
     await expect(fiche).toBeVisible();
-    expect(await photo.evaluate((img) => getComputedStyle(img).filter)).toContain('blur(3px)');
+    expect(await photo.evaluate((img) => getComputedStyle(img).filter)).not.toContain('blur');
     await fiche.locator('.associe__fiche').hover();
-    await expect.poll(() => photo.evaluate((img) => getComputedStyle(img).filter)).toContain('blur(0px)');
+    await expect.poll(() => photo.evaluate((img) => getComputedStyle(img).filter)).toBe('none');
   });
 
   test('propose un lien d’évitement au premier appui sur Tab', async ({ page, isMobile }) => {

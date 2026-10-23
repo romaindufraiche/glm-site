@@ -440,7 +440,7 @@ export const media = {
   nom: 'T’as cru\u00a0?',
   surtitre: 'Une vidéo par jour',
   texte:
-    'Hugo, le curieux, part d’une idée reçue qu’on entend partout. Nora, l’experte, explique ce qui se passe vraiment.',
+    'Notre média de vulgarisation tech. Il nous sert de veille technologique et nous permet de partager notre expertise avec le plus grand nombre, pour la rendre accessible à tous. Hugo, le curieux, part d’une idée reçue. Nora, l’experte, explique ce qui se passe vraiment.',
   /** Page où suivre la série : la page LinkedIn de GLM. */
   lien: 'https://www.linkedin.com/company/glmprime/',
   /**
