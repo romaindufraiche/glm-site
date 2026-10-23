@@ -312,7 +312,12 @@ const lettresContact = [...accueil.contact.titre];
                           ))}
                         </ul>
                         {projet.lien && (
-                          <a class="projet__lien" href={projet.lien.url} target="_blank" rel="noopener">
+                          <a
+                            class="projet__lien"
+                            href={projet.lien.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {projet.lien.libelle}
                           </a>
                         )}
@@ -380,7 +385,12 @@ const lettresContact = [...accueil.contact.titre];
                     ))}
                   </ul>
                   {associe.linkedin && (
-                    <a class="associe__lien" href={associe.linkedin} target="_blank" rel="noopener">
+                    <a
+                      class="associe__lien"
+                      href={associe.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Profil LinkedIn de {associe.prenom}
                     </a>
                   )}
@@ -442,7 +452,7 @@ const lettresContact = [...accueil.contact.titre];
             </ul>
           </div>
           <div class="tascru__pied">
-            <a class="bouton bouton--aplat" href={media.lien} target="_blank" rel="noopener">
+            <a class="bouton bouton--aplat" href={media.lien} target="_blank" rel="noopener noreferrer">
               Voir les vidéos sur LinkedIn
             </a>
           </div>
@@ -509,7 +519,7 @@ const lettresContact = [...accueil.contact.titre];
                 class="bouton bouton--contour bouton--icone"
                 href={lienWhatsApp}
                 target="_blank"
-                rel="noopener"
+                rel="noopener noreferrer"
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M4.5 19.5 5.6 16A8 8 0 1 1 8.4 18.6Z" />
@@ -522,7 +532,12 @@ const lettresContact = [...accueil.contact.titre];
                   Écrire via le formulaire
                 </a>
               )}
-              <a class="bouton bouton--contour" href={contact.linkedin} target="_blank" rel="noopener">
+              <a
+                class="bouton bouton--contour"
+                href={contact.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Suivre GLM sur LinkedIn
               </a>
             </div>
