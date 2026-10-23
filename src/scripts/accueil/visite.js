@@ -219,6 +219,43 @@
     });
     var compte = $('#compte');
     var m = { R: 1000, A: 30 };
+
+    // Animation des cartes : au survol ou au focus avec une souris, sinon sur la carte de face.
+    var survol = window.matchMedia('(hover: hover) and (pointer: fine)');
+    var etats = cartes.map(function () {
+      return { survol: false, focus: false, face: false, actif: false };
+    });
+    function majActivite(i) {
+      var e = etats[i];
+      var actif = survol.matches ? e.survol || e.focus : e.face || e.focus;
+      if (actif === e.actif) return;
+      e.actif = actif;
+      cartes[i].classList.toggle('est-active', actif);
+      var video = $('video', cartes[i]);
+      if (!video) return;
+      if (actif) {
+        var lecture = video.play();
+        if (lecture) lecture.catch(function () {});
+      } else video.pause();
+    }
+    cartes.forEach(function (c, i) {
+      c.addEventListener('pointerenter', function () {
+        etats[i].survol = true;
+        majActivite(i);
+      });
+      c.addEventListener('pointerleave', function () {
+        etats[i].survol = false;
+        majActivite(i);
+      });
+      c.addEventListener('focusin', function () {
+        etats[i].focus = true;
+        majActivite(i);
+      });
+      c.addEventListener('focusout', function () {
+        etats[i].focus = false;
+        majActivite(i);
+      });
+    });
     enregistrer(
       el,
       function (p) {
@@ -237,6 +274,11 @@
           }
         });
         compte.textContent = ('0' + (proche + 1)).slice(-2);
+        var visible = p > 0 && p < 1;
+        etats.forEach(function (e, i) {
+          e.face = visible && i === proche;
+          majActivite(i);
+        });
       },
       function () {
         var l = cartes[0].offsetWidth;
