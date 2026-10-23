@@ -415,7 +415,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
 /* ------------------------------------------------------------------ */
 
 export const vision: { cap: string; principes: { titre: string; texte: string; accent: Accent }[] } = {
-  cap: 'Notre cap\u00a0: faciliter votre quotidien, vous faire gagner du temps et de l’argent, et développer votre activité, pour que votre métier reste une passion. Le tout, par la tech.',
+  cap: 'Notre cap\u00a0: faciliter votre quotidien, vous faire gagner du temps et de l’argent, développer votre activité, pour que votre métier reste une passion. Le tout, par la tech.',
   // Principes reformulés à partir des réponses des associés (octobre 2026).
   principes: [
     {
