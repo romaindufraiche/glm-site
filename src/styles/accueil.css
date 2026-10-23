@@ -997,6 +997,12 @@ button:focus-visible {
 }
 .episode {
   --l: min(13rem, 30vw);
+}
+/* Au-delà de huit épisodes, les miniatures se resserrent pour que le manège tienne à l’écran. */
+.manege__axe--large .episode {
+  --l: min(9.5rem, 21vw);
+}
+.episode {
   position: absolute;
   width: var(--l);
   left: calc(var(--l) / -2);
@@ -1109,15 +1115,24 @@ button:focus-visible {
   color: var(--ivoire-doux);
   font-size: 1.15rem;
 }
-.contact__mail {
-  font-family: var(--font-titre);
-  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.4rem);
-  color: var(--ivoire);
-}
 .contact__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.9rem;
+}
+/* Boutons de contact avec pictogramme (e-mail, WhatsApp). */
+.bouton--icone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.bouton--icone svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
 }
 .fin {
   position: absolute;

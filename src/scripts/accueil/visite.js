@@ -191,7 +191,9 @@
         ligne.style.transform = 'scaleX(' + pp.toFixed(4) + ')';
         etapes.forEach(function (e, i) {
           var cx = m.centres[i] + x;
-          var q = lin(cx, m.vw * 0.98, m.vw * 0.5);
+          // Chaque étape finit son dessin au centre de l’écran, ou à sa position finale si elle
+          // ne l’atteint pas (la dernière s’arrête à droite) : « Accompagner » se termine aussi.
+          var q = lin(cx, m.vw * 0.98, Math.min(m.vw * 0.9, Math.max(m.vw * 0.5, m.centres[i] - m.rail + 1)));
           e.style.setProperty('--q', q.toFixed(3));
           e.style.setProperty('--r', lin(q, 0.55, 1).toFixed(3));
         });
