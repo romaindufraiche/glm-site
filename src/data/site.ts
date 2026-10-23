@@ -33,7 +33,7 @@ export interface Expertise {
 }
 
 /** Animation jouée au survol de la carte projet (voir src/components/AnimationProjet.astro). */
-export type AnimationProjet = 'adpvo' | 'crocomix' | 'infohub' | 'jeu' | 'echiquier' | 'synapse' | 'pepites';
+export type AnimationProjet = 'adpvo' | 'crocomix' | 'infohub' | 'synapse' | 'pepites';
 
 export interface Projet {
   nom: string;
@@ -49,7 +49,7 @@ export interface Projet {
    * les animations sont calées sur ce cadrage. Sans image, l’animation sert d’illustration.
    */
   image?: { fichier: string; alt: string };
-  /** Vidéo courte (muette, en boucle) déposée dans public/videos/ : <nom>.webm et <nom>.mp4. */
+  /** Vidéo courte (muette, en boucle) déposée dans public/videos/ : <nom>.webm et <nom>.mp4, lancée au survol. */
   video?: string;
   animation?: AnimationProjet;
   lien?: { url: string; libelle: string };
@@ -224,7 +224,11 @@ export const projets: Projet[] = [
     description:
       'Une intelligence artificielle qui joue aux échecs, et l’échiquier qui va avec. Nous avons conçu et fabriqué toute son architecture : un chariot aimanté sur deux axes déplace les pièces, des LED indiquent les coups, et l’on joue à la voix contre notre moteur ou contre Stockfish.',
     points: ['Moteur d’échecs (Minimax)', 'Commande vocale', 'Mécanique sur deux axes', 'Éclairage LED'],
-    animation: 'echiquier',
+    image: {
+      fichier: 'echiquier.webp',
+      alt: 'L’échiquier autonome : une pièce avance seule sur le plateau en bois.',
+    },
+    video: 'echiquier',
   },
   {
     nom: 'Ombres & Reliques, un jeu vidéo dans le navigateur',
@@ -238,7 +242,6 @@ export const projets: Projet[] = [
       alt: 'Partie d’Ombres & Reliques : le héros affronte une horde de goules dans une salle du donjon.',
     },
     video: 'ombres-reliques',
-    animation: 'jeu',
     lien: { url: 'https://krokow.github.io/Ombres-Reliques', libelle: 'Jouer' },
   },
   {
