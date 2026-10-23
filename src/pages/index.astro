@@ -1,25 +1,525 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../sections/Hero.astro';
-import Expertises from '../sections/Expertises.astro';
-import Projets from '../sections/Projets.astro';
-import Methode from '../sections/Methode.astro';
-import Equipe from '../sections/Equipe.astro';
-import Actualites from '../sections/Actualites.astro';
-import TasCru from '../sections/TasCru.astro';
-import Vision from '../sections/Vision.astro';
-import Contact from '../sections/Contact.astro';
-import { projetsAffiches } from '../lib/hebergement';
+import { Image } from 'astro:assets';
+import '../styles/accueil.css';
+import EnTete from '../components/EnTete.astro';
+import {
+  accueil,
+  calibres,
+  contact,
+  entreprise,
+  equipe,
+  expertises,
+  media,
+  methode,
+  vision,
+} from '../data/site';
+import { hebergement, lien, projetsAffiches } from '../lib/hebergement';
+import { imageDe } from '../lib/images';
+
+const deux = (n: number) => String(n).padStart(2, '0');
+
+// Les dessins des quatre étapes : la grille, le plan, la construction, puis le logo livré.
+const grille = Array.from(
+  { length: 11 },
+  (_, i) =>
+    `<path class="l fine" pathLength="1" d="M0 ${(i + 1) * 10} H120"/><path class="l fine" pathLength="1" d="M${(i + 1) * 10} 0 V120"/>`,
+).join('');
+const cadre = '<rect class="l" pathLength="1" x="0" y="0" width="120" height="120"/>';
+const bandesTracees = [30, 50, 70]
+  .map((x) => `<rect class="l" pathLength="1" x="${x}" y="30" width="20" height="60"/>`)
+  .join('');
+const couleurs = ['#E9674F', '#2FA877', '#3F63F2'];
+const bandesPleines = (classe: string) =>
+  [30, 50, 70]
+    .map((x, i) => `<rect${classe} x="${x}" y="30" width="20" height="60" fill="${couleurs[i]}"/>`)
+    .join('');
+const dessins = [
+  grille + cadre,
+  cadre +
+    '<path class="l fine" pathLength="1" d="M0 0 L120 120"/><path class="l fine" pathLength="1" d="M120 0 L0 120"/><path class="l fine" pathLength="1" d="M0 30 H120 M0 90 H120"/>' +
+    bandesTracees,
+  cadre + bandesTracees + bandesPleines(' class="rempli"'),
+  '<rect class="fond-logo" x="0" y="0" width="120" height="120" fill="#0B1533"/>' + cadre + bandesPleines(''),
+];
+
+const chapitres = expertises.map((expertise) => ({ ...expertise, ...calibres[expertise.calibre] }));
+
+const projets = projetsAffiches.map((projet) => ({
+  ...projet,
+  calibreInfo: calibres[projet.calibre],
+  capture: projet.image ? imageDe('projets', projet.image.fichier) : undefined,
+  reperes: [
+    { titre: 'Le besoin', texte: projet.besoin },
+    { titre: 'Ce qu’il fait', texte: projet.capacite },
+    { titre: 'Ce que ça change', texte: projet.gain },
+  ],
+}));
+
+// Le manège tourne en boucle : les épisodes sont répétés, les copies sont masquées aux lecteurs d’écran.
+const episodes = media.episodes.map((episode) => ({
+  ...episode,
+  image: imageDe('tascru', episode.miniature),
+}));
+const manege = [
+  ...episodes.map((e) => ({ ...e, copie: false })),
+  ...episodes.map((e) => ({ ...e, copie: true })),
+];
+
+const motsCap = vision.cap.split(' ');
+const lettresContact = [...accueil.contact.titre];
 ---
 
-<BaseLayout>
-  <Hero />
-  <Expertises />
-  {projetsAffiches.length > 0 && <Projets />}
-  <Methode />
-  <Equipe />
-  <Actualites />
-  <TasCru />
-  <Vision />
-  <Contact />
-</BaseLayout>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <EnTete />
+    <script is:inline src={lien('/accueil-mouvement.js')}></script>
+  </head>
+  <body>
+    <a class="evitement" href="#contenu">
+      Aller au contenu
+    </a>
+    <header class="nav" id="nav">
+      <a class="logotype" href="#ouverture" aria-label="GLM, retour en haut">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <rect width="120" height="120" fill="#0B1533"></rect>
+          <rect x="30" y="30" width="20" height="60" fill="#E9674F"></rect>
+          <rect x="50" y="30" width="20" height="60" fill="#2FA877"></rect>
+          <rect x="70" y="30" width="20" height="60" fill="#3F63F2"></rect>
+        </svg>
+        GLM
+      </a>
+      <nav aria-label="Navigation principale">
+        <ul class="nav__liens">
+          <li>
+            <a href="#methode">Méthode</a>
+          </li>
+          {projets.length > 0 && (
+            <li>
+              <a href="#projets">Projets</a>
+            </li>
+          )}
+          <li>
+            <a href="#equipe">Équipe</a>
+          </li>
+          <li>
+            <a href="#tascru">{media.nom}</a>
+          </li>
+        </ul>
+      </nav>
+      <a class="bouton nav__bouton" href="#contact">
+        <span>Parlons de votre projet</span>
+      </a>
+      <div class="nav__progression" aria-hidden="true">
+        <span id="progression"></span>
+      </div>
+    </header>
+
+    <div class="chargeur" id="chargeur" aria-hidden="true">
+      <div class="chargeur__fond"></div>
+      <div class="chargeur__logo" id="chargeur-logo">
+        <svg viewBox="0 0 120 120">
+          <rect width="120" height="120" fill="#0B1533"></rect>
+          <rect class="trace" x="0.6" y="0.6" width="118.8" height="118.8" pathLength="1"></rect>
+          <rect class="bande" x="30" y="30" width="20" height="60" fill="#E9674F"></rect>
+          <rect class="bande" x="50" y="30" width="20" height="60" fill="#2FA877"></rect>
+          <rect class="bande" x="70" y="30" width="20" height="60" fill="#3F63F2"></rect>
+        </svg>
+      </div>
+      <p class="chargeur__nom">
+        <span>G</span>
+        <span>L</span>
+        <span>M</span>
+      </p>
+    </div>
+
+    <main id="contenu" tabindex="-1">
+      <!-- Ouverture : on entre dans le logo -->
+      <section id="ouverture" class="sur-nuit" data-fond="nuit" aria-labelledby="titre-intro">
+        <div class="piste" id="piste">
+          <div class="etage" id="scene">
+            <canvas id="gl" aria-hidden="true"></canvas>
+            <div class="voile" id="voile" aria-hidden="true"></div>
+
+            <div class="plan intro" data-plan="intro">
+              <p class="surtitre">
+                <span class="filet" aria-hidden="true">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </span>
+                {accueil.surtitre}
+              </p>
+              <h1 class="titre" id="titre-intro">
+                {accueil.titre}
+              </h1>
+              <p class="lead">{accueil.accroche}</p>
+            </div>
+            <p class="indice" id="indice" aria-hidden="true">
+              {accueil.indice}
+            </p>
+
+            {chapitres.map((chapitre) => (
+              <div class={`plan chapitre accent-${chapitre.accent}`} data-plan={chapitre.calibre}>
+                <p class="chapitre__calibre">
+                  {chapitre.numero} · {chapitre.nom}
+                </p>
+                <h2 class="titre">{chapitre.titre}</h2>
+                <p>{chapitre.texte}</p>
+                {chapitre.statut && <p class="statut">{chapitre.statut}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div class="piste passage" data-de="nuit" data-vers="ivoire" aria-hidden="true">
+        <div class="etage">
+          <div class="passage__suivant"></div>
+          <div class="passage__mot">
+            <span>{accueil.passages.methode}</span>
+          </div>
+          <div class="passage__bandes">
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Méthode : le plan se dessine -->
+      <section id="methode" class="piste sur-ivoire" data-fond="ivoire" aria-labelledby="titre-methode">
+        <div class="etage">
+          <div class="mots" aria-hidden="true">
+            {methode.etapes.map((etape) => (
+              <span>{etape.titre}</span>
+            ))}
+          </div>
+          <div class="methode__rail">
+            <div class="methode__tete">
+              <p class="surtitre">
+                <span class="filet" aria-hidden="true">
+                  <i></i>
+                  <i></i>
+                  <i></i>
+                </span>
+                {accueil.passages.methode}
+              </p>
+              <h2 class="titre" id="titre-methode">
+                {methode.idee}
+              </h2>
+            </div>
+            {methode.etapes.map((etape, i) => (
+              <article class="etape">
+                <svg viewBox="-1 -1 122 122" aria-hidden="true" set:html={dessins[i]} />
+                <p class="etape__num" aria-hidden="true">
+                  {deux(i + 1)}
+                </p>
+                <h3>{etape.titre}</h3>
+                <p>{etape.texte}</p>
+              </article>
+            ))}
+          </div>
+          <div class="methode__ligne" aria-hidden="true">
+            <span></span>
+          </div>
+        </div>
+      </section>
+
+      {projets.length > 0 && (
+        <>
+          <div class="piste passage" data-de="ivoire" data-vers="nuit" aria-hidden="true">
+            <div class="etage">
+              <div class="passage__suivant" />
+              <div class="passage__mot">
+                <span>{accueil.passages.projets}</span>
+              </div>
+              <div class="passage__bandes">
+                <i />
+                <i />
+                <i />
+              </div>
+            </div>
+          </div>
+
+          <!-- Projets : un mur courbe qui tourne autour du visiteur -->
+          <section id="projets" class="piste sur-nuit" data-fond="nuit" aria-labelledby="titre-projets">
+            <div class="etage">
+              <div class="projets__tete">
+                <div>
+                  <p class="surtitre">
+                    <span class="filet" aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                    </span>
+                    {accueil.passages.projets}
+                  </p>
+                  <h2 class="titre" id="titre-projets">
+                    {accueil.projets.titre}
+                  </h2>
+                </div>
+                <p class="projets__compte" aria-hidden="true">
+                  <span id="compte">01</span> / {deux(projets.length)}
+                </p>
+              </div>
+              <div class="maquette">
+                <ul class="anneau" id="anneau" role="list">
+                  {projets.map((projet) => (
+                    <li class={`projet accent-${projet.calibreInfo.accent}`}>
+                      <p class="projet__meta">
+                        <span>
+                          {projet.calibreInfo.numero} · {projet.calibreInfo.nom}
+                        </span>
+                        <span class="projet__client">{projet.client}</span>
+                      </p>
+                      <div class="projet__ecran">
+                        {projet.capture && projet.image && (
+                          <Image
+                            src={projet.capture}
+                            alt={projet.image.alt}
+                            widths={[480, 720, 1080]}
+                            sizes="(max-width: 48rem) 84vw, 36rem"
+                            loading="lazy"
+                          />
+                        )}
+                      </div>
+                      <div class="projet__infos">
+                        <h3>{projet.nom}</h3>
+                        <dl class="projet__reperes">
+                          {projet.reperes.map((repere) => (
+                            <div>
+                              <dt>{repere.titre}</dt>
+                              <dd>{repere.texte}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                        {projet.lien && (
+                          <a class="projet__lien" href={projet.lien.url} target="_blank" rel="noopener">
+                            {projet.lien.libelle}
+                          </a>
+                        )}
+                      </div>
+                      <div class="projet__ombre" />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+        </>
+      )}
+
+      <!-- Équipe : trois bandes, trois associés -->
+      <section id="equipe" class="piste sur-nuit" data-fond="nuit" aria-labelledby="titre-equipe">
+        <div class="etage">
+          <div class="equipe__tete">
+            <p class="surtitre">
+              <span class="filet" aria-hidden="true">
+                <i></i>
+                <i></i>
+                <i></i>
+              </span>
+              Équipe
+            </p>
+            <h2 class="titre" id="titre-equipe">
+              {equipe.titre}
+            </h2>
+            <p>{equipe.texte}</p>
+          </div>
+          <div class="trio" id="trio" aria-hidden="true">
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
+          {equipe.associes.map((associe, i) => (
+            <article
+              class={`associe associe--${i + 1} accent-${associe.accent}`}
+              aria-labelledby={`nom-${i}`}
+            >
+              <div class="associe__fiche">
+                <div class="associe__photo">
+                  {associe.photo && (
+                    <Image
+                      src={imageDe('equipe', associe.photo)}
+                      alt={`Portrait de ${associe.prenom} ${associe.nom}`}
+                      widths={[420, 840]}
+                      sizes="(max-width: 48rem) 5.5rem, 33vw"
+                    />
+                  )}
+                </div>
+                <div class="associe__texte">
+                  <p class="associe__role">{associe.role}</p>
+                  <h3 class="associe__nom" id={`nom-${i}`}>
+                    {associe.prenom}
+                    <br />
+                    {associe.nom}
+                  </h3>
+                  {associe.formation && <p class="associe__formation">{associe.formation}</p>}
+                  <p class="associe__bio">{associe.bio}</p>
+                  <ul class="associe__reperes">
+                    {associe.expertises.map((expertise) => (
+                      <li>{expertise}</li>
+                    ))}
+                  </ul>
+                  {associe.linkedin && (
+                    <a class="associe__lien" href={associe.linkedin} target="_blank" rel="noopener">
+                      Profil LinkedIn de {associe.prenom}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <div class="piste passage" data-de="nuit" data-vers="ivoire" aria-hidden="true">
+        <div class="etage">
+          <div class="passage__suivant"></div>
+          <div class="passage__mot">
+            <span>{accueil.passages.media}</span>
+          </div>
+          <div class="passage__bandes">
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- T’as cru ? -->
+      <section id="tascru" class="piste sur-ivoire" data-fond="ivoire" aria-labelledby="titre-tascru">
+        <div class="etage">
+          <div class="tascru__tete">
+            <p class="surtitre">
+              <span class="filet" aria-hidden="true">
+                <i></i>
+                <i></i>
+                <i></i>
+              </span>
+              {media.surtitre}
+            </p>
+            <h2 class="titre" id="titre-tascru">
+              {media.nom}
+            </h2>
+            <p>{media.texte}</p>
+          </div>
+          <div class="manege">
+            <ul class="manege__axe" id="manege" role="list">
+              {manege.map((episode) => (
+                <li class="episode" aria-hidden={episode.copie ? 'true' : undefined}>
+                  <Image
+                    src={episode.image}
+                    alt={episode.copie ? '' : `Miniature T’as cru : ${episode.question}`}
+                    widths={[360, 720]}
+                    sizes="(max-width: 48rem) 30vw, 13rem"
+                    loading="lazy"
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="tascru__pied">
+            <a class="bouton bouton--aplat" href={media.lien} target="_blank" rel="noopener">
+              Voir les vidéos sur LinkedIn
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <div class="piste passage" data-de="ivoire" data-vers="nuit" aria-hidden="true">
+        <div class="etage">
+          <div class="passage__suivant"></div>
+          <div class="passage__mot">
+            <span>{accueil.passages.vision}</span>
+          </div>
+          <div class="passage__bandes">
+            <i></i>
+            <i></i>
+            <i></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vision -->
+      <section id="vision" class="piste sur-nuit" data-fond="nuit" aria-labelledby="titre-vision">
+        <div class="etage">
+          <h2 class="vision__cap" id="titre-vision">
+            {motsCap.map((mot, i) => (
+              <>
+                {i > 0 && ' '}
+                <span>{mot}</span>
+              </>
+            ))}
+          </h2>
+          <ul class="principes" role="list">
+            {vision.principes.map((principe) => (
+              <li class={`principe accent-${principe.accent}`}>
+                <div>
+                  <h3>{principe.titre}</h3>
+                  <p>{principe.texte}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- Contact, puis le logo se referme -->
+      <section id="contact" class="piste sur-nuit" data-fond="nuit" aria-labelledby="titre-contact">
+        <div class="etage">
+          <div class="contact__corps" id="contact-corps">
+            <h2 class="contact__titre" id="titre-contact" aria-label={accueil.contact.titre}>
+              {lettresContact.map((lettre) => (
+                <span aria-hidden="true">{lettre}</span>
+              ))}
+            </h2>
+            <p class="contact__texte">{accueil.contact.texte}</p>
+            <a class="contact__mail" href={`mailto:${contact.email}`}>
+              {contact.email}
+            </a>
+            <div class="contact__actions">
+              {hebergement.formulaire && (
+                <a class="bouton bouton--aplat" href={lien('/contact/')}>
+                  Écrire via le formulaire
+                </a>
+              )}
+              <a
+                class:list={['bouton', hebergement.formulaire ? 'bouton--contour' : 'bouton--aplat']}
+                href={contact.linkedin}
+                target="_blank"
+                rel="noopener"
+              >
+                Suivre GLM sur LinkedIn
+              </a>
+            </div>
+          </div>
+          <div class="fin" id="fin" aria-hidden="true">
+            <svg viewBox="0 0 120 120">
+              <rect class="bande" x="30" y="30" width="20" height="60" fill="#E9674F"></rect>
+              <rect class="bande" x="50" y="30" width="20" height="60" fill="#2FA877"></rect>
+              <rect class="bande" x="70" y="30" width="20" height="60" fill="#3F63F2"></rect>
+            </svg>
+            <p>GLM</p>
+          </div>
+          <footer class="pied">
+            <span>
+              © {new Date().getFullYear()} GLM · {entreprise.forme} · {entreprise.ville},{' '}
+              {entreprise.departement}
+            </span>
+            <span>
+              <a href={lien('/mentions-legales/')}>Mentions légales</a> ·
+              <a href={lien('/confidentialite/')}>Confidentialité</a>
+            </span>
+          </footer>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      import '../scripts/accueil/scene.js';
+      import '../scripts/accueil/visite.js';
+    </script>
+  </body>
+</html>

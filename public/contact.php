@@ -35,7 +35,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     header('Allow: POST');
     if (!$veutJson) {
         // Accès direct à l’adresse du script : on renvoie vers le formulaire.
-        header('Location: /#contact', true, 303);
+        header('Location: /contact/', true, 303);
         exit;
     }
     repondre($veutJson, 405, ['ok' => false, 'message' => 'Méthode non autorisée.']);

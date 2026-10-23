@@ -103,6 +103,7 @@ export const entreprise = {
   tva: 'FR09 108 105 529',
   // Numéro obligatoire dans les mentions légales (LCEN art. 6) : numéro WhatsApp de GLM, à confirmer.
   telephone: '+33 6 51 28 01 91',
+  ville: 'Sannois',
   departement: 'Val-d’Oise',
   /** Directeur de la publication : en SAS, le représentant légal (le Président). */
   directeurPublication: 'Romain Dufraiche, Président',
@@ -151,6 +152,24 @@ export const contact = {
   /** Script PHP de traitement du formulaire, déposé avec le site sur OVH (voir public/contact.php). */
   endpoint: '/contact.php',
   sujets: ['Web & communication', 'Automatisation & IA', 'Robotique', 'Autre'],
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* Page d’accueil : textes de la visite                               */
+/* ------------------------------------------------------------------ */
+
+export const accueil = {
+  surtitre: 'Architectes de la tech',
+  titre: 'On conçoit et on construit les systèmes numériques des entreprises.',
+  accroche: 'Du site web à l’automatisation et à l’intelligence artificielle, et demain jusqu’aux robots.',
+  indice: 'Faites défiler',
+  /** Mots affichés en grand entre deux sections. */
+  passages: { methode: 'Méthode', projets: 'Projets', media: 'Notre média', vision: 'Vision' },
+  projets: { titre: 'Une histoire vraie vaut dix promesses.' },
+  contact: {
+    titre: 'Parlons-en.',
+    texte: 'Un site, un process à automatiser, une idée encore floue : racontez-nous votre métier.',
+  },
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -288,7 +307,7 @@ export const methode = {
 export const equipe: { titre: string; texte: string; associes: Associe[] } = {
   titre: 'Trois associés, une seule équipe.',
   texte:
-    'On s’est rencontrés en cours de data science à UC Irvine, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par toute l’équipe, du premier échange à la mise en service.',
+    'On s’est rencontrés en cours de data science à UC Irvine, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par toute l’équipe.',
   // TODO: vérifier que chaque photo correspond au bon associé.
   associes: [
     {
@@ -362,12 +381,9 @@ export const vision: { cap: string; principes: { titre: string; texte: string; a
 /** Série vidéo quotidienne de vulgarisation publiée par GLM sur LinkedIn. */
 export const media = {
   nom: 'T’as cru\u00a0?',
-  surtitre: 'Notre média · Une vidéo par jour',
-  accroche: 'Une idée reçue, démontée chaque jour en vidéo.',
+  surtitre: 'Une vidéo par jour',
   texte:
-    'Chaque jour, une courte vidéo de vulgarisation scientifique, technologique et financière. Hugo, le curieux, part d’une idée reçue qu’on entend partout. Nora, l’experte, explique ce qui se passe vraiment.',
-  rythme: 'Un thème par semaine, une vidéo par jour.',
-  hashtag: '#TasCru',
+    'Hugo, le curieux, part d’une idée reçue qu’on entend partout. Nora, l’experte, explique ce qui se passe vraiment.',
   /** Page où suivre la série : la page LinkedIn de GLM. */
   lien: 'https://www.linkedin.com/company/glmprime/',
   /**
@@ -397,21 +413,3 @@ export const media = {
     },
   ],
 } as const;
-
-/* ------------------------------------------------------------------ */
-/* Actualités LinkedIn                                                */
-/* ------------------------------------------------------------------ */
-
-/**
- * Posts LinkedIn affichés dans la rubrique Actualités, du plus récent au plus ancien.
- * Coller au choix le lien du post (menu « … » → « Copier le lien vers le post »)
- * ou l’URL d’intégration officielle (menu « … » → « Intégrer ce post », valeur de src).
- * Les paramètres de suivi du lien sont ignorés automatiquement.
- *
- * Les iframes ne sont chargées qu’après consentement (bandeau cookies).
- */
-// TODO: ajouter un 3e post (idéalement depuis la page entreprise GLM).
-export const postsLinkedIn: string[] = [
-  'https://www.linkedin.com/posts/romain-dufraiche_datascience-ai-generativeai-activity-7406866497341452288-Wxge',
-  'https://www.linkedin.com/posts/romain-dufraiche_echec-ia-data-activity-7348087063193239552-Rr_i',
-];

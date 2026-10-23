@@ -57,11 +57,13 @@ src/
   data/site.ts        contenu éditable (seul fichier à modifier au quotidien)
   styles/tokens.css   design tokens de la charte (couleurs, typographie, espacements)
   components/         primitives de marque : Symbole, Logotype, Filet, Surtitre, Bouton, cartes
-  sections/           sections de la page (Nav, Hero, Expertises, Projets, Méthode, Équipe…)
+  sections/           navigation et pied de page des pages de texte
   layouts/            gabarits (base SEO + pages de texte)
-  pages/              accueil, mentions légales, confidentialité, confirmations, 404, robots.txt
-  lib/                logique isolée et testée (validation du formulaire, consentement, LinkedIn)
-  scripts/            comportements côté navigateur (menu, défilement des projets, formulaire, consentement)
+  pages/              accueil (visite V6), contact, mentions légales, confidentialité, confirmations, 404
+  styles/accueil.css  mise en page et animations de l’accueil
+  lib/                logique isolée et testée (validation du formulaire, hébergement, images)
+  scripts/            comportements côté navigateur (menu, formulaire)
+  scripts/accueil/    scène 3D three.js de l’ouverture et chorégraphie au défilement
 public/
   contact.php         point d’entrée du formulaire
   _serveur/           logique PHP (non accessible depuis le web)
@@ -73,8 +75,9 @@ tests/                unit/ (Vitest), php/, e2e/ (Playwright + axe-core)
 
 Choix techniques :
 
-- **Aucun contenu tiers sans consentement** : polices auto-hébergées, iframes LinkedIn chargées seulement
-  après accord (choix gardé 6 mois, modifiable via « Gérer les cookies » en pied de page).
+- **Aucun contenu tiers** : polices et three.js (version figée 0.158.0) servis avec le site, aucun cookie.
+- **Accueil en visite au défilement** : avec « mouvement réduit » ou sans WebGL, tout s’affiche à plat
+  (classes `statique` et `sans-3d`, posées par `public/accueil-mouvement.js`).
 - **CSP stricte** (`script-src 'self'`, `style-src 'self'`) : aucun script ni style en ligne.
 - **Formulaire** : fonctionne aussi sans JavaScript (redirection vers une page de confirmation).
   Validation côté navigateur pour le confort ; la validation PHP est la seule qui fait foi.

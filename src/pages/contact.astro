@@ -1,0 +1,23 @@
+---
+import PageTexte from '../layouts/PageTexte.astro';
+import FormulaireContact from '../components/FormulaireContact.astro';
+import { contact } from '../data/site';
+import { hebergement } from '../lib/hebergement';
+---
+
+<!-- Formulaire de contact (hébergement OVH, traité par contact.php). Sans formulaire, l’e-mail suffit. -->
+<PageTexte
+  titre="Écrire à GLM"
+  surtitre="Contact"
+  description="Un site, un process à automatiser, une idée encore floue : racontez-nous votre métier."
+>
+  <p>
+    Un site, un process à automatiser, une idée encore floue : racontez-nous votre métier. Vous pouvez aussi
+    écrire directement à <a href={`mailto:${contact.email}`}>{contact.email}</a>.
+  </p>
+  {hebergement.formulaire && (
+    <div data-email-direct={contact.email}>
+      <FormulaireContact />
+    </div>
+  )}
+</PageTexte>

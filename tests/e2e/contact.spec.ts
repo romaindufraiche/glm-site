@@ -11,7 +11,7 @@ async function remplir(page: Page) {
 
 test.describe('Formulaire de contact', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/#contact');
+    await page.goto('/contact/');
   });
 
   test('affiche une erreur précise par champ et place le focus sur le premier', async ({ page }) => {

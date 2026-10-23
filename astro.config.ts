@@ -20,6 +20,8 @@ export default defineConfig({
     build: {
       // Aucun script ni asset inliné : tout le JS est servi depuis /_astro/, autorisé par script-src 'self'.
       assetsInlineLimit: 0,
+      // La scène 3D de l’accueil embarque three.js (environ 650 ko, 170 ko compressé), chargé après l’affichage.
+      chunkSizeWarningLimit: 700,
     },
   },
   integrations: [

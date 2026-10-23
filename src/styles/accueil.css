@@ -1,0 +1,1379 @@
+/* Page d’accueil (maquette V6) : visite au défilement, scène 3D et sections épinglées. */
+@import '@fontsource/libre-caslon-display/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-400.css';
+@import '@fontsource/ibm-plex-sans/latin-500.css';
+@import '@fontsource/ibm-plex-sans/latin-600.css';
+
+:root {
+  --nuit: #0b1533;
+  --ivoire: #f4efe4;
+  --encre: #16181d;
+  --corail: #e9674f;
+  --jade: #2fa877;
+  --bleu: #3f63f2;
+  --pierre: #d9d6ce;
+  --ivoire-doux: #bab9b8;
+  --encre-douce: #4e4e4f;
+  --trait-nuit: #3a4156;
+  --font-titre: 'Libre Caslon Display', 'Libre Caslon Text', Georgia, 'Times New Roman', serif;
+  --font-texte: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --gutter: clamp(1.25rem, 0.8rem + 2vw, 2.5rem);
+  --nav-h: 4.25rem;
+  color-scheme: dark;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+/* La marque vit sur Nuit et Ivoire, en alternance : la page garde ses couleurs dans les deux thèmes. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --nuit: #0b1533;
+  }
+}
+:root[data-theme='dark'] {
+  --nuit: #0b1533;
+}
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+html.chargement {
+  overflow: hidden;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+}
+body {
+  background: var(--nuit);
+  color: var(--ivoire);
+  font-family: var(--font-texte);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 30;
+  background: var(--nuit);
+}
+img {
+  max-width: 100%;
+  display: block;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+.titre {
+  font-family: var(--font-titre);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.005em;
+}
+.surtitre {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.filet {
+  display: inline-flex;
+  height: 3px;
+  flex-shrink: 0;
+}
+.filet i {
+  width: 0.75rem;
+}
+.filet i:nth-child(1) {
+  background: var(--corail);
+}
+.filet i:nth-child(2) {
+  background: var(--jade);
+}
+.filet i:nth-child(3) {
+  background: var(--bleu);
+}
+.bouton {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.85rem 1.4rem;
+  text-decoration: none;
+  border: 1px solid currentColor;
+  color: inherit;
+  transition:
+    background 150ms,
+    color 150ms;
+}
+.sur-nuit .bouton--aplat {
+  background: var(--ivoire);
+  color: var(--nuit);
+  border-color: var(--ivoire);
+}
+.sur-nuit .bouton--aplat:hover {
+  background: transparent;
+  color: var(--ivoire);
+}
+.sur-nuit .bouton--contour:hover {
+  background: var(--ivoire);
+  color: var(--nuit);
+}
+.sur-ivoire .bouton--aplat {
+  background: var(--encre);
+  color: var(--ivoire);
+  border-color: var(--encre);
+}
+.sur-ivoire .bouton--aplat:hover {
+  background: transparent;
+  color: var(--encre);
+}
+.sur-nuit {
+  background: var(--nuit);
+  color: var(--ivoire);
+}
+.sur-ivoire {
+  background: var(--ivoire);
+  color: var(--encre);
+}
+
+/* Les sections animées sont des « pistes » : hautes, avec une scène épinglée à l’écran. */
+.piste {
+  position: relative;
+}
+.etage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* ================================================================ */
+/* Navigation                                                       */
+/* ================================================================ */
+.nav {
+  position: fixed;
+  top: env(safe-area-inset-top, 0px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 0 var(--gutter);
+  color: var(--ivoire);
+  transition: color 250ms;
+}
+.nav.ton-ivoire {
+  color: var(--encre);
+}
+.logotype {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: inherit;
+  text-decoration: none;
+  font-family: var(--font-titre);
+  font-size: 1.35rem;
+  letter-spacing: 0.14em;
+  margin-right: auto;
+}
+.logotype svg {
+  width: 28px;
+  height: 28px;
+}
+.nav__liens {
+  display: flex;
+  gap: 1.6rem;
+  list-style: none;
+  padding: 0;
+  font-size: 0.9375rem;
+}
+.nav__liens a {
+  color: inherit;
+  text-decoration: none;
+  opacity: 0.82;
+}
+.nav__liens a:hover {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+.nav__bouton {
+  font-size: 0.9375rem;
+  padding: 0.5rem 0.95rem;
+}
+.nav__bouton:hover {
+  background: currentColor;
+}
+.nav__bouton:hover span {
+  color: var(--nuit);
+}
+.nav.ton-ivoire .nav__bouton:hover span {
+  color: var(--ivoire);
+}
+.nav__progression {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+}
+.nav__progression span {
+  display: block;
+  height: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  /* Filet tricolore : trois aplats francs, sans dégradé. */
+  background: linear-gradient(
+    90deg,
+    var(--corail) 0 33.333%,
+    var(--jade) 33.333% 66.666%,
+    var(--bleu) 66.666% 100%
+  );
+}
+@media (max-width: 60rem) {
+  .nav__liens {
+    display: none;
+  }
+}
+@media (max-width: 30rem) {
+  .nav__bouton {
+    display: none;
+  }
+}
+
+/* ================================================================ */
+/* Chargeur : le logo se trace, puis se pose à sa place dans le hero */
+/* ================================================================ */
+.chargeur {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.chargeur__fond {
+  position: absolute;
+  inset: 0;
+  background: var(--nuit);
+}
+.chargeur__logo {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: min(34vw, 15rem);
+  transform: translate(-50%, -50%);
+  transform-origin: 0 0;
+}
+.chargeur__logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.chargeur .trace {
+  fill: none;
+  stroke: var(--ivoire);
+  stroke-width: 1.2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: tracer 1100ms cubic-bezier(0.6, 0, 0.3, 1) 150ms forwards;
+}
+.chargeur .bande {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(0);
+  animation: monter 650ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.chargeur .bande:nth-of-type(3) {
+  animation-delay: 1050ms;
+}
+.chargeur .bande:nth-of-type(4) {
+  animation-delay: 1180ms;
+}
+.chargeur .bande:nth-of-type(5) {
+  animation-delay: 1310ms;
+}
+.chargeur__nom {
+  position: absolute;
+  left: 50%;
+  top: calc(46% + min(17vw, 7.5rem) + 1.6rem);
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5em;
+  font-family: var(--font-titre);
+  font-size: clamp(1.4rem, 1rem + 1.5vw, 2rem);
+  letter-spacing: 0.14em;
+}
+.chargeur__nom span {
+  opacity: 0;
+  transform: translateY(0.4em);
+  animation: lettre 500ms cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+.chargeur__nom span:nth-child(1) {
+  animation-delay: 1500ms;
+}
+.chargeur__nom span:nth-child(2) {
+  animation-delay: 1580ms;
+}
+.chargeur__nom span:nth-child(3) {
+  animation-delay: 1660ms;
+}
+@keyframes tracer {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes monter {
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes lettre {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.chargeur.se-pose .trace,
+.chargeur.se-pose .chargeur__nom {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+.chargeur.se-pose .chargeur__fond {
+  opacity: 0;
+  transition: opacity 700ms 200ms;
+}
+.chargeur.se-pose .chargeur__logo {
+  transition: transform 900ms cubic-bezier(0.65, 0, 0.25, 1);
+}
+
+/* ================================================================ */
+/* Ouverture 3D                                                      */
+/* ================================================================ */
+#piste {
+  height: 1100vh;
+}
+#scene canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: opacity 300ms;
+}
+.chargement #scene canvas {
+  opacity: 0;
+}
+.voile {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.plan {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  visibility: hidden;
+}
+.plan.est-visible {
+  visibility: visible;
+}
+.intro {
+  left: var(--gutter);
+  bottom: clamp(3.5rem, 10vh, 7rem);
+  max-width: min(40rem, 46vw);
+  display: grid;
+  gap: 1.4rem;
+}
+.intro .surtitre {
+  color: var(--ivoire-doux);
+}
+.intro h1 {
+  font-size: clamp(2.5rem, 1.6rem + 4vw, 5.25rem);
+  max-width: 13ch;
+}
+.intro p.lead {
+  max-width: 30rem;
+  color: var(--ivoire-doux);
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+}
+/* Après le chargeur, le texte du hero arrive ligne par ligne : c’est le seul mouvement automatique. */
+.intro > * {
+  transition:
+    opacity 700ms,
+    transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.chargement .intro > * {
+  opacity: 0;
+  transform: translateY(1.2rem);
+}
+.intro > :nth-child(2) {
+  transition-delay: 90ms;
+}
+.intro > :nth-child(3) {
+  transition-delay: 180ms;
+}
+.indice {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(3.5rem, 10vh, 7rem);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.9375rem;
+  color: var(--ivoire-doux);
+}
+.indice::after {
+  content: '';
+  width: 1px;
+  height: 3rem;
+  background: var(--ivoire-doux);
+}
+/* Même construction que les cartes Calibre du site : aplat Nuit, barre de couleur en haut. */
+.chapitre {
+  left: var(--gutter);
+  bottom: clamp(2.5rem, 8vh, 5.5rem);
+  width: min(31rem, calc(100% - 2 * var(--gutter)));
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.75rem 2rem 2rem;
+  background: rgba(11, 21, 51, 0.9);
+  border-top: 4px solid var(--accent);
+}
+.chapitre__calibre {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.chapitre h2 {
+  font-size: clamp(2.6rem, 1.6rem + 3.6vw, 5.2rem);
+  line-height: 0.98;
+}
+.chapitre .statut {
+  justify-self: start;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--accent);
+  padding: 0.2rem 0.6rem;
+}
+.accent-bleu {
+  --accent: var(--bleu);
+}
+.accent-corail {
+  --accent: var(--corail);
+}
+.accent-jade {
+  --accent: var(--jade);
+}
+@media (max-width: 47.99rem) {
+  .intro {
+    max-width: none;
+    right: var(--gutter);
+    bottom: 5.5rem;
+  }
+  .indice {
+    left: var(--gutter);
+    right: auto;
+    bottom: 2rem;
+  }
+  .indice::after {
+    display: none;
+  }
+  .chapitre {
+    right: var(--gutter);
+    bottom: 1.25rem;
+    width: auto;
+    padding: 1.25rem 1.25rem 1.4rem;
+  }
+}
+
+/* ================================================================ */
+/* Passages : trois bandes balaient l’écran entre Nuit et Ivoire     */
+/* ================================================================ */
+.passage {
+  height: 190vh;
+}
+.passage .etage > div {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.passage__bandes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.passage__bandes i {
+  display: block;
+  will-change: transform;
+}
+.passage__bandes i:nth-child(1) {
+  background: var(--corail);
+}
+.passage__bandes i:nth-child(2) {
+  background: var(--jade);
+}
+.passage__bandes i:nth-child(3) {
+  background: var(--bleu);
+}
+.passage[data-vers='ivoire'] .passage__suivant {
+  background: var(--ivoire);
+}
+.passage[data-vers='nuit'] .passage__suivant {
+  background: var(--nuit);
+}
+.passage[data-de='ivoire'] {
+  background: var(--ivoire);
+}
+.passage[data-de='nuit'] {
+  background: var(--nuit);
+}
+.passage__mot {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-titre);
+  font-size: clamp(3rem, 1rem + 9vw, 10rem);
+  letter-spacing: -0.01em;
+}
+.passage[data-vers='ivoire'] .passage__mot {
+  color: var(--encre);
+}
+
+/* ================================================================ */
+/* Méthode : on dessine le plan, de la grille au logo fini           */
+/* ================================================================ */
+#methode {
+  height: 460vh;
+}
+#methode .etage {
+  /* Papier millimétré d’architecte : une ligne tous les 2 rem, une ligne forte tous les 12. */
+  background-color: var(--ivoire);
+  background-image:
+    linear-gradient(var(--pierre) 1px, transparent 1px),
+    linear-gradient(90deg, var(--pierre) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  background-position: -1px -1px;
+}
+.mots {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: flex;
+  gap: 6vw;
+  white-space: nowrap;
+  font-family: var(--font-titre);
+  font-size: clamp(8rem, 4rem + 22vw, 26rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(22, 24, 29, 0.34);
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+.methode__rail {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 4vw;
+  padding: var(--nav-h) 8vw 0 var(--gutter);
+}
+.methode__tete {
+  flex: 0 0 min(36rem, 80vw);
+  display: grid;
+  gap: 1.4rem;
+}
+.methode__tete h2 {
+  font-size: clamp(2.4rem, 1.5rem + 3.4vw, 4.6rem);
+}
+.methode__tete .surtitre,
+.equipe__tete .surtitre {
+  color: inherit;
+}
+.etape {
+  flex: 0 0 min(30rem, 78vw);
+  display: grid;
+  gap: 1.1rem;
+  padding: 2rem;
+  background: var(--ivoire);
+  border: 1px solid var(--encre);
+}
+.etape svg {
+  width: 100%;
+  max-width: 14rem;
+  height: auto;
+  overflow: visible;
+}
+.etape svg .l {
+  fill: none;
+  stroke: var(--encre);
+  stroke-width: 0.6;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--q, 0));
+}
+.etape svg .l.fine {
+  stroke: var(--encre-douce);
+  stroke-width: 0.35;
+}
+.etape svg .rempli {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(var(--r, 0));
+}
+.etape svg .fond-logo {
+  opacity: var(--r, 0);
+}
+.etape__num {
+  font-family: var(--font-titre);
+  font-size: 3.6rem;
+  line-height: 1;
+}
+.etape h3 {
+  font-family: var(--font-titre);
+  font-weight: 400;
+  font-size: 2.2rem;
+  line-height: 1.05;
+}
+.etape p {
+  color: var(--encre-douce);
+}
+.methode__ligne {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 2.25rem;
+  height: 3px;
+  background: var(--pierre);
+}
+.methode__ligne span {
+  display: block;
+  height: 100%;
+  background: var(--encre);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* ================================================================ */
+/* Projets : la maquette, un mur courbe qui tourne autour de vous    */
+/* ================================================================ */
+#projets {
+  height: 420vh;
+}
+.projets__tete {
+  position: absolute;
+  top: calc(var(--nav-h) + 2rem);
+  left: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem;
+  z-index: 5;
+}
+.projets__tete h2 {
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.6rem);
+  max-width: 16ch;
+}
+.projets__compte {
+  font-family: var(--font-titre);
+  font-size: 2rem;
+  color: var(--ivoire-doux);
+}
+.maquette {
+  position: absolute;
+  inset: 0;
+  perspective: 1400px;
+  perspective-origin: 50% 55%;
+}
+.anneau {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+.projet {
+  --l: min(36rem, 84vw);
+  --h: min(34rem, calc(100vh - 18rem));
+  position: absolute;
+  left: calc(var(--l) / -2);
+  top: calc(var(--h) / -2);
+  width: var(--l);
+  height: var(--h);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--ivoire);
+  color: var(--encre);
+  border-top: 6px solid var(--accent);
+  backface-visibility: hidden;
+}
+.projet__ecran {
+  position: relative;
+  min-height: 0;
+  margin: 0.75rem 1rem 0;
+  background: var(--nuit);
+  overflow: hidden;
+}
+.projet__ecran img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+.projet__infos {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.25rem 1.25rem;
+}
+.projet__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem 0;
+}
+.projet__client {
+  color: var(--encre-douce);
+  font-weight: 500;
+  text-align: right;
+}
+/* Les trois repères de chaque projet : le besoin, ce que fait l’outil, ce que ça change. */
+.projet__reperes {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.25rem 0 0;
+}
+.projet__reperes div {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0.75rem;
+  padding-top: 0.3rem;
+  border-top: 1px solid var(--pierre);
+}
+.projet__reperes dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--encre);
+}
+.projet__reperes dd {
+  margin: 0;
+  color: var(--encre-douce);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+.projet__lien {
+  justify-self: start;
+  color: var(--encre);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+.projet h3 {
+  font-family: var(--font-titre);
+  font-weight: 400;
+  font-size: 1.45rem;
+  line-height: 1.1;
+}
+.projet p {
+  color: var(--encre-douce);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.projet__ombre {
+  position: absolute;
+  inset: 0;
+  background: var(--nuit);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ================================================================ */
+/* Équipe : chaque bande du logo s’ouvre sur un associé              */
+/* ================================================================ */
+#equipe {
+  height: 380vh;
+}
+.equipe__tete {
+  position: absolute;
+  left: var(--gutter);
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(30rem, 42vw);
+  display: grid;
+  gap: 1.3rem;
+  z-index: 1;
+}
+.equipe__tete h2 {
+  font-size: clamp(2.2rem, 1.4rem + 3vw, 4.2rem);
+}
+.equipe__tete p {
+  color: var(--ivoire-doux);
+}
+.trio {
+  position: absolute;
+  right: 14vw;
+  top: 50%;
+  display: flex;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+.trio i {
+  display: block;
+  width: clamp(2.5rem, 4vw, 4.5rem);
+  height: clamp(7.5rem, 12vw, 13.5rem);
+}
+.trio i:nth-child(1) {
+  background: var(--corail);
+}
+.trio i:nth-child(2) {
+  background: var(--jade);
+}
+.trio i:nth-child(3) {
+  background: var(--bleu);
+}
+/* Chaque bande du logo s’étire jusqu’à devenir une colonne : les trois associés, côte à côte. */
+.associe {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: var(--accent);
+  clip-path: inset(50% 50% 50% 50%);
+  visibility: hidden;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  padding: calc(var(--nav-h) + 1rem) 0 1.5rem;
+}
+.associe--1 {
+  --col: 1;
+}
+.associe--2 {
+  --col: 2;
+}
+.associe--3 {
+  --col: 3;
+}
+.associe__fiche {
+  grid-column: var(--col);
+  display: grid;
+  margin: 0 clamp(0.75rem, 0.4rem + 1vw, 1.5rem);
+  background: var(--ivoire);
+  color: var(--encre);
+  opacity: var(--o, 0);
+}
+.associe__photo {
+  background: var(--nuit);
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+.associe__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 28%;
+  /* Léger flou par défaut : le portrait devient net au survol ou au focus de la fiche. */
+  filter: grayscale(1) contrast(1.05) blur(3px);
+  transform: scale(1.04);
+  transition:
+    filter 0.4s ease,
+    transform 0.4s ease;
+}
+.associe:hover .associe__photo img,
+.associe:focus-within .associe__photo img {
+  filter: grayscale(0) contrast(1.05) blur(0);
+  transform: none;
+}
+.associe__texte {
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  padding: clamp(1rem, 0.7rem + 1vw, 1.75rem);
+}
+.associe__role {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.associe__nom {
+  font-family: var(--font-titre);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 1rem + 1.9vw, 3rem);
+  line-height: 1;
+}
+.associe__formation {
+  color: var(--encre-douce);
+  font-size: 0.875rem;
+}
+.associe__bio {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.associe__reperes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  padding: 0;
+  font-size: 0.8125rem;
+}
+.associe__reperes li {
+  border: 1px solid var(--encre);
+  padding: 0.1rem 0.5rem;
+}
+.associe__lien {
+  color: var(--encre);
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+.associe__texte > * {
+  transform: translateY(calc((1 - var(--o, 0)) * 1rem));
+}
+
+/* ================================================================ */
+/* T’as cru ? : le manège des épisodes                               */
+/* ================================================================ */
+#tascru {
+  height: 360vh;
+}
+.tascru__tete {
+  position: absolute;
+  top: calc(var(--nav-h) + 1.5rem);
+  left: var(--gutter);
+  right: var(--gutter);
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  z-index: 2;
+}
+.tascru__tete h2 {
+  font-size: clamp(3rem, 1.6rem + 6vw, 8rem);
+  line-height: 0.95;
+}
+.tascru__tete p {
+  color: var(--encre-douce);
+  max-width: 34rem;
+}
+.manege {
+  position: absolute;
+  inset: 0;
+  perspective: 1600px;
+  perspective-origin: 50% 30%;
+}
+.manege__axe {
+  position: absolute;
+  left: 50%;
+  top: 63%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+.episode {
+  --l: min(13rem, 30vw);
+  position: absolute;
+  width: var(--l);
+  left: calc(var(--l) / -2);
+  top: calc(var(--l) * -0.625);
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--encre);
+  background: var(--nuit);
+}
+.episode img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.tascru__pied {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* ================================================================ */
+/* Vision                                                            */
+/* ================================================================ */
+#vision {
+  height: 300vh;
+}
+.vision__cap {
+  font-weight: 400;
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: 22vh;
+  font-family: var(--font-titre);
+  font-size: clamp(2.2rem, 1.2rem + 4vw, 5.6rem);
+  line-height: 1.05;
+  max-width: 22ch;
+}
+.vision__cap span {
+  opacity: 0.16;
+}
+.principes {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+}
+.principe {
+  display: grid;
+  grid-template-columns: 4px 1fr;
+  gap: 1rem;
+}
+.principe::before {
+  content: '';
+  background: var(--accent);
+  transform-origin: 50% 100%;
+  transform: scaleY(var(--o, 0));
+}
+.principe > div {
+  opacity: var(--o, 0);
+}
+.principe h3 {
+  font-family: var(--font-titre);
+  font-weight: 400;
+  font-size: 1.9rem;
+}
+.principe p {
+  color: var(--ivoire-doux);
+  font-size: 0.9375rem;
+}
+
+/* ================================================================ */
+/* Contact et fin : le logo se referme                               */
+/* ================================================================ */
+#contact {
+  height: 260vh;
+}
+.contact__corps {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 1.6rem;
+  padding: var(--nav-h) var(--gutter) 0;
+}
+.contact__titre {
+  font-weight: 400;
+  display: flex;
+  font-family: var(--font-titre);
+  font-size: clamp(4rem, 1rem + 13vw, 15rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+.contact__titre span {
+  display: inline-block;
+  transform: translateY(calc((1 - var(--o, 0)) * 105%));
+}
+.contact__texte {
+  max-width: 34rem;
+  color: var(--ivoire-doux);
+  font-size: 1.15rem;
+}
+.contact__mail {
+  font-family: var(--font-titre);
+  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.4rem);
+  color: var(--ivoire);
+}
+.contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+.fin {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 1.6rem;
+  pointer-events: none;
+}
+.fin svg {
+  width: min(42vw, 15rem);
+  height: auto;
+}
+.fin .bande {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.fin p {
+  font-family: var(--font-titre);
+  font-size: clamp(1.4rem, 1rem + 1.5vw, 2rem);
+  letter-spacing: 0.14em;
+}
+.pied {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  font-size: 0.8125rem;
+  color: var(--ivoire-doux);
+}
+.pied a {
+  color: inherit;
+}
+
+/* ================================================================ */
+/* Mobile                                                           */
+/* ================================================================ */
+@media (max-width: 47.99rem) {
+  .equipe__tete {
+    top: calc(var(--nav-h) + 1.5rem);
+    transform: none;
+    width: auto;
+    right: var(--gutter);
+  }
+  .trio {
+    right: 50%;
+    top: auto;
+    bottom: 12vh;
+    transform: translateX(50%);
+  }
+  /* Sur mobile, les colonnes deviennent trois rangées, et les fiches se resserrent. */
+  .associe {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    padding: var(--nav-h) 0 0;
+  }
+  .associe__fiche {
+    grid-column: 1;
+    grid-row: var(--col);
+    grid-template-columns: 5.5rem 1fr;
+    margin: 0 var(--gutter);
+  }
+  .associe__photo {
+    aspect-ratio: 1;
+  }
+  .associe__texte {
+    gap: 0.2rem;
+    padding: 0.6rem 0.9rem;
+    align-content: center;
+  }
+  .associe__nom {
+    font-size: 1.5rem;
+  }
+  .associe__bio,
+  .associe__reperes {
+    display: none;
+  }
+  .principes {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    bottom: 1.5rem;
+  }
+  .vision__cap {
+    top: calc(var(--nav-h) + 1.5rem);
+  }
+  .principe p {
+    display: none;
+  }
+}
+
+/* ================================================================ */
+/* Mouvement réduit : tout le contenu, à plat, sans épinglage        */
+/* ================================================================ */
+.statique .piste,
+.statique #piste,
+.statique .passage {
+  height: auto !important;
+}
+.statique .passage,
+.statique .chargeur,
+.statique .mots,
+.statique .methode__ligne,
+.statique .indice,
+.statique .fin,
+.statique .nav__progression,
+.statique .trio,
+.statique .projet__ombre {
+  display: none;
+}
+.statique .etage {
+  position: relative;
+  height: auto;
+  overflow: visible;
+  padding: calc(var(--nav-h) + 3rem) 0 4rem;
+}
+.statique .methode__rail,
+.statique .projets__tete,
+.statique .equipe__tete,
+.statique .tascru__tete,
+.statique .vision__cap,
+.statique .principes,
+.statique .contact__corps,
+.statique .pied {
+  position: relative;
+  inset: auto;
+  top: auto;
+  transform: none;
+  margin: 0 var(--gutter) 2.5rem;
+}
+.statique .methode__rail {
+  flex-wrap: wrap;
+  padding: 0;
+}
+.statique .maquette,
+.statique .manege {
+  position: relative;
+  perspective: none;
+}
+.statique .anneau,
+.statique .manege__axe {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: auto;
+  height: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: 1.5rem;
+  padding: 0 var(--gutter);
+  transform: none !important;
+}
+.statique .projet,
+.statique .episode {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: auto;
+  min-height: 24rem;
+  transform: none !important;
+}
+.statique .episode:nth-child(n + 5) {
+  display: none;
+}
+.statique .associe {
+  position: relative;
+  clip-path: none;
+  visibility: visible;
+  display: block;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem var(--gutter);
+}
+.statique .associe__fiche,
+.statique .associe__texte > *,
+.statique .principe > div {
+  opacity: 1;
+  transform: none;
+}
+.statique .principe::before {
+  transform: none;
+}
+.statique .vision__cap span {
+  opacity: 1;
+}
+.statique .contact__titre span {
+  transform: none;
+}
+.statique .tascru__pied {
+  position: relative;
+  bottom: auto;
+  margin-top: 2rem;
+}
+.statique .etape {
+  --q: 1;
+  --r: 1;
+}
+.sans-3d #piste {
+  height: auto;
+}
+.sans-3d #scene {
+  position: relative;
+  height: auto;
+  padding: calc(var(--nav-h) + 3rem) 0 4rem;
+}
+.sans-3d #scene canvas,
+.sans-3d .voile,
+.sans-3d .indice,
+.sans-3d .chapitre {
+  display: none;
+}
+.sans-3d .intro {
+  position: relative;
+  inset: auto;
+  opacity: 1;
+  visibility: visible;
+  margin: 0 var(--gutter);
+  max-width: 44rem;
+}
+
+/* Fiches projets sur petit écran : chaque repère passe sous son intitulé. */
+@media (max-width: 47.99rem) {
+  .projet__reperes div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .projet__infos {
+    padding: 0.75rem 1rem 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .associe__photo img {
+    transition: none;
+  }
+}
+
+/* Lien d’évitement : invisible jusqu’au premier appui sur Tab. */
+.evitement {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--ivoire);
+  color: var(--nuit);
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+.evitement:focus {
+  transform: none;
+}
+main:focus {
+  outline: none;
+}
+
+/* Mouvement réduit : les fiches projets prennent la hauteur de leur contenu. */
+.statique .projet {
+  height: auto;
+}
+.statique .projet__ecran {
+  aspect-ratio: 16 / 10;
+}
