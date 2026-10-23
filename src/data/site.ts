@@ -168,7 +168,7 @@ export const contact = {
 export const accueil = {
   surtitre: 'Architectes de la tech',
   titre: 'On conçoit et on construit les systèmes numériques des entreprises.',
-  accroche: 'Du site web à l’automatisation et à l’intelligence artificielle, et demain jusqu’aux robots.',
+  accroche: 'Site web, automatisation, data, IA… et demain, les\u00a0robots.',
   indice: 'Faites défiler',
   /** Mots affichés en grand entre deux sections. */
   passages: { methode: 'Méthode', projets: 'Projets', media: 'Notre média', vision: 'Vision' },
@@ -194,13 +194,13 @@ export const expertises: Expertise[] = [
     calibre: 'web',
     titre: 'La façade',
     texte:
-      'Sites, e-commerce, applications, personal branding, campagnes de prospection et de communication. Ce qui vous rend visible et construit votre image.',
+      'Sites web, e-commerce, applications, ERP, CRM, personal branding, campagnes de prospection et de communication. Ce qui vous rend visible et construit votre image.',
   },
   {
     calibre: 'ia',
     titre: 'La structure',
     texte:
-      'Process automatisés, données, IA intégrée à vos outils. Ce qui fait tourner l’entreprise et vous fait gagner du temps et de l’argent.',
+      'Process automatisés, data, IA intégrée à vos outils, assistants personnels. Ce qui fait tourner l’entreprise et vous fait gagner du temps et de l’argent.',
   },
   {
     calibre: 'robotique',
@@ -345,7 +345,10 @@ export const methode = {
   idee: 'La technologie s’adapte à votre métier, jamais l’inverse.',
   // TODO: relire les phrases des étapes (rédigées à partir de la charte v0.5).
   etapes: [
-    { titre: 'Écouter', texte: 'On part de votre métier réel et de ce qui vous fait perdre du temps.' },
+    {
+      titre: 'Écouter',
+      texte: 'On part de votre métier et de ce qui vous coûte du temps et de l’argent.',
+    },
     {
       titre: 'Concevoir',
       texte: 'On dessine la solution sur mesure, avec un devis clair avant d’écrire une ligne.',
@@ -375,7 +378,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Romain',
       nom: 'Dufraiche',
       role: 'Président',
-      formation: 'Ingénieur en électronique et en informatique · Télécom Paris · ESSEC',
+      formation: 'Ingénieur en électronique et ingénieur en informatique · Télécom Paris · ESSEC',
       bio: 'Il porte la vision stratégique de GLM et traduit vos besoins métier en un projet clair.',
       expertises: ['Stratégie', 'Organisation', 'Relation client'],
       accent: 'corail',
@@ -397,7 +400,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Romain',
       nom: 'Yerolymos',
       role: 'Développement et partenariats',
-      formation: 'Ingénieur en cybersécurité · Développement international',
+      formation: 'Ingénieur en cybersécurité · Développement international · ESIEE Paris',
       bio: 'Il sécurise les systèmes que l’on construit et développe les partenariats de GLM.',
       expertises: ['Cybersécurité', 'Partenariats', 'Réseau'],
       accent: 'bleu',
@@ -412,7 +415,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
 /* ------------------------------------------------------------------ */
 
 export const vision: { cap: string; principes: { titre: string; texte: string; accent: Accent }[] } = {
-  cap: 'Notre cap\u00a0: grâce à la technologie, vous faire gagner du temps et de l’argent et développer votre activité, pour que votre métier reste une passion.',
+  cap: 'Notre cap\u00a0: faciliter votre quotidien, vous faire gagner du temps et de l’argent et développer votre activité, pour que votre métier reste une passion. Le tout, par la technologie.',
   // Principes reformulés à partir des réponses des associés (octobre 2026).
   principes: [
     {
