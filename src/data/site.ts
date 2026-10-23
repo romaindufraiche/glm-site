@@ -34,9 +34,17 @@ export interface Expertise {
 
 export interface Projet {
   nom: string;
+  /** Pour qui : le client, ou « Projet GLM » pour un outil développé en interne. */
   client: string;
   calibre: CalibreId;
-  resultat: string;
+  /** Le problème de départ, en une phrase. */
+  besoin: string;
+  /** Ce que fait l’outil : sa capacité phare. */
+  capacite: string;
+  /** Ce que la personne y gagne (temps, argent, productivité…). */
+  gain: string;
+  /** Capture d’écran déposée dans src/assets/projets/ (format paysage). */
+  image?: { fichier: string; alt: string };
   lien?: { url: string; libelle: string };
   /** Projet d’exemple : la carte affiche la mention « Exemple ». À retirer une fois le vrai projet saisi. */
   exemple?: boolean;
@@ -95,6 +103,7 @@ export const entreprise = {
   tva: 'FR09 108 105 529',
   // Numéro obligatoire dans les mentions légales (LCEN art. 6) : numéro WhatsApp de GLM, à confirmer.
   telephone: '+33 6 51 28 01 91',
+  ville: 'Sannois',
   departement: 'Val-d’Oise',
   /** Directeur de la publication : en SAS, le représentant légal (le Président). */
   directeurPublication: 'Romain Dufraiche, Président',
@@ -146,6 +155,24 @@ export const contact = {
 } as const;
 
 /* ------------------------------------------------------------------ */
+/* Page d’accueil : textes de la visite                               */
+/* ------------------------------------------------------------------ */
+
+export const accueil = {
+  surtitre: 'Architectes de la tech',
+  titre: 'On conçoit et on construit les systèmes numériques des entreprises.',
+  accroche: 'Du site web à l’automatisation et à l’intelligence artificielle, et demain jusqu’aux robots.',
+  indice: 'Faites défiler',
+  /** Mots affichés en grand entre deux sections. */
+  passages: { methode: 'Méthode', projets: 'Projets', media: 'Notre média', vision: 'Vision' },
+  projets: { titre: 'Une histoire vraie vaut dix promesses.' },
+  contact: {
+    titre: 'Parlons-en.',
+    texte: 'Un site, un process à automatiser, une idée encore floue : racontez-nous votre métier.',
+  },
+} as const;
+
+/* ------------------------------------------------------------------ */
 /* Offres                                                             */
 /* ------------------------------------------------------------------ */
 
@@ -180,36 +207,72 @@ export const expertises: Expertise[] = [
 /* Projets                                                            */
 /* ------------------------------------------------------------------ */
 
-// TODO: remplacer ces 4 projets d’exemple par de vrais projets (nom, client, phrase de résultat),
-// puis retirer « exemple: true » : la carte affiche la mention « Exemple » tant qu’il est présent.
+// Projets décrits par les associés (message vocal du 23 octobre 2026), captures du dossier Drive « Site / Projets ».
 export const projets: Projet[] = [
   {
-    nom: 'Site vitrine et boutique en ligne pour [client]',
-    client: '[Client]',
+    nom: 'ADPVO, le site de l’Amicale des Policiers du Val-d’Oise',
+    client: 'Amicale des Policiers du Val-d’Oise',
     calibre: 'web',
-    resultat: 'Un site rapide et une boutique que le client met à jour lui-même.',
-    exemple: true,
+    besoin: 'Donner à l’Amicale un vrai site de CSE, que le bureau fait vivre seul.',
+    capacite:
+      'Billetterie avec commande en ligne, adhésion via HelloAsso, annonces entre collègues, posts « À la une » et espace bureau complet.',
+    gain: 'Le bureau publie offres et actualités lui-même et reçoit les commandes déjà triées, export compris.',
+    image: {
+      fichier: 'adpvo.webp',
+      alt: 'Page d’accueil du site de l’ADPVO : bandeau bleu, blanc, rouge et catégories d’offres.',
+    },
+    lien: { url: 'https://adpvo.fr', libelle: 'Voir le site' },
   },
   {
-    nom: 'Devis et relances automatisés',
-    client: '[Client]',
-    calibre: 'ia',
-    resultat: 'Les devis et les relances partent seuls, sans ressaisie.',
-    exemple: true,
-  },
-  {
-    nom: 'Assistant IA pour les demandes courantes',
-    client: '[Client]',
-    calibre: 'ia',
-    resultat: 'Les questions fréquentes ont une réponse immédiate. L’équipe garde les cas complexes.',
-    exemple: true,
-  },
-  {
-    nom: 'Application de prise de rendez-vous',
-    client: '[Client]',
+    nom: 'Atelier, l’organisateur de projets',
+    client: 'Projet GLM',
     calibre: 'web',
-    resultat: 'Les clients réservent en ligne, le planning se remplit sans appel.',
-    exemple: true,
+    besoin: 'Suivre plusieurs projets, leurs tâches et le temps passé, sans jongler entre plusieurs outils.',
+    capacite:
+      'Projets, tâches épinglées, réunions, suivi des heures, tableau de bord, boîte de réception et calendrier au même endroit.',
+    gain: 'Moins de temps à s’organiser, plus à produire : on s’en sert nous-mêmes au quotidien.',
+    image: {
+      fichier: 'atelier.webp',
+      alt: 'Écran d’Atelier : liste de tâches d’un projet, avec dates, étiquettes et tâches épinglées.',
+    },
+  },
+  {
+    nom: 'CrocoMix, le studio de remix',
+    client: 'Projet GLM',
+    calibre: 'ia',
+    besoin: 'Retravailler un morceau quand on n’a que le fichier final.',
+    capacite:
+      'L’IA sépare la voix, la basse, la batterie, la guitare et le piano. Chaque piste se règle, se coupe et reçoit ses propres effets.',
+    gain: 'Remixer, s’entraîner sur un instrument ou enregistrer sa propre partie, directement dans le navigateur.',
+    image: {
+      fichier: 'crocomix.webp',
+      alt: 'Console de CrocoMix : une piste par instrument, effets, oscilloscope et égaliseur.',
+    },
+  },
+  {
+    nom: 'InfoHub, le tableau de bord personnel',
+    client: 'Projet GLM',
+    calibre: 'ia',
+    besoin: 'Avoir l’essentiel de sa journée sur un seul écran.',
+    capacite:
+      'Météo, marchés, actualités, sport, musique et état de l’ordinateur, alimentés en direct par de nombreuses sources de données.',
+    gain: 'Un coup d’œil au lieu de passer d’un site à l’autre.',
+    image: {
+      fichier: 'infohub.webp',
+      alt: 'Tableau de bord InfoHub au style néon : météo, crypto, actualités, musique et sport.',
+    },
+  },
+  {
+    nom: 'Un jeu roguelike dans le navigateur',
+    client: 'Projet GLM',
+    calibre: 'web',
+    besoin: 'Prouver qu’un jeu complet peut tourner sans rien installer.',
+    capacite: 'Cinq classes, plus de neuf niveaux, un mode infini et de nombreux objets à collectionner.',
+    gain: 'On ouvre un lien et on joue, sur n’importe quel ordinateur.',
+    image: {
+      fichier: 'roguelike.webp',
+      alt: 'Partie du roguelike : le héros affronte des monstres dans une salle de donjon.',
+    },
   },
 ];
 
@@ -244,7 +307,7 @@ export const methode = {
 export const equipe: { titre: string; texte: string; associes: Associe[] } = {
   titre: 'Trois associés, une seule équipe.',
   texte:
-    'On s’est rencontrés en cours de data science à UC Irvine, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par toute l’équipe, du premier échange à la mise en service.',
+    'On s’est rencontrés en cours de data science à UC Irvine, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par toute l’équipe.',
   // TODO: vérifier que chaque photo correspond au bon associé.
   associes: [
     {
@@ -318,12 +381,9 @@ export const vision: { cap: string; principes: { titre: string; texte: string; a
 /** Série vidéo quotidienne de vulgarisation publiée par GLM sur LinkedIn. */
 export const media = {
   nom: 'T’as cru\u00a0?',
-  surtitre: 'Notre média · Une vidéo par jour',
-  accroche: 'Une idée reçue, démontée chaque jour en vidéo.',
+  surtitre: 'Une vidéo par jour',
   texte:
-    'Chaque jour, une courte vidéo de vulgarisation scientifique, technologique et financière. Hugo, le curieux, part d’une idée reçue qu’on entend partout. Nora, l’experte, explique ce qui se passe vraiment.',
-  rythme: 'Un thème par semaine, une vidéo par jour.',
-  hashtag: '#TasCru',
+    'Hugo, le curieux, part d’une idée reçue qu’on entend partout. Nora, l’experte, explique ce qui se passe vraiment.',
   /** Page où suivre la série : la page LinkedIn de GLM. */
   lien: 'https://www.linkedin.com/company/glmprime/',
   /**
@@ -353,21 +413,3 @@ export const media = {
     },
   ],
 } as const;
-
-/* ------------------------------------------------------------------ */
-/* Actualités LinkedIn                                                */
-/* ------------------------------------------------------------------ */
-
-/**
- * Posts LinkedIn affichés dans la rubrique Actualités, du plus récent au plus ancien.
- * Coller au choix le lien du post (menu « … » → « Copier le lien vers le post »)
- * ou l’URL d’intégration officielle (menu « … » → « Intégrer ce post », valeur de src).
- * Les paramètres de suivi du lien sont ignorés automatiquement.
- *
- * Les iframes ne sont chargées qu’après consentement (bandeau cookies).
- */
-// TODO: ajouter un 3e post (idéalement depuis la page entreprise GLM).
-export const postsLinkedIn: string[] = [
-  'https://www.linkedin.com/posts/romain-dufraiche_datascience-ai-generativeai-activity-7406866497341452288-Wxge',
-  'https://www.linkedin.com/posts/romain-dufraiche_echec-ia-data-activity-7348087063193239552-Rr_i',
-];

@@ -1,13 +1,14 @@
 ---
 import Logotype from '../components/Logotype.astro';
 import Bouton from '../components/Bouton.astro';
+import { media } from '../data/site';
 import { lien, projetsAffiches } from '../lib/hebergement';
 
 const liens = [
-  { href: lien('/#expertises'), libelle: 'Expertises' },
+  { href: lien('/#methode'), libelle: 'Méthode' },
   ...(projetsAffiches.length > 0 ? [{ href: lien('/#projets'), libelle: 'Projets' }] : []),
   { href: lien('/#equipe'), libelle: 'Équipe' },
-  { href: lien('/#actualites'), libelle: 'Actualités' },
+  { href: lien('/#tascru'), libelle: media.nom },
   { href: lien('/#contact'), libelle: 'Contact' },
 ];
 ---

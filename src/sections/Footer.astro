@@ -1,13 +1,13 @@
 ---
 import Logotype from '../components/Logotype.astro';
-import { entreprise, contact } from '../data/site';
+import { entreprise, contact, media } from '../data/site';
 
 const annee = new Date().getFullYear();
 const liens = [
-  { href: lien('/#expertises'), libelle: 'Expertises' },
+  { href: lien('/#methode'), libelle: 'Méthode' },
   ...(projetsAffiches.length > 0 ? [{ href: lien('/#projets'), libelle: 'Projets' }] : []),
   { href: lien('/#equipe'), libelle: 'Équipe' },
-  { href: lien('/#actualites'), libelle: 'Actualités' },
+  { href: lien('/#tascru'), libelle: media.nom },
   { href: lien('/#contact'), libelle: 'Contact' },
 ];
 import { lien, projetsAffiches } from '../lib/hebergement';
@@ -43,11 +43,6 @@ import { lien, projetsAffiches } from '../lib/hebergement';
         </li>
         <li>
           <a href={lien('/confidentialite/')}>Politique de confidentialité</a>
-        </li>
-        <li>
-          <button type="button" class="pied__cookies" hidden data-gerer-cookies>
-            Gérer les cookies
-          </button>
         </li>
         <li>
           <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">
@@ -92,30 +87,7 @@ import { lien, projetsAffiches } from '../lib/hebergement';
   }
 
   .pied a,
-  .pied__cookies {
-    display: inline-block;
-    padding-block: var(--space-1);
-    font-size: var(--fs-petit);
-    color: var(--texte);
-    text-decoration: none;
-  }
-
   .pied a:hover,
-  .pied__cookies:hover {
-    text-decoration: underline;
-  }
-
-  .pied__cookies {
-    background: none;
-    border: 0;
-    padding-inline: 0;
-    cursor: pointer;
-  }
-
-  .pied__cookies[hidden] {
-    display: none;
-  }
-
   .pied__bas {
     margin-top: var(--space-7);
     padding-top: var(--space-5);
