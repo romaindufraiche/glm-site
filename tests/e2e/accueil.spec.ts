@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { contact, media } from '../../src/data/site';
 
 /** Amène la visite à une progression précise d’une section épinglée. */
 async function aller(page: Page, section: string, progression: number) {
@@ -75,7 +76,9 @@ test.describe('Page d’accueil', () => {
     const section = page.locator('#tascru');
     await expect(section.getByRole('heading', { level: 2 })).toContainText('T’as cru');
     await expect(section).toContainText('Une vidéo par jour');
-    await expect(section.getByRole('img', { name: /^Miniature T’as cru/ })).toHaveCount(4);
+    await expect(section.getByRole('img', { name: /^Miniature T’as cru/ })).toHaveCount(
+      media.episodes.length,
+    );
     await expect(section.getByRole('link', { name: /Voir les vidéos sur LinkedIn/ })).toHaveAttribute(
       'href',
       'https://www.linkedin.com/company/glmprime/',
@@ -111,6 +114,19 @@ test.describe('Page d’accueil', () => {
     await page.waitForLoadState('networkidle');
     expect(tiers).toEqual([]);
     await expect(page.locator('iframe')).toHaveCount(0);
+  });
+
+  test('le contact propose l’e-mail et WhatsApp en boutons', async ({ page }) => {
+    await page.goto('/');
+    const section = page.locator('#contact');
+    await expect(section.getByRole('link', { name: 'Nous écrire un e-mail' })).toHaveAttribute(
+      'href',
+      `mailto:${contact.email}`,
+    );
+    await expect(section.getByRole('link', { name: 'Discuter sur WhatsApp' })).toHaveAttribute(
+      'href',
+      new RegExp(`^https://wa\\.me/${contact.whatsapp}`),
+    );
   });
 
   test('mouvement réduit : tout le contenu s’affiche à plat, sans 3D', async ({ page }) => {

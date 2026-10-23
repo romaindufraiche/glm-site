@@ -364,7 +364,7 @@ export const methode = {
 export const equipe: { titre: string; texte: string; associes: Associe[] } = {
   titre: 'Trois associés, une seule équipe.',
   texte:
-    'On s’est rencontrés en cours de data science à UC Irvine, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par toute l’équipe.',
+    'On s’est rencontrés en cours de data science, en Californie. De retour en France, on a créé GLM pour construire quelque chose à nous. Chaque projet est suivi par toute l’équipe.',
   // TODO: vérifier que chaque photo correspond au bon associé.
   associes: [
     {
@@ -408,24 +408,25 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
 /* ------------------------------------------------------------------ */
 
 export const vision: { cap: string; principes: { titre: string; texte: string; accent: Accent }[] } = {
-  cap: 'Notre cap\u00a0: rendre l’IA et la robotique autonomes concrètes pour les entreprises en France et en Europe.',
-  // Principes tirés des réponses des associés au questionnaire de marque.
+  cap: 'Notre cap\u00a0: rendre la technologie accessible à tous, pour que chacun se consacre aux tâches à forte valeur ajoutée.',
+  // Principes reformulés à partir des réponses des associés (octobre 2026).
   principes: [
     {
-      titre: 'Liberté',
+      titre: 'Ambition',
       texte:
-        'On a créé GLM pour rester libres de nos choix. On choisit nos projets, et des clients qui jouent franc-jeu avec nous.',
+        'On voit grand, pour nous comme pour vous. On prend en charge le passé et le présent de votre entreprise pour la projeter vers l’avenir.',
       accent: 'corail',
     },
     {
-      titre: 'Terrain',
+      titre: 'Échange',
       texte:
-        'Jeunes et au contact des PME, on part de la réalité de votre quotidien, pas d’une vision lointaine.',
+        'On aime s’investir dans chaque projet, échanger, rencontrer de nouvelles personnes et découvrir de nouveaux métiers.',
       accent: 'jade',
     },
     {
-      titre: 'Ambition',
-      texte: 'On a faim de réussir et on vise loin : faire de GLM une belle réussite de la tech française.',
+      titre: 'Au quotidien',
+      texte:
+        'On utilise nous-mêmes ces technologies tous les jours. On vous aide à les comprendre et à vous les approprier pour donner de l’élan à votre activité.',
       accent: 'bleu',
     },
   ],
@@ -440,7 +441,7 @@ export const media = {
   nom: 'T’as cru\u00a0?',
   surtitre: 'Une vidéo par jour',
   texte:
-    'Notre média de vulgarisation tech. Il nous sert de veille technologique et nous permet de partager notre expertise avec le plus grand nombre, pour la rendre accessible à tous. Hugo, le curieux, part d’une idée reçue. Nora, l’experte, explique ce qui se passe vraiment.',
+    'Notre média de vulgarisation tech. Hugo, le curieux, part d’une idée reçue. Nora, l’experte, explique ce qui se passe vraiment.',
   /** Page où suivre la série : la page LinkedIn de GLM. */
   lien: 'https://www.linkedin.com/company/glmprime/',
   /**
@@ -449,14 +450,53 @@ export const media = {
    */
   episodes: [
     {
-      miniature: 'semaine2-ep1.png',
+      miniature: 'semaine4-ep3.png',
       question:
-        'L’IA est en panne\u00a0? Hugo\u00a0: « Elle m’a juste écrit un texte au lieu de réserver\u00a0! »',
+        'Une usine de puces en quelques mois\u00a0? Hugo\u00a0: « On construit en France, et c’est réglé\u00a0! »',
     },
     {
-      miniature: 'semaine2-ep2.png',
+      miniature: 'semaine4-ep2.png',
       question:
-        'ChatGPT recopie ses réponses\u00a0? Hugo\u00a0: « C’est une énorme base de données de réponses\u00a0! »',
+        'Une puce, c’est du plastique\u00a0? Hugo\u00a0: « Un bout de plastique noir avec des pattes\u00a0! »',
+    },
+    {
+      miniature: 'semaine4-ep1.png',
+      question:
+        'L’IA, c’est un jeu vidéo\u00a0? Hugo\u00a0: « Elle tourne sur des cartes graphiques, donc… »',
+    },
+    {
+      miniature: 'semaine3-ep5.png',
+      question:
+        'Réentraîner l’IA avec mes docs\u00a0? Hugo\u00a0: « Je commande des cartes graphiques\u00a0! »',
+    },
+    {
+      miniature: 'semaine3-ep4.png',
+      question:
+        'L’IA m’a trouvé un livre… qui existe\u00a0? Hugo\u00a0: « Titre, auteur, année\u00a0: tout y est\u00a0! »',
+    },
+    {
+      miniature: 'semaine3-ep3.png',
+      question: 'Un robot dans ChatGPT\u00a0? Hugo\u00a0: « Il y a un robot géant caché dans l’IA\u00a0? »',
+    },
+    {
+      miniature: 'semaine3-ep2.png',
+      question:
+        'L’IA a un dictionnaire\u00a0? Hugo\u00a0: « Elle connaît la définition de chaque mot\u00a0! »',
+    },
+    {
+      miniature: 'semaine3-ep1.png',
+      question:
+        'L’IA ne sait même pas lire\u00a0? Hugo\u00a0: « Elle ne sait même pas compter les lettres\u00a0! »',
+    },
+    {
+      miniature: 'semaine2-ep5.png',
+      question:
+        'Supprimée, c’est effacé\u00a0? Hugo\u00a0: « Je supprime, et pouf\u00a0! Disparue pour toujours\u00a0! »',
+    },
+    {
+      miniature: 'semaine2-ep4.png',
+      question:
+        'Je l’ai corrigée, elle a appris\u00a0? Hugo\u00a0: « Demain, il le saura pour tout le monde\u00a0! »',
     },
     {
       miniature: 'semaine2-ep3.png',
@@ -464,9 +504,14 @@ export const media = {
         'L’IA a un vrai cerveau\u00a0? Hugo\u00a0: « Elle a des neurones, donc elle pense comme nous\u00a0! »',
     },
     {
-      miniature: 'semaine2-ep4.png',
+      miniature: 'semaine2-ep2.png',
       question:
-        'Je l’ai corrigée, elle a appris\u00a0? Hugo\u00a0: « Demain, il le saura pour tout le monde\u00a0! »',
+        'ChatGPT recopie ses réponses\u00a0? Hugo\u00a0: « C’est une énorme base de données de réponses\u00a0! »',
+    },
+    {
+      miniature: 'semaine2-ep1.png',
+      question:
+        'L’IA est en panne\u00a0? Hugo\u00a0: « Elle m’a juste écrit un texte au lieu de réserver\u00a0! »',
     },
   ],
 } as const;

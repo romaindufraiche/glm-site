@@ -55,15 +55,17 @@ const projets = await Promise.all(
   }),
 );
 
-// Le manège tourne en boucle : les épisodes sont répétés, les copies sont masquées aux lecteurs d’écran.
+// Le manège doit compter au moins huit miniatures pour tourner en boucle : avec moins d’épisodes,
+// ils sont répétés, et les copies sont masquées aux lecteurs d’écran.
 const episodes = media.episodes.map((episode) => ({
   ...episode,
   image: imageDe('tascru', episode.miniature),
 }));
 const manege = [
   ...episodes.map((e) => ({ ...e, copie: false })),
-  ...episodes.map((e) => ({ ...e, copie: true })),
+  ...(episodes.length < 8 ? episodes.map((e) => ({ ...e, copie: true })) : []),
 ];
+const lienWhatsApp = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}`;
 
 const motsCap = vision.cap.split(' ');
 const lettresContact = [...accueil.contact.titre];
@@ -423,7 +425,11 @@ const lettresContact = [...accueil.contact.titre];
             <p>{media.texte}</p>
           </div>
           <div class="manege">
-            <ul class="manege__axe" id="manege" role="list">
+            <ul
+              class:list={['manege__axe', { 'manege__axe--large': manege.length > 8 }]}
+              id="manege"
+              role="list"
+            >
               {manege.map((episode) => (
                 <li class="episode" aria-hidden={episode.copie ? 'true' : undefined}>
                   <Image
@@ -493,21 +499,32 @@ const lettresContact = [...accueil.contact.titre];
               ))}
             </h2>
             <p class="contact__texte">{accueil.contact.texte}</p>
-            <a class="contact__mail" href={`mailto:${contact.email}`}>
-              {contact.email}
-            </a>
             <div class="contact__actions">
-              {hebergement.formulaire && (
-                <a class="bouton bouton--aplat" href={lien('/contact/')}>
-                  Écrire via le formulaire
-                </a>
-              )}
+              <a class="bouton bouton--aplat bouton--icone" href={`mailto:${contact.email}`}>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="1.5" />
+                  <path d="M3.5 6 12 13l8.5-7" />
+                </svg>
+                Nous écrire un e-mail
+              </a>
               <a
-                class:list={['bouton', hebergement.formulaire ? 'bouton--contour' : 'bouton--aplat']}
-                href={contact.linkedin}
+                class="bouton bouton--contour bouton--icone"
+                href={lienWhatsApp}
                 target="_blank"
                 rel="noopener"
               >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4.5 19.5 5.6 16A8 8 0 1 1 8.4 18.6Z" />
+                  <path d="M9.3 8.6c.2 2.4 1.9 4.6 4.3 5.6l1-1.1 1.8.8-.3 1.5c-3.9.2-7.6-3.4-7.5-7.3l1.5-.3.8 1.8Z" />
+                </svg>
+                Discuter sur WhatsApp
+              </a>
+              {hebergement.formulaire && (
+                <a class="bouton bouton--contour" href={lien('/contact/')}>
+                  Écrire via le formulaire
+                </a>
+              )}
+              <a class="bouton bouton--contour" href={contact.linkedin} target="_blank" rel="noopener">
                 Suivre GLM sur LinkedIn
               </a>
             </div>
