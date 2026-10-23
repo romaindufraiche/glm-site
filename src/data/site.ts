@@ -33,7 +33,7 @@ export interface Expertise {
 }
 
 /** Animation jouée au survol de la carte projet (voir src/components/AnimationProjet.astro). */
-export type AnimationProjet = 'adpvo' | 'crocomix' | 'infohub' | 'synapse' | 'pepites';
+export type AnimationProjet = 'amicale' | 'crocomix' | 'infohub' | 'synapse' | 'pepites';
 
 export interface Projet {
   nom: string;
@@ -263,7 +263,7 @@ export const projets: Projet[] = [
     animation: 'pepites',
   },
   {
-    nom: 'ADPVO, l’amicale des PME du Val-d’Oise',
+    nom: 'Le site de l’Amicale des PME du Val-d’Oise',
     client: 'Amicale des PME du Val-d’Oise',
     calibre: 'web',
     description:
@@ -278,10 +278,10 @@ export const projets: Projet[] = [
       'Génération des fichiers',
     ],
     image: {
-      fichier: 'adpvo.webp',
-      alt: 'Page d’accueil du site de l’ADPVO : bandeau bleu, blanc, rouge, catégories d’offres et offres à la une.',
+      fichier: 'amicale.webp',
+      alt: 'Page d’accueil du site de l’amicale : bandeau bleu, blanc, rouge, catégories d’offres et offres à la une.',
     },
-    animation: 'adpvo',
+    animation: 'amicale',
   },
   {
     nom: 'CrocoMix, le studio de remix',
@@ -375,7 +375,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Romain',
       nom: 'Dufraiche',
       role: 'Président',
-      formation: 'Télécom Paris · ESSEC',
+      formation: 'Ingénieur en électronique et en informatique · Télécom Paris · ESSEC',
       bio: 'Il porte la vision stratégique de GLM et traduit vos besoins métier en un projet clair.',
       expertises: ['Stratégie', 'Organisation', 'Relation client'],
       accent: 'corail',
@@ -386,7 +386,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Théo',
       nom: 'Delaforge',
       role: 'Expert technique',
-      formation: 'École des Mines',
+      formation: 'Ingénieur data et IA, audit des systèmes informatiques · École des Mines',
       bio: 'Il conçoit l’architecture de chaque solution et veille à sa solidité, du code à la mise en production.',
       expertises: ['Architecture', 'Développement', 'IA & données'],
       accent: 'jade',
@@ -397,7 +397,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
       prenom: 'Romain',
       nom: 'Yerolymos',
       role: 'Développement et partenariats',
-      formation: 'Expert en cybersécurité',
+      formation: 'Ingénieur en cybersécurité · Développement international',
       bio: 'Il sécurise les systèmes que l’on construit et développe les partenariats de GLM.',
       expertises: ['Cybersécurité', 'Partenariats', 'Réseau'],
       accent: 'bleu',
@@ -412,7 +412,7 @@ export const equipe: { titre: string; texte: string; associes: Associe[] } = {
 /* ------------------------------------------------------------------ */
 
 export const vision: { cap: string; principes: { titre: string; texte: string; accent: Accent }[] } = {
-  cap: 'Notre cap\u00a0: rendre la technologie accessible à tous, pour que chacun se consacre aux tâches à forte valeur ajoutée.',
+  cap: 'Notre cap\u00a0: grâce à la technologie, vous faire gagner du temps et de l’argent et développer votre activité, pour que votre métier reste une passion.',
   // Principes reformulés à partir des réponses des associés (octobre 2026).
   principes: [
     {
@@ -430,7 +430,7 @@ export const vision: { cap: string; principes: { titre: string; texte: string; a
     {
       titre: 'Au quotidien',
       texte:
-        'On utilise nous-mêmes ces technologies tous les jours. On vous aide à les comprendre et à vous les approprier pour donner de l’élan à votre activité.',
+        'On expérimente les nouvelles technologies dès leur sortie et on se met à jour chaque jour. On vous aide à les comprendre et à vous les approprier pour donner de l’élan à votre activité.',
       accent: 'bleu',
     },
   ],
