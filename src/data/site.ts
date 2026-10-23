@@ -215,7 +215,50 @@ export const expertises: Expertise[] = [
 /* ------------------------------------------------------------------ */
 
 // Projets décrits par les associés, captures du dossier Drive « Site / Projets ».
+// L’ordre alterne les domaines (robotique, web, IA…) : c’est l’ordre de l’anneau.
 export const projets: Projet[] = [
+  {
+    nom: 'L’échiquier autonome',
+    client: 'Projet R&D',
+    calibre: 'robotique',
+    description:
+      'Une intelligence artificielle qui joue aux échecs, et l’échiquier qui va avec. Nous avons conçu et fabriqué toute son architecture : un chariot aimanté sur deux axes déplace les pièces, des LED indiquent les coups, et l’on joue à la voix contre notre moteur ou contre Stockfish.',
+    points: ['Moteur d’échecs (Minimax)', 'Commande vocale', 'Mécanique sur deux axes', 'Éclairage LED'],
+    animation: 'echiquier',
+  },
+  {
+    nom: 'Ombres & Reliques, un jeu vidéo dans le navigateur',
+    client: 'Projet GLM',
+    calibre: 'web',
+    description:
+      'Nous avons créé un jeu vidéo qui tourne directement dans le navigateur, de la conception graphique au gameplay, en passant par les mondes et les objets. Il est en ligne et 100 % fonctionnel.',
+    points: ['Conception graphique', 'Gameplay', 'Mondes et objets', 'En production'],
+    image: {
+      fichier: 'ombres-reliques.webp',
+      alt: 'Partie d’Ombres & Reliques : le héros affronte une horde de goules dans une salle du donjon.',
+    },
+    video: 'ombres-reliques',
+    animation: 'jeu',
+    lien: { url: 'https://krokow.github.io/Ombres-Reliques', libelle: 'Jouer' },
+  },
+  {
+    nom: 'Pépites, l’analyse de portefeuille',
+    client: 'Projet GLM',
+    calibre: 'ia',
+    description:
+      'Un algorithme qui analyse l’actualité et un portefeuille financier, puis propose des signaux d’achat ou de vente sur une sélection d’actions définie à l’avance. C’est un outil d’aide à la décision, pas un conseil en investissement.',
+    points: [
+      'Analyse de l’actualité',
+      'Suivi de portefeuille',
+      'Indicateurs techniques',
+      'Signaux d’achat et de vente',
+    ],
+    image: {
+      fichier: 'pepites.webp',
+      alt: 'Écran de Pépites : graphique en chandeliers d’une action avec moyennes mobiles, volumes et RSI.',
+    },
+    animation: 'pepites',
+  },
   {
     nom: 'ADPVO, l’amicale des PME du Val-d’Oise',
     client: 'Amicale des PME du Val-d’Oise',
@@ -256,6 +299,20 @@ export const projets: Projet[] = [
     animation: 'crocomix',
   },
   {
+    nom: 'Synapse, le home cinéma personnalisé',
+    client: 'Projet GLM',
+    calibre: 'web',
+    description:
+      'Nous avons construit une grande base de films qui rassemble les films disponibles et les centralise dans un home cinéma : bandes-annonces, où les regarder, notes et recommandations personnalisées. Toute l’interface graphique est faite maison.',
+    points: ['Base de films', 'Recommandations', 'Application installable', 'Design de l’interface'],
+    image: {
+      fichier: 'synapse.webp',
+      alt: 'Accueil de Synapse au style cyberpunk : film à la une et rangée des tendances de la semaine.',
+    },
+    animation: 'synapse',
+    lien: { url: 'https://krokow.github.io/synapse/', libelle: 'Voir l’application' },
+  },
+  {
     nom: 'InfoHub, le tableau de bord de la journée',
     client: 'Projet GLM',
     calibre: 'ia',
@@ -274,62 +331,6 @@ export const projets: Projet[] = [
       alt: 'Tableau de bord InfoHub au style néon : météo, crypto, actualités, musique, sport et suivi de l’ISS.',
     },
     animation: 'infohub',
-  },
-  {
-    nom: 'Ombres & Reliques, un jeu vidéo dans le navigateur',
-    client: 'Projet GLM',
-    calibre: 'web',
-    description:
-      'Nous avons créé un jeu vidéo qui tourne directement dans le navigateur, de la conception graphique au gameplay, en passant par les mondes et les objets. Il est en ligne et 100 % fonctionnel.',
-    points: ['Conception graphique', 'Gameplay', 'Mondes et objets', 'En production'],
-    image: {
-      fichier: 'ombres-reliques.webp',
-      alt: 'Partie d’Ombres & Reliques : le héros affronte une horde de goules dans une salle du donjon.',
-    },
-    video: 'ombres-reliques',
-    animation: 'jeu',
-    lien: { url: 'https://krokow.github.io/Ombres-Reliques', libelle: 'Jouer' },
-  },
-  {
-    nom: 'L’échiquier autonome',
-    client: 'Projet R&D',
-    calibre: 'robotique',
-    description:
-      'Une intelligence artificielle qui joue aux échecs, et l’échiquier qui va avec. Nous avons conçu et fabriqué toute son architecture : un chariot aimanté sur deux axes déplace les pièces, des LED indiquent les coups, et l’on joue à la voix contre notre moteur ou contre Stockfish.',
-    points: ['Moteur d’échecs (Minimax)', 'Commande vocale', 'Mécanique sur deux axes', 'Éclairage LED'],
-    animation: 'echiquier',
-  },
-  {
-    nom: 'Synapse, le home cinéma personnalisé',
-    client: 'Projet GLM',
-    calibre: 'web',
-    description:
-      'Nous avons construit une grande base de films qui rassemble les films disponibles et les centralise dans un home cinéma : bandes-annonces, où les regarder, notes et recommandations personnalisées. Toute l’interface graphique est faite maison.',
-    points: ['Base de films', 'Recommandations', 'Application installable', 'Design de l’interface'],
-    image: {
-      fichier: 'synapse.webp',
-      alt: 'Accueil de Synapse au style cyberpunk : film à la une et rangée des tendances de la semaine.',
-    },
-    animation: 'synapse',
-    lien: { url: 'https://krokow.github.io/synapse/', libelle: 'Voir l’application' },
-  },
-  {
-    nom: 'Pépites, l’analyse de portefeuille',
-    client: 'Projet GLM',
-    calibre: 'ia',
-    description:
-      'Un algorithme qui analyse l’actualité et un portefeuille financier, puis propose des signaux d’achat ou de vente sur une sélection d’actions définie à l’avance. C’est un outil d’aide à la décision, pas un conseil en investissement.',
-    points: [
-      'Analyse de l’actualité',
-      'Suivi de portefeuille',
-      'Indicateurs techniques',
-      'Signaux d’achat et de vente',
-    ],
-    image: {
-      fichier: 'pepites.webp',
-      alt: 'Écran de Pépites : graphique en chandeliers d’une action avec moyennes mobiles, volumes et RSI.',
-    },
-    animation: 'pepites',
   },
 ];
 
