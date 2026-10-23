@@ -11,11 +11,7 @@ test.describe('Page d’accueil', () => {
       'On conçoit et on construit les systèmes numériques des entreprises.',
     );
     await expect(page.locator('h1')).toHaveCount(1);
-    // En production, les projets d’exemple sont retirés : la section Projets disparaît tant qu’il n’y en a pas de vrais.
-    const sansExemples = process.env['PUBLIC_MASQUER_EXEMPLES'] === 'oui';
-    const titres = ['Expertises', 'Projets', 'Méthode', 'Équipe', 'Actualités', 'Vision', 'Contact'].filter(
-      (titre) => !(sansExemples && titre === 'Projets'),
-    );
+    const titres = ['Expertises', 'Projets', 'Méthode', 'Équipe', 'Actualités', 'Vision', 'Contact'];
     for (const titre of titres) {
       await expect(page.locator('section').filter({ hasText: titre }).first()).toBeVisible();
     }

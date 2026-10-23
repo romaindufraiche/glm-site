@@ -8,10 +8,6 @@ const decalage = (page: Page, index: number) =>
     .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).m42);
 
 test.describe('Défilement des projets', () => {
-  test.skip(
-    process.env['PUBLIC_MASQUER_EXEMPLES'] === 'oui',
-    'Aucun projet publié (projets d’exemple masqués)',
-  );
   test('desktop : section épinglée, la colonne de projets monte', async ({ page, isMobile }) => {
     test.skip(isMobile, 'Défilement épinglé réservé au desktop');
     await page.goto('/');
@@ -36,14 +32,35 @@ test.describe('Défilement des projets', () => {
     // À la fin du trajet : toute la colonne est montée d’un seul bloc.
     await page.evaluate((y) => window.scrollTo(0, y), debut + distance);
     await expect.poll(() => decalage(page, 0)).toBeLessThan(depart - 100);
-    await page.waitForTimeout(800);
-    const premier = await decalage(page, 0);
-    expect(await decalage(page, 3)).toBeCloseTo(premier, 0);
+    // Les deux décalages sont lus au même instant : l’inertie peut encore être en cours.
+    const [premier, quatrieme] = await page.evaluate(() =>
+      [0, 3].map((i) => {
+        const el = document.querySelectorAll<HTMLElement>('[data-projets-item]')[i];
+        return el ? new DOMMatrix(getComputedStyle(el).transform).m42 : NaN;
+      }),
+    );
+    expect(quatrieme).toBeCloseTo(premier ?? NaN, 0);
     await expect(page.locator('#projets-titre')).toBeInViewport();
 
     // Au-delà, la page reprend son défilement normal.
     await page.evaluate((y) => window.scrollTo(0, y), debut + distance + 600);
     await expect(page.locator('#methode')).toBeInViewport();
+  });
+
+  test('chaque projet présente son besoin, ce qu’il fait et ce qu’il change', async ({ page }) => {
+    await page.goto('/');
+    const cartes = page.locator('[data-projets-item] article');
+    const nombre = await cartes.count();
+    expect(nombre).toBeGreaterThanOrEqual(3);
+    for (let i = 0; i < nombre; i++) {
+      await expect(cartes.nth(i).locator('dt')).toHaveText([
+        'Le besoin',
+        'Ce qu’il fait',
+        'Ce que ça change',
+      ]);
+      await expect(cartes.nth(i).getByRole('img')).toHaveCount(1);
+    }
+    await expect(page.locator('.carte__exemple')).toHaveCount(0);
   });
 
   test('mobile et mouvement réduit : grille simple, aucune animation', async ({ page }) => {

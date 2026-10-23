@@ -202,7 +202,6 @@ Tous sont marqués `TODO:` dans le code ; `npm run verifier:production` les dét
 
 **Contenu**
 
-- [ ] 4 projets d’exemple à remplacer par de vrais projets (puis retirer `exemple: true`)
 - [ ] Un 3e post LinkedIn (idéalement de la page entreprise GLM)
 - [ ] Phrases des 4 étapes de la méthode à relire (rédigées à partir de la charte)
 
