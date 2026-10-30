@@ -1,0 +1,161 @@
+name: Déploiement d’une démo
+
+# Met en ligne une démo de projet sur son sous-domaine (ex. demo1.glmprime.com), à la demande :
+# onglet Actions → Déploiement d’une démo → Run workflow.
+#
+# La démo est récupérée depuis son propre dépôt GitHub, construite si besoin (npm run build), puis
+# envoyée par SFTP dans le dossier demos/<nom> de l’hébergement. Ce dossier est À CÔTÉ de www/ :
+# le déploiement du site principal (qui vide www/ de tout fichier en trop) ne le touche jamais.
+# Le sous-domaine se crée une fois dans l’espace client OVH (voir docs/demos.md).
+#
+# Secrets utilisés (Settings → Secrets and variables → Actions) :
+#   SFTP_HOST, SFTP_USER, SFTP_PASSWORD, SFTP_PORT (22 par défaut)
+#   DEMO_TOKEN  facultatif : jeton GitHub en lecture seule, seulement pour une démo en dépôt privé
+# Aucun identifiant n’est écrit dans le dépôt.
+
+on:
+  workflow_dispatch:
+    inputs:
+      nom:
+        description: 'Nom de la démo = sous-dossier et sous-domaine (ex. demo1 → demo1.glmprime.com)'
+        required: true
+      depot:
+        description: 'Dépôt GitHub de la démo (ex. krokow/ombres-reliques)'
+        required: true
+      branche:
+        description: 'Branche à déployer'
+        required: true
+        default: main
+      essai:
+        description: 'Essai à blanc : afficher ce qui serait envoyé, sans rien modifier'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: demo-${{ inputs.nom }}
+  cancel-in-progress: false
+
+jobs:
+  deployer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier les paramètres et les secrets
+        env:
+          NOM: ${{ inputs.nom }}
+          DEPOT: ${{ inputs.depot }}
+          BRANCHE: ${{ inputs.branche }}
+          SFTP_HOST: ${{ secrets.SFTP_HOST }}
+          SFTP_USER: ${{ secrets.SFTP_USER }}
+          SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+        run: |
+          # Noms stricts : pas de « .. », de « / » ni d’espace, pour ne jamais écrire hors de demos/.
+          [[ "$NOM" =~ ^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$ ]] || { echo "::error::Nom invalide : lettres minuscules, chiffres et tirets."; exit 1; }
+          [[ "$DEPOT" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]] || { echo "::error::Dépôt invalide : propriétaire/nom."; exit 1; }
+          [[ "$BRANCHE" =~ ^[A-Za-z0-9_./-]+$ ]] || { echo "::error::Branche invalide."; exit 1; }
+          manquants=""
+          [ -n "$SFTP_HOST" ] || manquants="$manquants SFTP_HOST"
+          [ -n "$SFTP_USER" ] || manquants="$manquants SFTP_USER"
+          [ -n "$SFTP_PASSWORD" ] || manquants="$manquants SFTP_PASSWORD"
+          if [ -n "$manquants" ]; then echo "::error::Secrets manquants :$manquants (voir docs/demos.md)."; exit 1; fi
+
+      - name: Récupérer la démo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.depot }}
+          ref: ${{ inputs.branche }}
+          token: ${{ secrets.DEMO_TOKEN || github.token }}
+          path: demo
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Construire la démo
+        id: build
+        working-directory: demo
+        run: |
+          if [ -f package.json ] && node -e "process.exit(require('./package.json').scripts?.build ? 0 : 1)"; then
+            if [ -f package-lock.json ]; then npm ci; else npm install; fi
+            npm run build
+          fi
+          # Dossier à publier : le résultat du build s’il existe, sinon la racine du dépôt (site statique).
+          for d in dist build out; do
+            if [ -f "$d/index.html" ]; then echo "dossier=demo/$d" >> "$GITHUB_OUTPUT"; exit 0; fi
+          done
+          [ -f index.html ] || { echo "::error::Aucun index.html trouvé (ni à la racine, ni dans dist/, build/ ou out/)."; exit 1; }
+          echo "dossier=demo" >> "$GITHUB_OUTPUT"
+
+      - name: Ajouter les réglages serveur par défaut
+        env:
+          DOSSIER: ${{ steps.build.outputs.dossier }}
+        run: |
+          # Une démo n’est pas destinée aux moteurs de recherche, et garde les en-têtes de sécurité
+          # du site principal. Un .htaccess ou un robots.txt fourni par la démo est conservé.
+          if [ ! -f "$DOSSIER/.htaccess" ]; then
+            cat > "$DOSSIER/.htaccess" <<'HTACCESS'
+          AddDefaultCharset UTF-8
+          Options -Indexes
+          <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteCond %{SERVER_PORT} 80
+            RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+          </IfModule>
+          <IfModule mod_headers.c>
+            Header always set X-Robots-Tag "noindex, nofollow"
+            Header always set X-Content-Type-Options "nosniff"
+            Header always set Referrer-Policy "strict-origin-when-cross-origin"
+            Header always set X-Frame-Options "SAMEORIGIN"
+            Header always set Strict-Transport-Security "max-age=31536000"
+            Header always unset X-Powered-By
+          </IfModule>
+          <FilesMatch "^\.(?!htaccess$)|\.(md|log|bak|env)$">
+            Require all denied
+          </FilesMatch>
+          HTACCESS
+          fi
+          [ -f "$DOSSIER/robots.txt" ] || printf 'User-agent: *\nDisallow: /\n' > "$DOSSIER/robots.txt"
+          find "$DOSSIER" -name '.git*' -prune -exec rm -rf {} +
+          echo "Fichiers à publier :"; find "$DOSSIER" -type f | sed "s|^$DOSSIER/||" | sort | head -200
+
+      - name: Installer lftp
+        run: sudo apt-get update -q && sudo apt-get install -y -q lftp
+
+      - name: Envoyer sur le SFTP
+        env:
+          HOST: ${{ secrets.SFTP_HOST }}
+          USER: ${{ secrets.SFTP_USER }}
+          PASS: ${{ secrets.SFTP_PASSWORD }}
+          PORT: ${{ secrets.SFTP_PORT }}
+          DOSSIER: ${{ steps.build.outputs.dossier }}
+          NOM: ${{ inputs.nom }}
+          ESSAI: ${{ inputs.essai }}
+        run: |
+          options="--reverse --delete --verbose --parallel=4 --exclude-glob .git* --exclude-glob node_modules/ --exclude .well-known/acme-challenge/"
+          [ "$ESSAI" = "true" ] && options="$options --dry-run" && echo "::notice::Essai à blanc : rien n’est modifié sur le serveur."
+          # Le mot de passe passe par l’environnement (LFTP_PASSWORD), jamais par la ligne de commande.
+          export LFTP_PASSWORD="$PASS"
+          lftp --env-password -u "$USER" -p "${PORT:-22}" "sftp://$HOST" <<EOF
+          set sftp:auto-confirm yes
+          set net:max-retries 2
+          set net:timeout 30
+          mkdir -p -f demos/$NOM
+          mirror $options "$DOSSIER" "demos/$NOM"
+          bye
+          EOF
+
+      - name: Contrôler la démo en ligne
+        if: ${{ !inputs.essai }}
+        env:
+          NOM: ${{ inputs.nom }}
+        run: |
+          url="https://$NOM.glmprime.com/"
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$url" || true)
+          if [ "$code" = "200" ]; then
+            echo "Démo en ligne : $url"
+          else
+            echo "::warning::$url répond $code. Le sous-domaine est-il créé dans l’espace client OVH et pointé vers demos/$NOM ? (voir docs/demos.md)"
+          fi
