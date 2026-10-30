@@ -109,6 +109,8 @@ Tout lien interne passe par `lien()` (`src/lib/hebergement.ts`) pour rester vala
 Protections du site, audit de l’hébergement et marche à suivre si un filtre de sécurité refuse
 d’ouvrir le site : voir [docs/securite.md](docs/securite.md).
 
+Démos de projets sur sous-domaine (demo1.glmprime.com…) : voir [docs/demos.md](docs/demos.md).
+
 ## Mise en ligne sur OVH
 
 ### Première installation
